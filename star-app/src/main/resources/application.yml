@@ -6,7 +6,7 @@ spring:
 app:
   id: ${spring.application.name}
 server:
-  port: 18001
+  port: 80
 
 ---
 spring:

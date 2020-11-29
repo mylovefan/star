@@ -51,7 +51,7 @@ jackson:
 
 mybatis-plus:
   typeAliasesPackage: com.star.module.*.entity
-  mapper-locations: classpath:/com/star/module/*/dao/impl/*.impl
+  mapper-locations: classpath:/com/star/module/*/dao/impl/*.xml
 #  type-aliases-package: com.jgpt.module.spp
 
 swagger:

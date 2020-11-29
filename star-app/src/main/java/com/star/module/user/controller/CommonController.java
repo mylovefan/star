@@ -11,6 +11,7 @@ import com.star.module.user.vo.UserMenuVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -48,5 +49,17 @@ public class CommonController implements CommonFacade {
     @Override
     public Boolean modifyPassCode(ModifyPassCodeDTO modifyPassCodeDTO) {
         return null;
+    }
+
+
+    @Override
+    public void weiXinLong(@RequestParam(value = "code",required = false) String code,
+                           @RequestParam(value = "rawData",required = false) String rawData,
+                           @RequestParam(value = "signature",required = false) String signature,
+                           @RequestParam(value = "encrypteData",required = false) String encrypteData,
+                           @RequestParam(value = "iv",required = false) String iv) {
+
+
+
     }
 }
