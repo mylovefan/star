@@ -24,7 +24,7 @@ public interface CommonService {
      *
      * @return
      */
-    List<MenusVo> getMenus(String userId);
+    List<MenusVo> getMenus();
 
     /**
      *

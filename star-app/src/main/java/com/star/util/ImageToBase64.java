@@ -1,4 +1,4 @@
-package com.jgls.util;
+package com.star.util;
 
 import org.springframework.stereotype.Component;
 import sun.misc.BASE64Encoder;

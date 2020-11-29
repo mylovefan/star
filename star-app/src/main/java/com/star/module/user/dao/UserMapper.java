@@ -3,6 +3,7 @@ package com.star.module.user.dao;
 import com.star.module.user.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.mapstruct.Mapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -12,6 +13,7 @@ import org.mapstruct.Mapper;
  * @author zhangrc <1538618608@qq.com>
  * @since 2020-11-29
  */
+@Repository
 public interface UserMapper extends BaseMapper<User> {
 
 }

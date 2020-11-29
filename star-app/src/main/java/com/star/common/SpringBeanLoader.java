@@ -1,4 +1,4 @@
-package com.jgls.common;
+package com.star.common;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

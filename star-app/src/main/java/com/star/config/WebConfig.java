@@ -25,8 +25,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration registration = registry.addInterceptor(new LogCostInterceptor());     //拦截的对象会进入这个类中进行判断
-        registration.addPathPatterns("/**");
+
         registration.excludePathPatterns("/common/login","/common/loginout");
+        registration.addPathPatterns("/**");
     }
 
     @Override
@@ -36,6 +37,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
+
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {

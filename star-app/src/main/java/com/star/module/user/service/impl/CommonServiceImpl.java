@@ -66,7 +66,7 @@ public class CommonServiceImpl implements CommonService {
 
 
     @Override
-    public List<MenusVo> getMenus(String userId){
+    public List<MenusVo> getMenus(){
         List<MenusVo> menusVos = new ArrayList<>();
         QueryWrapper<Function> queryWrapper = new QueryWrapper<>();
         List<Function> list = functionMapper.selectList(queryWrapper);

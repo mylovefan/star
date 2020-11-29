@@ -1,10 +1,8 @@
 package com.star.module.user.dao;
 
-import com.star.module.user.entity.Function;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
+import com.star.module.user.entity.Function;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -14,6 +12,7 @@ import java.util.List;
  * @author zhangrc <1538618608@qq.com>
  * @since 2020-11-29
  */
+@Repository
 public interface FunctionMapper extends BaseMapper<Function> {
 
 }

@@ -21,7 +21,7 @@
     <properties>
         <java.version>1.8</java.version>
         <oss-version>1.0.1-SNAPSHOT</oss-version>
-        <mybatis-plus-boot-starter.version>3.0-RC1</mybatis-plus-boot-starter.version>
+        <mybatis-plus-boot-starter.version>3.0.2</mybatis-plus-boot-starter.version>
     </properties>
 
     <dependencies>

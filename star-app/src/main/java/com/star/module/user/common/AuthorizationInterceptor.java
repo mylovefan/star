@@ -99,7 +99,6 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 String userId = claimsJws.getBody().getAudience();
                 String account = claimsJws.getBody().getSubject();
                 String userName = claimsJws.getBody().get("user_name").toString();
-                String port_data = claimsJws.getBody().get("port_data").toString();
                 String updateSeconds = claimsJws.getBody().get("updateSeconds").toString();
                 Date now = Calendar.getInstance().getTime();
                 long nowTime = now.getTime();
@@ -115,7 +114,6 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                     request.setAttribute(REQUEST_CURRENT_USER_ID, userId);
                     request.setAttribute(REQUEST_CURRENT_ACCOUNT, account);
                     request.setAttribute(REQUEST_CURRENT_USER_NAME, userName);
-                    request.setAttribute(REQUEST_CURRENT_AUTH_DATA,port_data);
                     return true;
                 }else {
                     unauthorizedErrorMsg ="Token expired, please log in again";
