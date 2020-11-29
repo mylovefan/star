@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: ${env:dev}
+  application:
+    name: star
+app:
+  id: ${spring.application.name}
+server:
+  port: 18001
+
+---
+spring:
+  profiles: dev
+
+---
+spring:
+  profiles: prod
