@@ -54,6 +54,18 @@ public class Star implements Serializable {
     @TableField("hot_nums")
     private Integer hotNums;
 
+    @ApiModelProperty(value = "首页轮播图")
+    @TableField("home_img")
+    private String homeImg;
+
+    @ApiModelProperty(value = "详情页")
+    @TableField("detail_img")
+    private String detailImg;
+
+    @ApiModelProperty(value = "打榜弹窗图")
+    @TableField("hit_popup_img")
+    private String hitPopupImg;
+
     @ApiModelProperty(value = "创建时间")
     @TableField("create_time")
     private LocalDateTime createTime;
