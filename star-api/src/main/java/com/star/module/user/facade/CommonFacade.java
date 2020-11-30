@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+
 @Api(value = "公共接口", tags = "公共接口")
 @RequestMapping("common/")
 public interface CommonFacade {
@@ -40,9 +42,13 @@ public interface CommonFacade {
     })
     @ApiOperation(value = "微信登录")
     @GetMapping("weiXinLong")
-    void weiXinLong(@RequestParam(value = "code",required = false) String code,
-                    @RequestParam(value = "rawData",required = false) String rawData,
-                    @RequestParam(value = "signature",required = false) String signature,
-                    @RequestParam(value = "encrypteData",required = false) String encrypteData,
-                    @RequestParam(value = "iv",required = false) String iv);
+    void weiXinLong(@RequestParam(value = "code") String code,
+                    @RequestParam(value = "rawData") String rawData,
+                    @RequestParam(value = "signature") String signature,
+                    @RequestParam(value = "encrypteData") String encrypteData,
+                    @RequestParam(value = "iv") String iv);
+
+    @ApiOperation(value = "上传文件")
+    @PostMapping("upload")
+    String upload(@RequestParam(value = "file") File file);
 }

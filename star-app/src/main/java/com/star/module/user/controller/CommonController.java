@@ -6,13 +6,17 @@ import com.star.module.user.dto.LoginDto;
 import com.star.module.user.dto.ModifyPassCodeDTO;
 import com.star.module.user.facade.CommonFacade;
 import com.star.module.user.service.CommonService;
+import com.star.module.user.service.WeixinAuthService;
 import com.star.module.user.vo.UserLoginVo;
 import com.star.module.user.vo.UserMenuVo;
+import com.star.util.TencentUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.File;
 
 /**
  * <p>
@@ -28,10 +32,13 @@ public class CommonController implements CommonFacade {
     @Autowired
     private CommonService commonService;
 
+    @Autowired
+    private WeixinAuthService weixinAuthService;
+
     @Override
     @IgnoreSecurity
     public UserLoginVo login(LoginDto loginDto) {
-        return commonService.login(loginDto.getAccount(),loginDto.getPwd());
+        return commonService.login(loginDto.getAccount(), loginDto.getPwd());
     }
 
     @Override
@@ -53,13 +60,18 @@ public class CommonController implements CommonFacade {
 
 
     @Override
-    public void weiXinLong(@RequestParam(value = "code",required = false) String code,
-                           @RequestParam(value = "rawData",required = false) String rawData,
-                           @RequestParam(value = "signature",required = false) String signature,
-                           @RequestParam(value = "encrypteData",required = false) String encrypteData,
-                           @RequestParam(value = "iv",required = false) String iv) {
+    public void weiXinLong(@RequestParam(value = "code", required = false) String code,
+                           @RequestParam(value = "rawData", required = false) String rawData,
+                           @RequestParam(value = "signature", required = false) String signature,
+                           @RequestParam(value = "encrypteData", required = false) String encrypteData,
+                           @RequestParam(value = "iv", required = false) String iv) {
 
+        weixinAuthService.weiXinLong(code, rawData, signature, encrypteData, iv);
 
+    }
 
+    @Override
+    public String upload(@RequestParam(value = "file") File file) {
+        return TencentUploadUtil.upload(file);
     }
 }
