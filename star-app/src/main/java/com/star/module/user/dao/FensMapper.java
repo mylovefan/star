@@ -1,7 +1,7 @@
 package com.star.module.user.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.star.module.user.test.entity.Fens;
+import com.star.module.user.entity.Fens;
 
 /**
  * <p>

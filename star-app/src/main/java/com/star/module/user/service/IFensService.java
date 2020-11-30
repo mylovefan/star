@@ -1,7 +1,7 @@
 package com.star.module.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.star.module.user.test.entity.Fens;
+import com.star.module.user.entity.Fens;
 
 /**
  * <p>
