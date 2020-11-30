@@ -11,6 +11,7 @@ import com.star.module.user.vo.UserLoginVo;
 import com.star.module.user.vo.UserMenuVo;
 import com.star.util.TencentUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,7 +38,7 @@ public class CommonController implements CommonFacade {
 
     @Override
     @IgnoreSecurity
-    public UserLoginVo login(LoginDto loginDto) {
+    public UserLoginVo login(@RequestBody LoginDto loginDto) {
         return commonService.login(loginDto.getAccount(), loginDto.getPwd());
     }
 
@@ -60,18 +61,25 @@ public class CommonController implements CommonFacade {
 
 
     @Override
-    public void weiXinLong(@RequestParam(value = "code", required = false) String code,
+    @IgnoreSecurity
+    public UserLoginVo weiXinLong(@RequestParam(value = "code", required = false) String code,
                            @RequestParam(value = "rawData", required = false) String rawData,
                            @RequestParam(value = "signature", required = false) String signature,
                            @RequestParam(value = "encrypteData", required = false) String encrypteData,
                            @RequestParam(value = "iv", required = false) String iv) {
 
-        weixinAuthService.weiXinLong(code, rawData, signature, encrypteData, iv);
+        return weixinAuthService.weiXinLong(code, rawData, signature, encrypteData, iv);
 
     }
 
     @Override
     public String upload(@RequestParam(value = "file") File file) {
         return TencentUploadUtil.upload(file);
+    }
+
+    @Override
+    @IgnoreSecurity
+    public UserLoginVo testLogin(Long id) {
+        return weixinAuthService.testLogin(id);
     }
 }

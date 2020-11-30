@@ -67,10 +67,6 @@ public class Fens implements Serializable {
     @TableField("avatar_url")
     private String avatarUrl;
 
-    @ApiModelProperty(value = "自定义图像")
-    @TableField("image")
-    private String image;
-
     @ApiModelProperty(value = "性别")
     @TableField("gender")
     private Integer gender;

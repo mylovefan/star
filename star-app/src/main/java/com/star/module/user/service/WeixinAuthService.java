@@ -1,5 +1,7 @@
 package com.star.module.user.service;
 
+import com.star.module.user.vo.UserLoginVo;
+
 public interface WeixinAuthService {
 
     /**
@@ -11,5 +13,13 @@ public interface WeixinAuthService {
      * @param encrypteData
      * @param iv
      */
-    void weiXinLong( String code,String rawData,String signature,String encrypteData,String iv);
+    UserLoginVo weiXinLong(String code, String rawData, String signature, String encrypteData, String iv);
+
+    /**
+     * 测试获取token
+     *
+     * @param id
+     * @return
+     */
+    UserLoginVo testLogin(Long id);
 }

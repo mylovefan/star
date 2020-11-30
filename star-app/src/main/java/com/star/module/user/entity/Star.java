@@ -46,6 +46,10 @@ public class Star implements Serializable {
     @TableField("tags")
     private String tags;
 
+    @ApiModelProperty(value = "是否热门搜索")
+    @TableField("hot_search")
+    private Integer hotSearch;
+
     @ApiModelProperty(value = "所属开屏图")
     @TableField("open_img")
     private String openImg;

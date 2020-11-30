@@ -6,6 +6,8 @@ import com.star.module.user.service.IHitListService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  * 打榜记录表 服务实现类
@@ -16,5 +18,4 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> implements IHitListService {
-
 }

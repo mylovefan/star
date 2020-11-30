@@ -42,7 +42,7 @@ public interface CommonFacade {
     })
     @ApiOperation(value = "微信登录")
     @GetMapping("weiXinLong")
-    void weiXinLong(@RequestParam(value = "code") String code,
+    UserLoginVo weiXinLong(@RequestParam(value = "code") String code,
                     @RequestParam(value = "rawData") String rawData,
                     @RequestParam(value = "signature") String signature,
                     @RequestParam(value = "encrypteData") String encrypteData,
@@ -51,4 +51,9 @@ public interface CommonFacade {
     @ApiOperation(value = "上传文件")
     @PostMapping("upload")
     String upload(@RequestParam(value = "file") File file);
+
+
+    @ApiOperation(value = "开发获取token")
+    @PostMapping("testLogin")
+    UserLoginVo testLogin(@RequestParam(value = "id") Long id);
 }
