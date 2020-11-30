@@ -22,7 +22,7 @@ public class CodeGenerator {
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/star-app/src/main/java/");
         //设置生成注释作者
-        gc.setAuthor("zhangrc <1538618608@qq.com>");
+        gc.setAuthor("ljk <longwaystyle@163.com>");
         //生成后是否用编辑器打开
         gc.setOpen(false);
         //是否生成swagger注释
@@ -33,7 +33,7 @@ public class CodeGenerator {
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setUrl("jdbc:mysql://123.207.120.31:3306/star?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&useSSL=false&serverTimezone=UTC");
-        dsc.setDriverName("com.mysql.jdbc.Driver");
+        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("123456");
         mpg.setDataSource(dsc);
@@ -42,7 +42,7 @@ public class CodeGenerator {
         //设置功能名称
         //pc.setModuleName("report");
         //生成父包
-        pc.setParent("com.star.module.user.test");
+        pc.setParent("com.star.module.user");
         mpg.setPackageInfo(pc);
 
         // 策略配置
@@ -58,7 +58,7 @@ public class CodeGenerator {
         //控制层是否使用RestController
         strategy.setRestControllerStyle(true);
         //生成代码的表
-        strategy.setInclude("fens");
+        strategy.setInclude("star");
         strategy.setControllerMappingHyphenStyle(true);
         //设置表前缀，生成类将去掉前缀
         strategy.setTablePrefix(pc.getModuleName() + "_");
