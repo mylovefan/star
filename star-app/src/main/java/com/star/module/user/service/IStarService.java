@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author ljk <longwaystyle@163.com>
  * @since 2020-11-30
  */
-public interface StarService extends IService<Star> {
+public interface IStarService extends IService<Star> {
 
 }

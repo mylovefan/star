@@ -50,6 +50,10 @@ public class Star implements Serializable {
     @TableField("open_img")
     private String openImg;
 
+    @ApiModelProperty(value = "明星热力值")
+    @TableField("hot_nums")
+    private Integer hotNums;
+
     @ApiModelProperty(value = "创建时间")
     @TableField("create_time")
     private LocalDateTime createTime;

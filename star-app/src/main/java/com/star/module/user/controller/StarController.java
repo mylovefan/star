@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020-11-30
  */
 @RestController
-@RequestMapping("/star")
 public class StarController implements BackendFacade {
 
     @Override
