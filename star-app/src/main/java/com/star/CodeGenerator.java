@@ -32,17 +32,17 @@ public class CodeGenerator {
         mpg.setGlobalConfig(gc);
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/star?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&useSSL=false&serverTimezone=UTC");
+        dsc.setUrl("jdbc:mysql://123.207.120.31:3306/star?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&useSSL=false&serverTimezone=UTC");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("root");
+        dsc.setPassword("123456");
         mpg.setDataSource(dsc);
         // 包配置
         PackageConfig pc = new PackageConfig();
         //设置功能名称
         //pc.setModuleName("report");
         //生成父包
-        pc.setParent("com.star.module.user");
+        pc.setParent("com.star.module.user.test");
         mpg.setPackageInfo(pc);
 
         // 策略配置
@@ -58,7 +58,7 @@ public class CodeGenerator {
         //控制层是否使用RestController
         strategy.setRestControllerStyle(true);
         //生成代码的表
-        strategy.setInclude("function");
+        strategy.setInclude("fens");
         strategy.setControllerMappingHyphenStyle(true);
         //设置表前缀，生成类将去掉前缀
         strategy.setTablePrefix(pc.getModuleName() + "_");
