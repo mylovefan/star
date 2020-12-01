@@ -22,7 +22,7 @@ public class CodeGenerator {
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/star-app/src/main/java/");
         //设置生成注释作者
-        gc.setAuthor("ljk <longwaystyle@163.com>");
+        gc.setAuthor("zhangrc <1538618608@qq.com>");
         //生成后是否用编辑器打开
         gc.setOpen(false);
         //是否生成swagger注释
@@ -42,7 +42,7 @@ public class CodeGenerator {
         //设置功能名称
         //pc.setModuleName("report");
         //生成父包
-        pc.setParent("com.star.module.user");
+        pc.setParent("com.star.module.front");
         mpg.setPackageInfo(pc);
 
         // 策略配置
@@ -58,7 +58,7 @@ public class CodeGenerator {
         //控制层是否使用RestController
         strategy.setRestControllerStyle(true);
         //生成代码的表
-        strategy.setInclude("hit_settings");
+        strategy.setInclude("fens_mark_log");
         strategy.setControllerMappingHyphenStyle(true);
         //设置表前缀，生成类将去掉前缀
         strategy.setTablePrefix(pc.getModuleName() + "_");
