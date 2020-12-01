@@ -39,7 +39,7 @@ public class FensVigourLog implements Serializable {
     @TableField("star_id")
     private Long starId;
 
-    @ApiModelProperty(value = "热力值类型(1-签到 2-抽奖 3-看视频 4-分享)")
+    @ApiModelProperty(value = "热力值类型(1-签到 2-抽奖 3-看视频 4-分享 5-赠送)")
     @TableField("type")
     private Integer type;
 
@@ -50,6 +50,10 @@ public class FensVigourLog implements Serializable {
     @ApiModelProperty(value = "获取热力值日期 年月日")
     @TableField("vig_time")
     private LocalDate vigTime;
+
+    @ApiModelProperty(value = "赠送人")
+    @TableField("add_user")
+    private String addUser;
 
     @ApiModelProperty(value = "新增时间")
     @TableField("add_time")
