@@ -21,4 +21,6 @@ public interface IStarService extends IService<Star> {
     PageSerializable<StartVo> selectPage(StarPageDto starPageDto);
 
     void addStar(StarDto dto);
+
+    void updateStar(StarDto dto);
 }

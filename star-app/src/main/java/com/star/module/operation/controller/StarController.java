@@ -35,4 +35,9 @@ public class StarController implements BackendFacade {
     public void addStar(@RequestBody StarDto dto) {
         iStarService.addStar(dto);
     }
+
+    @Override
+    public void updateStar(@RequestBody StarDto dto) {
+        iStarService.updateStar(dto);
+    }
 }
