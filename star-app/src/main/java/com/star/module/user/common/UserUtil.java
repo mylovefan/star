@@ -38,12 +38,12 @@ public class UserUtil {
      *
      * @return
      */
-    public static String getCurrentUserId(HttpServletRequest request) {
+    public static Long getCurrentUserId(HttpServletRequest request) {
         Object userId = request.getAttribute(AuthorizationInterceptor.REQUEST_CURRENT_USER_ID);
         if (userId == null) {
             return null;
         }
-        return userId.toString();
+        return Long.parseLong(userId.toString());
     }
 
 }

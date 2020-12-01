@@ -5,7 +5,10 @@ import com.star.module.operation.dto.FensDto;
 import com.star.module.operation.dto.GiveDto;
 import com.star.module.operation.vo.FensVo;
 import com.star.module.operation.vo.GiveVo;
+import com.star.module.operation.vo.ImportGiveVo;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @description :粉丝管理
@@ -30,4 +33,19 @@ public interface FensMrgService {
      * @return
      */
     PageSerializable<GiveVo> selectGivePage(@RequestBody GiveDto giveDto);
+
+    /**
+     * 赠送活力值
+     *
+     * @param id
+     * @param vigourVal
+     */
+    void giveVigourVal(@RequestParam("id") Long id ,@RequestParam("vigourVal") Integer vigourVal);
+
+    /**
+     * 导入
+     * @param file
+     * @return
+     */
+    ImportGiveVo importVigourVal(MultipartFile file);
 }

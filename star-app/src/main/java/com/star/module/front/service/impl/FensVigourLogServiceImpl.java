@@ -1,10 +1,17 @@
 package com.star.module.front.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.star.common.CommonConstants;
 import com.star.module.front.dao.FensVigourLogMapper;
 import com.star.module.front.entity.FensVigourLog;
 import com.star.module.front.service.IFensVigourLogService;
+import com.star.util.SnowflakeId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /**
  * <p>
@@ -17,4 +24,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class FensVigourLogServiceImpl extends ServiceImpl<FensVigourLogMapper, FensVigourLog> implements IFensVigourLogService {
 
+    @Autowired
+    private FensVigourLogMapper fensVigourLogMapper;
+
+    @Override
+    public void addVigour(FensVigourLog fensVigourLog) {
+        LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
+        fensVigourLog.setId(SnowflakeId.getInstance().nextId());
+        fensVigourLog.setAddTime(localDateTimeOfNow);
+        fensVigourLog.setVigTime(LocalDate.now());
+        fensVigourLogMapper.insert(fensVigourLog);
+    }
 }

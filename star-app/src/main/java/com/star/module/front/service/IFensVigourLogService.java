@@ -13,4 +13,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IFensVigourLogService extends IService<FensVigourLog> {
 
+    /**
+     * 新增活力记录
+     *
+     * @param fensVigourLog
+     */
+    void addVigour(FensVigourLog fensVigourLog);
+
 }

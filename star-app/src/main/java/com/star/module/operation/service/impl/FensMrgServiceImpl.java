@@ -7,16 +7,23 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
 import com.star.module.front.dao.FensMapper;
 import com.star.module.front.entity.Fens;
+import com.star.module.front.entity.FensVigourLog;
+import com.star.module.front.enums.VigourTypeEnums;
+import com.star.module.front.service.IFensVigourLogService;
 import com.star.module.operation.dto.FensDto;
 import com.star.module.operation.dto.GiveDto;
 import com.star.module.operation.service.FensMrgService;
 import com.star.module.operation.vo.FensVo;
 import com.star.module.operation.vo.GiveVo;
+import com.star.module.operation.vo.ImportGiveVo;
+import com.star.module.user.common.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +33,12 @@ public class FensMrgServiceImpl implements FensMrgService {
 
     @Autowired
     private FensMapper fensMapper;
+
+    @Autowired
+    private IFensVigourLogService fensVigourLogService;
+
+    @Autowired
+    private HttpServletRequest request;
 
     @Override
     public PageSerializable<FensVo> selectFensPage(FensDto fensDto) {
@@ -54,5 +67,20 @@ public class FensMrgServiceImpl implements FensMrgService {
         PageSerializable<GiveVo> pageSerializable = new PageSerializable<>(page.getResult());
         pageSerializable.setTotal(page.getTotal());
         return pageSerializable;
+    }
+
+    @Override
+    public void giveVigourVal(Long id,Integer vigourVal) {
+        FensVigourLog fensVigourLog = new FensVigourLog();
+        fensVigourLog.setAddUser(UserUtil.getCurrentUserName(request));
+        fensVigourLog.setFensId(id);
+        fensVigourLog.setType(VigourTypeEnums.GIVE.getCode());
+        fensVigourLogService.addVigour(fensVigourLog);
+    }
+
+
+    @Override
+    public ImportGiveVo importVigourVal(MultipartFile file) {
+        return null;
     }
 }
