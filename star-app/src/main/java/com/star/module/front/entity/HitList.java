@@ -1,14 +1,15 @@
 package com.star.module.front.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -16,7 +17,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author ljk <longwaystyle@163.com>
- * @since 2020-11-30
+ * @since 2020-12-01
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -33,14 +34,6 @@ public class HitList implements Serializable {
     @TableField("star_id")
     private Long starId;
 
-    @ApiModelProperty(value = "明星姓名")
-    @TableField("star_name")
-    private String starName;
-
-    @ApiModelProperty(value = "明星头像")
-    @TableField("star_avatar_url")
-    private String starAvatarUrl;
-
     @ApiModelProperty(value = "本次消耗活力值")
     @TableField("vigour_val")
     private Integer vigourVal;
@@ -48,10 +41,6 @@ public class HitList implements Serializable {
     @ApiModelProperty(value = "打榜粉丝id")
     @TableField("fens_id")
     private Long fensId;
-
-    @ApiModelProperty(value = "打榜粉丝昵称")
-    @TableField("fens_nick_name")
-    private String fensNickName;
 
     @ApiModelProperty(value = "创建时间")
     @TableField("create_time")

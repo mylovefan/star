@@ -26,9 +26,7 @@ public class StarController implements BackendFacade {
     private IStarService iStarService;
 
     @Override
-    public StartVo getStars(PageDTO pageDTO, String name, Long id) {
-
-        PageSerializable<StartVo> pageList = iStarService.selectPage(pageDTO,name,id);
-        return null;
+    public PageSerializable<StartVo> getStars(PageDTO pageDTO, String name, Long id) {
+        return iStarService.selectPage(pageDTO,name,id);
     }
 }
