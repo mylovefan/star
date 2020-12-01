@@ -16,4 +16,8 @@
             and	f.fens_id LIKE CONCAT('%',#{id},'%')
         </if>
     </select>
+
+    <update id="updateVigour">
+        update vigour_val = vigour_val + {vigourVal} , total_vigour_val = total_vigour_val + {vigourVal} where id = #{id}
+    </update>
 </mapper>

@@ -2,7 +2,9 @@ package com.star.module.front.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.star.common.CommonConstants;
+import com.star.module.front.dao.FensMapper;
 import com.star.module.front.dao.FensVigourLogMapper;
+import com.star.module.front.entity.Fens;
 import com.star.module.front.entity.FensVigourLog;
 import com.star.module.front.service.IFensVigourLogService;
 import com.star.util.SnowflakeId;
@@ -27,6 +29,9 @@ public class FensVigourLogServiceImpl extends ServiceImpl<FensVigourLogMapper, F
     @Autowired
     private FensVigourLogMapper fensVigourLogMapper;
 
+    @Autowired
+    private FensMapper fensMapper;
+
     @Override
     public void addVigour(FensVigourLog fensVigourLog) {
         LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
@@ -34,5 +39,8 @@ public class FensVigourLogServiceImpl extends ServiceImpl<FensVigourLogMapper, F
         fensVigourLog.setAddTime(localDateTimeOfNow);
         fensVigourLog.setVigTime(LocalDate.now());
         fensVigourLogMapper.insert(fensVigourLog);
+
+        //修改粉丝表活力值记录
+        fensMapper.updateVigour(fensVigourLog.getFensId(),fensVigourLog.getVigourVal());
     }
 }

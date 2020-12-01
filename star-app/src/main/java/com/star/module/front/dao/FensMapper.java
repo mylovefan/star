@@ -25,4 +25,10 @@ public interface FensMapper extends BaseMapper<Fens> {
      */
     Page<GiveVo> selectGivePage(GiveDto giveDto);
 
+    /**
+     * 修改活力值
+     * @param vigourVal
+     */
+    void updateVigour(@Param("id") Long id,@Param("vigourVal") int vigourVal);
+
 }
