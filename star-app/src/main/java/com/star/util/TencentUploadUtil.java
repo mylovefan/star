@@ -38,10 +38,10 @@ public class TencentUploadUtil {
      * 上传腾讯云
      *
      * @param bytes    文件字节
-     * @param filePath 文件路径
      * @return 腾讯云访问路径
      */
-    public static String upload(byte[] bytes, String filePath) {
+    public static String upload(byte[] bytes) {
+        String filePath = String.valueOf(SnowflakeId.getInstance().nextId()).concat(".jpg");
         // 1 初始化秘钥信息
         COSCredentials cred = new BasicCOSCredentials(secretId, secretKey);
         // 2 设置bucket的区域
@@ -73,7 +73,7 @@ public class TencentUploadUtil {
         // 关闭客户端
         cosClient.shutdown();
         // http://{buckname}-{appid}.cosgz.myqcloud.com/image/1545012027692.jpg
-        return baseUrl + filePath;
+        return findFile(filePath);
     }
 
     /**
@@ -116,7 +116,7 @@ public class TencentUploadUtil {
         // 关闭客户端
         cosClient.shutdown();
         // http://{buckname}-{appid}.cosgz.myqcloud.com/image/1545012027692.jpg
-        return filePath;
+        return findFile(filePath);
     }
 
     public static byte[] File2byte(File tradeFile) {
