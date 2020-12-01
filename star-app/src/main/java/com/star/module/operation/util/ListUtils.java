@@ -1,10 +1,12 @@
 package com.star.module.operation.util;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
 
+@Component
 public class ListUtils<T> {
 
     /**
