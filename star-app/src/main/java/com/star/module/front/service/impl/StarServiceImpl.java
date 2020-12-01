@@ -6,13 +6,24 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageSerializable;
 import com.github.pagehelper.util.StringUtil;
 import com.star.commen.dto.PageDTO;
+import com.star.module.front.dao.HitListMapper;
 import com.star.module.front.entity.Star;
 import com.star.module.front.dao.StarMapper;
+import com.star.module.front.service.IHitListService;
 import com.star.module.front.service.IStarService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.star.module.operation.util.DateUtils;
+import com.star.module.operation.util.ListUtils;
 import com.star.module.user.vo.StartVo;
+import com.star.module.user.vo.UserVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -28,6 +39,10 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
     @Autowired
     private StarMapper starMapper;
 
+    @Autowired
+    private ListUtils listUtils;
+
+
     @Override
     public PageSerializable<StartVo> selectPage(PageDTO pageDTO, String name, Long id) {
         QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
@@ -39,9 +54,11 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         }
         IPage page = new Page(pageDTO.getPageNum(), pageDTO.getPageSize());
         IPage<Star> pageList = starMapper.selectPage(page, queryWrapper);
+        List<StartVo> list = new ArrayList<>();
+        listUtils.copyList(pageList.getRecords(),list, StartVo.class);
 
-
-        return null;
-
+        PageSerializable<StartVo> pageSerializable = new PageSerializable<>(list);
+        pageSerializable.setTotal(pageList.getTotal());
+        return pageSerializable;
     }
 }

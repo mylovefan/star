@@ -1,14 +1,15 @@
 package com.star.module.front.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -16,7 +17,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author ljk <longwaystyle@163.com>
- * @since 2020-11-30
+ * @since 2020-12-01
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -69,6 +70,38 @@ public class Star implements Serializable {
     @ApiModelProperty(value = "打榜弹窗图")
     @TableField("hit_popup_img")
     private String hitPopupImg;
+
+    @ApiModelProperty(value = "周冠军次数")
+    @TableField("rank_week_champion_num")
+    private Integer rankWeekChampionNum;
+
+    @ApiModelProperty(value = "月冠军次数")
+    @TableField("rank_month_champion_num")
+    private Integer rankMonthChampionNum;
+
+    @ApiModelProperty(value = "周亚军次数")
+    @TableField("rank_week_second_num")
+    private Integer rankWeekSecondNum;
+
+    @ApiModelProperty(value = "月亚军次数")
+    @TableField("rank_month_second_num")
+    private Integer rankMonthSecondNum;
+
+    @ApiModelProperty(value = "周季军次数")
+    @TableField("rank_week_third_num")
+    private Integer rankWeekThirdNum;
+
+    @ApiModelProperty(value = "月季军次数")
+    @TableField("rank_month_third_num")
+    private Integer rankMonthThirdNum;
+
+    @ApiModelProperty(value = "本周排名")
+    @TableField("this_week_rank")
+    private Integer thisWeekRank;
+
+    @ApiModelProperty(value = "本月排名")
+    @TableField("this_month_rank")
+    private Integer thisMonthRank;
 
     @ApiModelProperty(value = "创建时间")
     @TableField("create_time")
