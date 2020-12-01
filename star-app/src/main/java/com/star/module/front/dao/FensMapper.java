@@ -1,7 +1,7 @@
-package com.star.module.user.dao;
+package com.star.module.front.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.star.module.user.entity.Fens;
+import com.star.module.front.entity.Fens;
 
 /**
  * <p>

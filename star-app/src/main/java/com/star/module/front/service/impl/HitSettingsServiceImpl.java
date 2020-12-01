@@ -1,8 +1,8 @@
-package com.star.module.user.service.impl;
+package com.star.module.front.service.impl;
 
-import com.star.module.user.entity.HitSettings;
-import com.star.module.user.dao.HitSettingsMapper;
-import com.star.module.user.service.IHitSettingsService;
+import com.star.module.front.entity.HitSettings;
+import com.star.module.front.dao.HitSettingsMapper;
+import com.star.module.front.service.IHitSettingsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

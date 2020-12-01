@@ -1,12 +1,10 @@
-package com.star.module.user.service.impl;
+package com.star.module.front.service.impl;
 
-import com.star.module.user.entity.HitList;
-import com.star.module.user.dao.HitListMapper;
-import com.star.module.user.service.IHitListService;
+import com.star.module.front.entity.HitList;
+import com.star.module.front.dao.HitListMapper;
+import com.star.module.front.service.IHitListService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>

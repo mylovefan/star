@@ -1,5 +1,6 @@
 package com.star.module.user.facade;
 
+import com.star.commen.dto.PageDTO;
 import com.star.module.user.vo.StartVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -20,5 +21,5 @@ public interface BackendFacade {
             @ApiImplicitParam(name = "name",value = "明星姓名", paramType = "query", dataType = "String"),
             @ApiImplicitParam(name = "id",value = "id", paramType = "query", dataType = "Long")
     })
-    StartVo getStars(@RequestParam(value = "name") String name, @RequestParam(value = "id") Long id);
+    StartVo getStars(PageDTO pageDTO, @RequestParam(value = "name") String name, @RequestParam(value = "id") Long id);
 }

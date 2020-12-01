@@ -1,6 +1,6 @@
-package com.star.module.user.service;
+package com.star.module.front.service;
 
-import com.star.module.user.entity.HitSettings;
+import com.star.module.front.entity.HitSettings;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

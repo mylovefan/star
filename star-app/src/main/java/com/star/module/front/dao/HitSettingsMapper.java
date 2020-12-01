@@ -1,6 +1,6 @@
-package com.star.module.user.dao;
+package com.star.module.front.dao;
 
-import com.star.module.user.entity.HitSettings;
+import com.star.module.front.entity.HitSettings;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

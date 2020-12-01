@@ -1,4 +1,4 @@
-package com.star.module.user.controller;
+package com.star.module.front.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;

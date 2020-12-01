@@ -1,7 +1,7 @@
-package com.star.module.user.service;
+package com.star.module.front.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.star.module.user.entity.Fens;
+import com.star.module.front.entity.Fens;
 
 /**
  * <p>

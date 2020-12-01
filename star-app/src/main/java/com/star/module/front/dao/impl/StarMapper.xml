@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.star.module.front.dao.StarMapper">
+    <!--<resultMap id="BaseResultMap" type="com.star.module.front.entity.Star">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="picture" column="picture" jdbcType="VARCHAR"/>
+        <result property="tags" column="tags" jdbcType="VARCHAR"/>
+        <result property="hotSearch" column="hot_search" jdbcType="INTEGER"/>
+        <result property="openImg" column="open_img" jdbcType="VARCHAR"/>
+        <result property="hotNums" column="hot_nums" jdbcType="INTEGER"/>
+        <result property="homeImg" column="home_img" jdbcType="VARCHAR"/>
+        <result property="detailImg" column="detail_img" jdbcType="VARCHAR"/>
+        <result property="hitPopupImg" column="hit_popup_img" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="deleteTime" column="delete_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    &lt;!&ndash;  输出字段列  &ndash;&gt;
+    <sql id="Base_Column_List">
+		id,name,avatar,picture,tags,hot_search,open_img,hot_nums,home_img,detail_img,hit_popup_img,create_time,delete_time
+	</sql>
+
+-->
+</mapper>

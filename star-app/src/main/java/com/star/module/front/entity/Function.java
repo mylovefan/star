@@ -1,4 +1,4 @@
-package com.star.module.user.entity;
+package com.star.module.front.entity;
 
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
