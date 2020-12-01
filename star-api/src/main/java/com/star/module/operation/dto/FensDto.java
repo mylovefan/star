@@ -5,4 +5,6 @@ import lombok.Data;
 
 @Data
 public class FensDto extends PageDTO {
+
+    private Long id;
 }

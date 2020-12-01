@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.star.module.operation.util.DateUtils;
 import com.star.module.operation.util.ListUtils;
 import com.star.module.user.dto.StarDto;
+import com.star.module.user.dto.StarPageDto;
 import com.star.module.user.entity.User;
 import com.star.module.user.vo.StartVo;
 import com.star.module.user.vo.UserVo;
@@ -50,15 +51,15 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
 
 
     @Override
-    public PageSerializable<StartVo> selectPage(PageDTO pageDTO, String name, Long id) {
+    public PageSerializable<StartVo> selectPage(StarPageDto starPageDto) {
         QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
-        if(StringUtil.isNotEmpty(name)){
-            queryWrapper.lambda().like(Star::getName,name);
+        if(StringUtil.isNotEmpty(starPageDto.getName())){
+            queryWrapper.lambda().like(Star::getName,starPageDto.getName());
         }
-        if(id!=null){
-            queryWrapper.lambda().like(Star::getId,id);
+        if(starPageDto.getId()!=null){
+            queryWrapper.lambda().like(Star::getId,starPageDto.getId());
         }
-        IPage page = new Page(pageDTO.getPageNum(), pageDTO.getPageSize());
+        IPage page = new Page(starPageDto.getPageNum(), starPageDto.getPageSize());
         IPage<Star> pageList = starMapper.selectPage(page, queryWrapper);
         List<StartVo> list = new ArrayList<>();
         listUtils.copyList(pageList.getRecords(),list, StartVo.class);

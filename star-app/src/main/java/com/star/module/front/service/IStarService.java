@@ -5,6 +5,7 @@ import com.star.commen.dto.PageDTO;
 import com.star.module.front.entity.Star;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.star.module.user.dto.StarDto;
+import com.star.module.user.dto.StarPageDto;
 import com.star.module.user.vo.StartVo;
 
 /**
@@ -17,7 +18,7 @@ import com.star.module.user.vo.StartVo;
  */
 public interface IStarService extends IService<Star> {
 
-    PageSerializable<StartVo> selectPage(PageDTO pageDTO, String name, Long id);
+    PageSerializable<StartVo> selectPage(StarPageDto starPageDto);
 
     void addStar(StarDto dto);
 }

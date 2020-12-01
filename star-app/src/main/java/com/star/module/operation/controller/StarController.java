@@ -4,10 +4,12 @@ package com.star.module.operation.controller;
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
 import com.star.module.user.dto.StarDto;
+import com.star.module.user.dto.StarPageDto;
 import com.star.module.user.facade.BackendFacade;
 import com.star.module.front.service.IStarService;
 import com.star.module.user.vo.StartVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -25,12 +27,12 @@ public class StarController implements BackendFacade {
     private IStarService iStarService;
 
     @Override
-    public PageSerializable<StartVo> getStars(PageDTO pageDTO, String name, Long id) {
-        return iStarService.selectPage(pageDTO,name,id);
+    public PageSerializable<StartVo> getStars(@RequestBody StarPageDto starPageDto) {
+        return iStarService.selectPage(starPageDto);
     }
 
     @Override
-    public void addStar(StarDto dto) {
+    public void addStar(@RequestBody StarDto dto) {
         iStarService.addStar(dto);
     }
 }
