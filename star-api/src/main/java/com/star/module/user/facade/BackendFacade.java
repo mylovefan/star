@@ -22,4 +22,8 @@ public interface BackendFacade {
     @ApiOperation(value = "新增明星")
     @PostMapping("star/add")
     void addStar(@RequestBody StarDto dto);
+
+    @ApiOperation(value = "修改明星")
+    @PostMapping("star/update")
+    void updateStar(@RequestBody StarDto dto);
 }

@@ -7,6 +7,8 @@ import com.github.pagehelper.PageSerializable;
 import com.github.pagehelper.util.StringUtil;
 import com.star.commen.dto.PageDTO;
 import com.star.common.CommonConstants;
+import com.star.common.ErrorCodeEnum;
+import com.star.common.ServiceException;
 import com.star.module.front.dao.HitListMapper;
 import com.star.module.front.entity.Star;
 import com.star.module.front.dao.StarMapper;
@@ -24,6 +26,7 @@ import com.star.util.SnowflakeId;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -71,11 +74,26 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
 
     @Override
     public void addStar(StarDto dto) {
-        Star star = new Star();
+        QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Star::getName, dto.getName());
+        Star star = starMapper.selectOne(queryWrapper);
+        if(star!=null){
+            throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(),"该明星已存在");
+        }
         BeanUtils.copyProperties(dto,star);
         star.setId(SnowflakeId.getInstance().nextId());
         LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
         star.setCreateTime(localDateTimeOfNow);
         starMapper.insert(star);
+    }
+
+    @Override
+    public void updateStar(StarDto dto) {
+        if(StringUtils.isEmpty(dto.getId())){
+            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),ErrorCodeEnum.PARAM_ERROR.getValue());
+        }
+        Star star = new Star();
+        BeanUtils.copyProperties(dto,star);
+        starMapper.updateById(star);
     }
 }
