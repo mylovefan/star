@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class StarController implements BackendFacade {
 
+
     @Override
-    public StartVo getStars() {
+    public StartVo getStars(String name, Long id) {
         return null;
     }
 }
