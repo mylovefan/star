@@ -23,10 +23,11 @@ import com.star.module.user.entity.User;
 import com.star.module.user.vo.StartVo;
 import com.star.module.user.vo.UserVo;
 import com.star.util.SnowflakeId;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -46,6 +47,7 @@ import java.util.List;
 @Service
 public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IStarService {
 
+    private static final String HOTSEARCH = "热门搜索";
     @Autowired
     private StarMapper starMapper;
 
@@ -81,6 +83,13 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
             throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(),"该明星已存在");
         }
         BeanUtils.copyProperties(dto,star);
+        if(StringUtils.isNotEmpty(star.getTags())){
+            if (star.getTags().contains(HOTSEARCH)) {
+                star.setHotSearch(NumberUtils.INTEGER_ONE);
+            } else {
+                star.setHotSearch(NumberUtils.INTEGER_ZERO);
+            }
+        }
         star.setId(SnowflakeId.getInstance().nextId());
         LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
         star.setCreateTime(localDateTimeOfNow);
@@ -89,11 +98,19 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
 
     @Override
     public void updateStar(StarDto dto) {
-        if(StringUtils.isEmpty(dto.getId())){
+        if(dto.getId()!=null){
             throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),ErrorCodeEnum.PARAM_ERROR.getValue());
         }
         Star star = new Star();
         BeanUtils.copyProperties(dto,star);
+        if(StringUtils.isNotEmpty(star.getTags())){
+            if (star.getTags().contains(HOTSEARCH)) {
+                star.setHotSearch(NumberUtils.INTEGER_ONE);
+            } else {
+                star.setHotSearch(NumberUtils.INTEGER_ZERO);
+            }
+        }
+
         starMapper.updateById(star);
     }
 }
