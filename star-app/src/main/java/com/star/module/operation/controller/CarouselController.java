@@ -1,6 +1,12 @@
 package com.star.module.operation.controller;
 
 
+import com.star.module.operation.service.ICarouselService;
+import com.star.module.user.dto.CarouselDto;
+import com.star.module.user.facade.CarouselFacade;
+import com.star.module.user.vo.CarouselVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -12,6 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020-12-01
  */
 @RestController
-public class CarouselController {
+public class CarouselController implements CarouselFacade {
 
+    @Autowired
+    private ICarouselService carouselService;
+
+    @Override
+    public void addOrUpdateCarousel(@RequestBody CarouselDto carouselDto) {
+        carouselService.addOrUpdateCarousel(carouselDto);
+    }
+
+    @Override
+    public CarouselVo selectCarousel() {
+        return carouselService.selectCarousel();
+    }
 }

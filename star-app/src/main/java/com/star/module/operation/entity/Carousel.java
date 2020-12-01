@@ -31,20 +31,32 @@ public class Carousel implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "首页轮播图")
-    @TableField("home")
-    private String home;
+    @TableField("home1")
+    private String home1;
 
     @ApiModelProperty(value = "二级轮播图")
-    @TableField("level")
-    private String level;
+    @TableField("level1")
+    private String level1;
 
-    @ApiModelProperty(value = "排序")
-    @TableField("sort")
-    private Integer sort;
+    @ApiModelProperty(value = "首页轮播图")
+    @TableField("home2")
+    private String home2;
+
+    @ApiModelProperty(value = "二级轮播图")
+    @TableField("level2")
+    private String level2;
+
+    @ApiModelProperty(value = "是否开启")
+    @TableField("open")
+    private Integer open;
 
     @ApiModelProperty(value = "新增时间")
     @TableField("add_time")
     private LocalDateTime addTime;
+
+    @ApiModelProperty(value = "修改时间")
+    @TableField("update_time")
+    private LocalDateTime updateTime;
 
 
 }
