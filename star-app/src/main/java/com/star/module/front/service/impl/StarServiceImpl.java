@@ -14,9 +14,6 @@ import com.star.module.user.vo.StartVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.List;
-
 /**
  * <p>
  * 明星表 服务实现类

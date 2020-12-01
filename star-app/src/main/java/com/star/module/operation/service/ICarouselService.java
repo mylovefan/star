@@ -4,7 +4,6 @@ import com.star.module.operation.entity.Carousel;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.star.module.user.dto.CarouselDto;
 import com.star.module.user.vo.CarouselVo;
-import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * <p>
