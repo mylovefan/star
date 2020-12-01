@@ -2,7 +2,10 @@ package com.star.module.operation.service;
 
 import com.github.pagehelper.PageSerializable;
 import com.star.module.operation.dto.FensDto;
+import com.star.module.operation.dto.GiveDto;
 import com.star.module.operation.vo.FensVo;
+import com.star.module.operation.vo.GiveVo;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @description :粉丝管理
@@ -19,4 +22,12 @@ public interface FensMrgService {
      * @return
      */
     PageSerializable<FensVo> selectFensPage(FensDto fensDto);
+
+    /**
+     * 赠送记录列表
+     *
+     * @param giveDto
+     * @return
+     */
+    PageSerializable<GiveVo> selectGivePage(@RequestBody GiveDto giveDto);
 }

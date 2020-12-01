@@ -31,6 +31,10 @@ public class Star implements Serializable {
     @TableId("id")
     private Long id;
 
+    @ApiModelProperty(value = "star_id")
+    @TableId("star_id")
+    private Long starId;
+
     @ApiModelProperty(value = "姓名")
     @TableField("name")
     private String name;

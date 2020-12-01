@@ -14,6 +14,9 @@ public class FensVo {
     @ApiModelProperty(value = "id")
     private Long id;
 
+    @ApiModelProperty(value = "粉丝id")
+    private Long fensId;
+
     @ApiModelProperty(value = "网名")
     private String nickName;
 

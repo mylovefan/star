@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.star.module.user.dao.impl.FensMapper">
+<mapper namespace="com.star.module.front.dao.FensMapper">
 
+    <select id="selectGivePage" resultType="com.star.module.operation.vo.GiveVo">
+        select f.fens_id fensId,f.nick_name nickName,fl.vigour_val vigourVal,
+          fl.add_user addUser ,fl.add_time addTime from fens_vigour_log fl left join fens f on fl.fens_id =  f.id
+        when fl.type = 5
+        <if test="giveTime != null and giveTime != ''">
+            and	fl.add_time &gt;  #{giveTime}
+        </if>
+        <if test="giveTimeEnd != null and giveTimeEnd != ''">
+            and	fl.add_time &lt; #{giveTimeEnd}
+        </if>
+        <if test="id != null '">
+            and	f.fens_id LIKE CONCAT('%',#{id},'%')
+        </if>
+    </select>
 </mapper>

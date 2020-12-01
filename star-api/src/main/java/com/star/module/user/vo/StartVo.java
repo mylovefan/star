@@ -1,5 +1,6 @@
 package com.star.module.user.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,9 @@ public class StartVo{
 
 
     private Long id;
+
+    @ApiModelProperty(value = "明星id")
+    private Long starId;
 
     private String name;
 

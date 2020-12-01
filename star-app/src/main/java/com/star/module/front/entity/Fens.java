@@ -31,6 +31,10 @@ public class Fens implements Serializable {
     @TableId("id")
     private Long id;
 
+    @ApiModelProperty(value = "fens_id")
+    @TableId("fens_id")
+    private Long fensId;
+
     @ApiModelProperty(value = "open_id")
     @TableField("open_id")
     private String openId;
