@@ -2,6 +2,9 @@ package com.star.module.operation.service;
 
 import com.star.module.operation.entity.Tags;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.star.module.user.vo.TagsVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITagsService extends IService<Tags> {
 
+    List<TagsVo> tagsList();
+
+    void addTags(String name);
 }
