@@ -58,7 +58,7 @@ public class CodeGenerator {
         //控制层是否使用RestController
         strategy.setRestControllerStyle(true);
         //生成代码的表
-        strategy.setInclude("hit_list");
+        strategy.setInclude("hit_settings");
         strategy.setControllerMappingHyphenStyle(true);
         //设置表前缀，生成类将去掉前缀
         strategy.setTablePrefix(pc.getModuleName() + "_");
