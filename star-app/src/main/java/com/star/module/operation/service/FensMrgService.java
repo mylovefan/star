@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @description :粉丝管理
  * @author zhangrc
@@ -48,4 +50,12 @@ public interface FensMrgService {
      * @return
      */
     ImportGiveVo importVigourVal(MultipartFile file);
+
+    /**
+     * 下载模板
+     *
+     * @param response
+     * @throws Exception
+     */
+    void downModel(HttpServletResponse response);
 }

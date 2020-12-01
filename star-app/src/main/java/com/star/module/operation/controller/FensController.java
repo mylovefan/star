@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 public class FensController implements FensFacade {
 
@@ -37,6 +39,11 @@ public class FensController implements FensFacade {
 
     @Override
     public ImportGiveVo importVigourVal(@RequestParam("file") MultipartFile file) {
-        return null;
+        return fensMrgService.importVigourVal(file);
+    }
+
+    @Override
+    public void downModel(HttpServletResponse response) {
+        fensMrgService.downModel(response);
     }
 }
