@@ -3,6 +3,7 @@ package com.star.module.operation.controller;
 
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
+import com.star.module.user.dto.StarDto;
 import com.star.module.user.facade.BackendFacade;
 import com.star.module.front.service.IStarService;
 import com.star.module.user.vo.StartVo;
@@ -28,5 +29,10 @@ public class StarController implements BackendFacade {
     @Override
     public PageSerializable<StartVo> getStars(PageDTO pageDTO, String name, Long id) {
         return iStarService.selectPage(pageDTO,name,id);
+    }
+
+    @Override
+    public void addStar(StarDto dto) {
+        iStarService.addStar(dto);
     }
 }
