@@ -3,16 +3,16 @@ package com.star.module.operation.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
 import com.star.module.front.dao.FensMapper;
 import com.star.module.front.entity.Fens;
 import com.star.module.operation.dto.FensDto;
+import com.star.module.operation.dto.GiveDto;
 import com.star.module.operation.service.FensMrgService;
 import com.star.module.operation.vo.FensVo;
-import com.star.module.user.entity.User;
-import com.star.module.user.vo.UserVo;
+import com.star.module.operation.vo.GiveVo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +43,16 @@ public class FensMrgServiceImpl implements FensMrgService {
         }
         PageSerializable<FensVo> pageSerializable = new PageSerializable<>(list);
         pageSerializable.setTotal(fensIPage.getTotal());
+        return pageSerializable;
+    }
+
+
+    @Override
+    public PageSerializable<GiveVo> selectGivePage(GiveDto giveDto) {
+        PageHelper.startPage(giveDto.getPageNum(),giveDto.getPageSize());
+        com.github.pagehelper.Page<GiveVo> page = fensMapper.selectGivePage(giveDto);
+        PageSerializable<GiveVo> pageSerializable = new PageSerializable<>(page.getResult());
+        pageSerializable.setTotal(page.getTotal());
         return pageSerializable;
     }
 }
