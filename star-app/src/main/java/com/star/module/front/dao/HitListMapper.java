@@ -2,6 +2,12 @@ package com.star.module.front.dao;
 
 import com.star.module.front.entity.HitList;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.star.module.user.vo.HitListVo;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -11,6 +17,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author ljk <longwaystyle@163.com>
  * @since 2020-11-30
  */
+@Repository
 public interface HitListMapper extends BaseMapper<HitList> {
 
+    List<HitListVo> selectHitRankByStar(@Param(value = "startTime") String startTime, @Param(value = "endTime")String endTime,
+                                        @Param(value = "pageNum")Integer pageNum, @Param(value = "pageSize")Integer pageSize, @Param(value = "sortType")int sortType, @Param(value = "needLimit") boolean needLimit);
+
+    int totalCount(@Param(value = "startTime") String startTime, @Param(value = "endTime")String endTime);
 }

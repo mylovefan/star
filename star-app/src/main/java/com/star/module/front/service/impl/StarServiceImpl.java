@@ -100,10 +100,10 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
 
     @Override
     public void updateStar(StarDto dto) {
-        if(dto.getId()!=null){
+        if(dto.getId()==null){
             throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),ErrorCodeEnum.PARAM_ERROR.getValue());
         }
-        Star star = new Star();
+        Star star = starMapper.selectById(dto.getId());
         BeanUtils.copyProperties(dto,star);
         if(StringUtils.isNotEmpty(star.getTags())){
             if (star.getTags().contains(HOTSEARCH)) {
@@ -115,4 +115,5 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
 
         starMapper.updateById(star);
     }
+    //eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6IjEiLCJpYXQiOjE2MDY4OTkzNjYsInVzZXJfbmFtZSI6IueuoeeQhuWRmCIsInVwZGF0ZVNlY29uZHMiOjE2MDY5MDI5NjYzOTcsImV4cCI6MTYwNjkxMDE2Nn0.cJd8eOVnuQ5gDy6hi29ZHnhZseznCW80ZYxtscZtEFeycahvaC7f2jDjHdPa8gzNtE3lJ5ha0n7VDkS9SxWNjA
 }
