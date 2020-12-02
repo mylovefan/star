@@ -4,6 +4,7 @@ import com.github.pagehelper.PageSerializable;
 import com.star.module.front.entity.FensMarkLog;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.star.module.user.dto.FensMarkRankDto;
+import com.star.module.user.vo.FensMarkVo;
 import com.star.module.user.vo.HitListVo;
 
 /**
@@ -21,5 +22,5 @@ public interface IFensMarkLogService extends IService<FensMarkLog> {
      * @param fensMarkRankDto
      * @return
      */
-    PageSerializable<HitListVo> selectPage(FensMarkRankDto fensMarkRankDto);
+    PageSerializable<FensMarkVo> selectPage(FensMarkRankDto fensMarkRankDto);
 }
