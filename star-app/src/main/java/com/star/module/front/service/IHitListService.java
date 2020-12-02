@@ -1,7 +1,10 @@
 package com.star.module.front.service;
 
+import com.github.pagehelper.PageSerializable;
 import com.star.module.front.entity.HitList;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.star.module.user.dto.HitListDto;
+import com.star.module.user.vo.HitListVo;
 
 import java.util.Date;
 
@@ -23,4 +26,11 @@ public interface IHitListService extends IService<HitList> {
      * @return
      */
     int statisticsRankByTime(Long starId ,Date startTime ,Date endTime);
+
+    /**
+     * 榜单列表
+     * @param hitListDto
+     * @return
+     */
+    PageSerializable<HitListVo> selectPage(HitListDto hitListDto);
 }
