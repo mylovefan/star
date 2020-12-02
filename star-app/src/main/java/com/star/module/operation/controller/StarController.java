@@ -82,7 +82,8 @@ public class StarController implements BackendFacade {
 
     @Override
     public PageSerializable<HitListVo> fensMarkRankList(@RequestBody FensMarkRankDto fensMarkRankDto) {
-        return iFensMarkLogService.selectPage(fensMarkRankDto);
+        //return iFensMarkLogService.selectPage(fensMarkRankDto);
+        return null;
     }
 
 }

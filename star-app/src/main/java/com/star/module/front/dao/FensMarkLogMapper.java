@@ -19,5 +19,5 @@ import java.util.List;
 @Repository
 public interface FensMarkLogMapper extends BaseMapper<FensMarkLog> {
 
-    List<FensMarkVo> selectMarkRankByFens(@Param(value = "startTime") Long fensId, @Param(value = "startTime") Long starId, @Param(value = "startTime") String startTime, @Param(value = "startTime") String endTime);
+    List<FensMarkVo> selectMarkRankByFens(@Param(value = "fensId") Long fensId, @Param(value = "starId") Long starId, @Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime);
 }

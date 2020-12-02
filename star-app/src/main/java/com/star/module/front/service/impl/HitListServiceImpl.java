@@ -1,22 +1,16 @@
 package com.star.module.front.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageSerializable;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
-import com.star.module.front.entity.HitList;
 import com.star.module.front.dao.HitListMapper;
-import com.star.module.front.entity.Star;
+import com.star.module.front.entity.HitList;
 import com.star.module.front.service.IHitListService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.star.module.operation.util.DateUtils;
 import com.star.module.user.dto.HitListDto;
 import com.star.module.user.vo.HitListVo;
-import com.star.module.user.vo.StartVo;
-import freemarker.template.utility.NumberUtil;
-import freemarker.template.utility.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
