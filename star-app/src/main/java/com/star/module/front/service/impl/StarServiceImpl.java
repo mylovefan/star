@@ -17,6 +17,7 @@ import com.star.module.front.service.IStarService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.star.module.operation.util.DateUtils;
 import com.star.module.operation.util.ListUtils;
+import com.star.module.operation.util.RandomUtils;
 import com.star.module.user.dto.StarDto;
 import com.star.module.user.dto.StarPageDto;
 import com.star.module.user.entity.User;
@@ -35,6 +36,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -82,6 +84,7 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         if(star!=null){
             throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(),"该明星已存在");
         }
+        star = new Star();
         BeanUtils.copyProperties(dto,star);
         if(StringUtils.isNotEmpty(star.getTags())){
             if (star.getTags().contains(HOTSEARCH)) {
@@ -90,6 +93,13 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
                 star.setHotSearch(NumberUtils.INTEGER_ZERO);
             }
         }
+
+        QueryWrapper<Star> query = new QueryWrapper<>();
+        List<Star> starList = starMapper.selectList(query);
+        List<Long> starIds = starList.stream().map(Star::getStarId).collect(Collectors.toList());
+        Long newStarId = RandomUtils.randomNumber6(starIds);
+
+        star.setStarId(newStarId);
         star.setId(SnowflakeId.getInstance().nextId());
         LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
         star.setCreateTime(localDateTimeOfNow);

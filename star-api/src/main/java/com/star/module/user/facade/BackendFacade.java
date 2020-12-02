@@ -38,7 +38,7 @@ public interface BackendFacade {
     @PostMapping("tags/list")
     List<TagsVo> getTagsList();
 
-    @ApiOperation(value = "标签列表")
+    @ApiOperation(value = "新增标签")
     @PostMapping("tags/add")
    void addTag(@RequestParam(value = "标签名") String name);
 }
