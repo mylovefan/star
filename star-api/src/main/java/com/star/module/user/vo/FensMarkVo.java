@@ -7,6 +7,9 @@ import lombok.Data;
 @Data
 public class FensMarkVo {
 
+    @ApiModelProperty(value = "周时间段")
+    private String weekTime;
+
     @ApiModelProperty(value = "粉丝名称")
     private String fensName;
 
