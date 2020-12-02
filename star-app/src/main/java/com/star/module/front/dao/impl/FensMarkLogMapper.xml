@@ -2,4 +2,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.star.module.front.dao.FensMarkLogMapper">
 
+    <select id="selectHitRankByStar" resultType="com.star.module.user.vo.FensMarkVo">
+        SELECT
+        fs.nick_name AS fensName,
+        fml.fens_id AS fensId,
+        fml.star_id AS starId,
+        IFNULL(SUM(fs.vigour_val),0) AS totalVigourVal
+        FROM fens_mark_log fml
+        LEFT JOIN fens fs ON fs.id = fml.fens_id
+        <where>
+            <if test="startTime != null">
+                and	fml.add_time <![CDATA[>= ]]> #{startTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null">
+                and	fml.add_time <![CDATA[<= ]]> #{endTime,jdbcType=VARCHAR}
+            </if>
+        </where>
+        GROUP BY fml.fens_id ORDER BY
+        <if test="sortType==0">
+            totalVigourVal asc
+        </if>
+        <if test="sortType==1">
+            totalVigourVal desc
+        </if>
+        <choose>
+            <when test="needLimit">
+                LIMIT ${(pageNum-1) * pageSize}, ${pageSize}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="totalCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT(DISTINCT fml.fens_id ) AS totalCount
+        FROM fens_mark_log fml
+        LEFT JOIN fens fs ON fs.id = fml.fens_id
+        <where>
+            <if test="startTime != null">
+                and	fml.add_time <![CDATA[>= ]]> #{startTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null">
+                and	fml.add_time <![CDATA[<= ]]> #{endTime,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>
 </mapper>

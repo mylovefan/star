@@ -1,6 +1,7 @@
 package com.star.module.user.facade;
 
 import com.github.pagehelper.PageSerializable;
+import com.star.module.user.dto.FensMarkRankDto;
 import com.star.module.user.dto.HitListDto;
 import com.star.module.user.dto.StarDto;
 import com.star.module.user.dto.StarPageDto;
@@ -42,6 +43,11 @@ public interface BackendFacade {
     void addTag(@RequestParam("name") String name);
 
     @ApiOperation(value = "榜单排行榜列表")
-    @PostMapping("hitList/list")
-    PageSerializable<HitListVo> getStars(@RequestBody HitListDto hitListDto);
+    @PostMapping("hitList/rankList")
+    PageSerializable<HitListVo> hilListRankList(@RequestBody HitListDto hitListDto);
+
+    @ApiOperation(value = "粉丝打榜排行榜列表")
+    @PostMapping("fensMark/rankList")
+    PageSerializable<HitListVo> fensMarkRankList(@RequestBody FensMarkRankDto fensMarkRankDto);
+
 }

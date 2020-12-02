@@ -2,6 +2,11 @@ package com.star.module.front.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.star.module.front.entity.FensMarkLog;
+import com.star.module.user.vo.FensMarkVo;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -11,6 +16,8 @@ import com.star.module.front.entity.FensMarkLog;
  * @author zhangrc <1538618608@qq.com>
  * @since 2020-12-01
  */
+@Repository
 public interface FensMarkLogMapper extends BaseMapper<FensMarkLog> {
 
+    List<FensMarkVo> selectMarkRankByFens(@Param(value = "startTime") Long fensId, @Param(value = "startTime") Long starId, @Param(value = "startTime") String startTime, @Param(value = "startTime") String endTime);
 }

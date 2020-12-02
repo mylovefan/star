@@ -113,7 +113,7 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
                     pageSerializable = this.pageResult(hitListDto, weekRankList);
                     break;
                 }
-                //月榜
+            //月榜
             case 1:
                 if (hitListDto.getListType() != null) {
                     //具体月份
@@ -149,7 +149,7 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
                         break;
                     }
                 }
-                //总榜
+            //总榜
             case 2:
                 //返回结果
                 List<HitListVo> totalRankList = hitListMapper.selectHitRankByStar(null,null,
