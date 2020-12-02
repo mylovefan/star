@@ -10,6 +10,7 @@ import com.star.module.front.service.IFensVigourLogService;
 import com.star.util.SnowflakeId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,6 +34,7 @@ public class FensVigourLogServiceImpl extends ServiceImpl<FensVigourLogMapper, F
     private FensMapper fensMapper;
 
     @Override
+    @Transactional
     public void addVigour(FensVigourLog fensVigourLog) {
         LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
         fensVigourLog.setId(SnowflakeId.getInstance().nextId());

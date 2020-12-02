@@ -41,7 +41,7 @@ public interface CommonFacade {
             @ApiImplicitParam(name = "iv", value = "偏移向量", dataType = "string", paramType = "query")
     })
     @ApiOperation(value = "微信登录")
-    @GetMapping("weiXinLong")
+    @PostMapping("weiXinLong")
     UserLoginVo weiXinLong(@RequestParam(value = "code") String code,
                     @RequestParam(value = "rawData") String rawData,
                     @RequestParam(value = "signature") String signature,

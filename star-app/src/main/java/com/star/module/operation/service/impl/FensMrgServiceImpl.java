@@ -62,6 +62,7 @@ public class FensMrgServiceImpl implements FensMrgService {
         if(fensDto.getId() != null){
             queryWrapper.lambda().like(Fens::getId,fensDto.getId());
         }
+        queryWrapper.orderByDesc("add_time");
         IPage<Fens> fensIPage = fensMapper.selectPage(page, queryWrapper);
         List<FensVo> list = new ArrayList<>();
         for (Fens fens : fensIPage.getRecords()){
@@ -125,16 +126,30 @@ public class FensMrgServiceImpl implements FensMrgService {
             //获得第i行对象
             Row row = sheet.getRow(i);
             Cell c0 = row.getCell(0);
-            String fensId = c0.getStringCellValue();
+            Long fensId = null;
+            if(c0.getCellType() == 0){
+                Integer fensIdStr =new Integer((int) c0.getNumericCellValue());
+                fensId = Long.parseLong(fensIdStr.toString());
+            }else {
+                String fensIdStr = c0.getStringCellValue();
+                fensId = Long.parseLong(fensIdStr);
+            }
+
             Cell c1 = row.getCell(1);
-            String vigourVal = c1.getStringCellValue();
+            String vigourVal = "";
+            if(c0.getCellType() == 0){
+                Integer cellValue = new Integer((int) c1.getNumericCellValue());
+                vigourVal = cellValue.toString();
+            }else {
+                vigourVal = c1.getStringCellValue();
+            }
 
             QueryWrapper<Fens> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda().eq(Fens::getFensId, fensId);
             Fens fens = fensMapper.selectOne(queryWrapper);
             if(fens == null){
                 fail ++ ;
-                list.add(fensId);
+                list.add(fensId.toString());
                 continue;
             }
             FensVigourLog fensVigourLog = new FensVigourLog();

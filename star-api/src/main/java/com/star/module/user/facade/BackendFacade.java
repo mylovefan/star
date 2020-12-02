@@ -17,7 +17,7 @@ import springfox.documentation.service.Tags;
 
 import java.util.List;
 
-@Api(value = "后台接口", tags = "后台接口")
+@Api(value = "明星管理", tags = "明星管理")
 @RequestMapping("backend/")
 public interface BackendFacade {
 

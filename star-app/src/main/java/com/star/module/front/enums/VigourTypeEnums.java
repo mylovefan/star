@@ -4,8 +4,8 @@ public enum  VigourTypeEnums {
     SIGN(1,"签到"),
     LUCK(2,"抽奖"),
     VIEW(3,"看视频"),
-    SHARE(1,"分享"),
-    GIVE(1,"赠送"),
+    SHARE(4,"分享"),
+    GIVE(5,"赠送"),
     ;
 
     private int code;
