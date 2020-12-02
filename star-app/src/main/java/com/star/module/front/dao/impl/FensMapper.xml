@@ -3,21 +3,28 @@
 <mapper namespace="com.star.module.front.dao.FensMapper">
 
     <select id="selectGivePage" resultType="com.star.module.operation.vo.GiveVo">
-        select f.fens_id fensId,f.nick_name nickName,fl.vigour_val vigourVal,
-          fl.add_user addUser ,fl.add_time addTime from fens_vigour_log fl left join fens f on fl.fens_id =  f.id
-        when fl.type = 5
+        SELECT
+        f.fens_id fensId,
+        f.nick_name nickName,
+        fl.vigour_val vigourVal,
+        fl.add_user addUser,
+        fl.add_time addTime
+        FROM
+        fens_vigour_log fl
+        LEFT JOIN fens f ON fl.fens_id = f.id
+        WHERE fl.type = 5
         <if test="giveTime != null and giveTime != ''">
             and	fl.add_time &gt;  #{giveTime}
         </if>
         <if test="giveTimeEnd != null and giveTimeEnd != ''">
             and	fl.add_time &lt; #{giveTimeEnd}
         </if>
-        <if test="id != null '">
+        <if test="id != null">
             and	f.fens_id LIKE CONCAT('%',#{id},'%')
         </if>
     </select>
 
     <update id="updateVigour">
-        update vigour_val = vigour_val + {vigourVal} , total_vigour_val = total_vigour_val + {vigourVal} where id = #{id}
+        update fens SET vigour_val = vigour_val + #{vigourVal} , total_vigour_val = total_vigour_val + #{vigourVal} where id = #{id}
     </update>
 </mapper>
