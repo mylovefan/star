@@ -62,6 +62,7 @@ public class FensMrgServiceImpl implements FensMrgService {
         if(fensDto.getId() != null){
             queryWrapper.lambda().like(Fens::getId,fensDto.getId());
         }
+        queryWrapper.orderByDesc("add_time");
         IPage<Fens> fensIPage = fensMapper.selectPage(page, queryWrapper);
         List<FensVo> list = new ArrayList<>();
         for (Fens fens : fensIPage.getRecords()){

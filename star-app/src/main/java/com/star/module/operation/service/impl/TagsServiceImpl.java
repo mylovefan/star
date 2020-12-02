@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author zhangrc <1538618608@qq.com>
@@ -38,8 +38,9 @@ public class TagsServiceImpl extends ServiceImpl<TagsMapper, Tags> implements IT
     @Override
     public List<TagsVo> tagsList() {
         QueryWrapper<Tags> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("add_time");
         List<Tags> tagsList = tagsMapper.selectList(wrapper);
-        if(tagsList.size()>0){
+        if (tagsList.size() > 0) {
             List<TagsVo> tagsVoList = new ArrayList<>();
             listUtils.copyList(tagsList, tagsVoList, TagsVo.class);
             return tagsVoList;
@@ -52,8 +53,8 @@ public class TagsServiceImpl extends ServiceImpl<TagsMapper, Tags> implements IT
         QueryWrapper<Tags> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(Tags::getName, name);
         Tags tags = tagsMapper.selectOne(queryWrapper);
-        if(tags != null){
-            throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(),"同名标签已存在");
+        if (tags != null) {
+            throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(), "同名标签已存在");
         }
         Tags tagsNew = new Tags();
         tagsNew.setName(name);
