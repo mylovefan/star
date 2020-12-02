@@ -31,6 +31,9 @@ public class ResourcesPageDto extends PageDTO {
     @ApiModelProperty(value = "结束时间")
     private String endTime;
 
+    @ApiModelProperty(value = "1-待开始 2-进行中 3-已结束")
+    private Integer status;
+
 
 
 }

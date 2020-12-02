@@ -1,14 +1,15 @@
 package com.star.module.operation.service;
 
 import com.github.pagehelper.PageSerializable;
+import com.star.module.operation.dto.ListAwardDto;
 import com.star.module.operation.dto.ResourcesDto;
 import com.star.module.operation.dto.ResourcesPageDto;
 import com.star.module.operation.entity.Resources;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.star.module.operation.vo.ResourcesDetailDto;
+import com.star.module.operation.vo.ListAwardVo;
+import com.star.module.operation.vo.ResourcesDetailVo;
 import com.star.module.operation.vo.ResourcesVo;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * <p>
@@ -41,6 +42,21 @@ public interface IResourcesService extends IService<Resources> {
      * @param id
      * @return
      */
-    ResourcesDetailDto selectResources(Long id);
+    ResourcesDetailVo selectResources(Long id);
+
+    /**
+     * 新增修改周榜月榜
+     *
+     * @param listAwardDto
+     */
+    void addOrUpdateListAward(ListAwardDto listAwardDto);
+
+    /**
+     * 周榜月榜详情
+     *
+     * @param code
+     * @return
+     */
+    ListAwardVo selectListAward(String code);
 
 }

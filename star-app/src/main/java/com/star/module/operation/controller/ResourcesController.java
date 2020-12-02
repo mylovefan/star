@@ -2,15 +2,19 @@ package com.star.module.operation.controller;
 
 
 import com.github.pagehelper.PageSerializable;
+import com.star.module.operation.dto.ListAwardDto;
 import com.star.module.operation.dto.ResourcesDto;
 import com.star.module.operation.dto.ResourcesPageDto;
 import com.star.module.operation.facade.ResourcesFacade;
-import com.star.module.operation.vo.ResourcesDetailDto;
+import com.star.module.operation.service.IResourcesService;
+import com.star.module.operation.vo.ListAwardVo;
+import com.star.module.operation.vo.ResourcesDetailVo;
 import com.star.module.operation.vo.ResourcesVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -24,19 +28,31 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ResourcesController implements ResourcesFacade {
 
+    @Autowired
+    private IResourcesService resourcesService;
 
     @Override
     public void addOrUpdateResources(@RequestBody ResourcesDto resourcesDto) {
-
+        resourcesService.addOrUpdateResources(resourcesDto);
     }
 
     @Override
     public PageSerializable<ResourcesVo> selectResourcesPage(@RequestBody ResourcesPageDto resourcesPageDto) {
-        return null;
+        return resourcesService.selectResourcesPage(resourcesPageDto);
     }
 
     @Override
-    public ResourcesDetailDto selectResources(@PathVariable("id") Long id) {
+    public ResourcesDetailVo selectResources(@PathVariable("id") Long id) {
+        return resourcesService.selectResources(id);
+    }
+
+    @Override
+    public void addOrUpdateListAward(@RequestBody ListAwardDto listAwardDto) {
+        resourcesService.addOrUpdateListAward(listAwardDto);
+    }
+
+    @Override
+    public ListAwardVo selectListAward(@RequestParam("code") String code) {
         return null;
     }
 }

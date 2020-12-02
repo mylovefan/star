@@ -1,11 +1,11 @@
 package com.star.module.operation.facade;
 
 import com.github.pagehelper.PageSerializable;
-import com.star.module.operation.dto.FensDto;
+import com.star.module.operation.dto.ListAwardDto;
 import com.star.module.operation.dto.ResourcesDto;
 import com.star.module.operation.dto.ResourcesPageDto;
-import com.star.module.operation.vo.FensVo;
-import com.star.module.operation.vo.ResourcesDetailDto;
+import com.star.module.operation.vo.ListAwardVo;
+import com.star.module.operation.vo.ResourcesDetailVo;
 import com.star.module.operation.vo.ResourcesVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,5 +25,13 @@ public interface ResourcesFacade {
 
     @ApiOperation(value = "资源详情")
     @GetMapping("selectResources")
-    ResourcesDetailDto selectResources(@PathVariable("id") Long id);
+    ResourcesDetailVo selectResources(@PathVariable("id") Long id);
+
+    @ApiOperation(value = "周榜月榜新增修改")
+    @PostMapping("addOrUpdateListAward")
+    void addOrUpdateListAward(@RequestBody ListAwardDto listAwardDto);
+
+    @ApiOperation(value = "查询周榜月榜 code(WEEK | MONTH)")
+    @GetMapping("selectListAward")
+    ListAwardVo selectListAward(@RequestParam("code") String code);
 }

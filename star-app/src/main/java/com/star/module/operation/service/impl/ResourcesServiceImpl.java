@@ -1,28 +1,36 @@
 package com.star.module.operation.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageSerializable;
+import com.github.pagehelper.util.StringUtil;
 import com.star.common.CommonConstants;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
 import com.star.module.front.dao.StarMapper;
 import com.star.module.front.entity.Star;
+import com.star.module.operation.dao.ListAwardMapper;
 import com.star.module.operation.dao.ResourcesMapper;
 import com.star.module.operation.dao.StarResourcesRelMapper;
 import com.star.module.operation.dao.StarTagsMapper;
+import com.star.module.operation.dto.ListAwardDto;
 import com.star.module.operation.dto.ResourcesDto;
 import com.star.module.operation.dto.ResourcesPageDto;
 import com.star.module.operation.dto.TagsDto;
+import com.star.module.operation.entity.ListAward;
 import com.star.module.operation.entity.Resources;
 import com.star.module.operation.entity.StarResourcesRel;
 import com.star.module.operation.entity.StarTags;
 import com.star.module.operation.service.IResourcesService;
-import com.star.module.operation.util.DateUtils;
-import com.star.module.operation.vo.ResourcesDetailDto;
+import com.star.module.operation.vo.ListAwardVo;
+import com.star.module.operation.vo.ResourcesDetailVo;
 import com.star.module.operation.vo.ResourcesVo;
 import com.star.util.SnowflakeId;
+import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +64,9 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
 
     @Autowired
     private StarMapper starMapper;
+
+    @Autowired
+    private ListAwardMapper listAwardMapper;
 
     @Override
     @Transactional
@@ -120,11 +131,100 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
 
     @Override
     public PageSerializable<ResourcesVo> selectResourcesPage(ResourcesPageDto resourcesPageDto) {
-        return null;
+        IPage<Resources> page = new Page<>(resourcesPageDto.getPageNum(),resourcesPageDto.getPageSize());
+        QueryWrapper<Resources> queryWrapper = new QueryWrapper<>();
+        if(StringUtil.isNotEmpty(resourcesPageDto.getBeginTime())){
+            queryWrapper.lambda().ge(Resources::getAddTime,resourcesPageDto.getBeginTime());
+        }
+        if(StringUtil.isNotEmpty(resourcesPageDto.getEndTime())){
+            queryWrapper.lambda().le(Resources::getAddTime,resourcesPageDto.getEndTime());
+        }
+        if(resourcesPageDto.getType() != null){
+            queryWrapper.lambda().eq(Resources::getType,resourcesPageDto.getType());
+        }
+        LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
+        if(resourcesPageDto.getStatus() != null){
+            if(resourcesPageDto.getStatus() == 1){
+                queryWrapper.lambda().le(Resources::getBeginTime,localDateTimeOfNow);
+            }else if(resourcesPageDto.getStatus() == 2){
+                queryWrapper.lambda().ge(Resources::getBeginTime,localDateTimeOfNow);
+                queryWrapper.lambda().le(Resources::getEndTime,localDateTimeOfNow);
+            }else {
+                queryWrapper.lambda().ge(Resources::getEndTime,localDateTimeOfNow);
+            }
+
+        }
+        queryWrapper.orderByDesc("add_time");
+        IPage<Resources> resourcesIPage = resourcesMapper.selectPage(page, queryWrapper);
+        List<ResourcesVo> list = new ArrayList<>();
+        for (Resources resources : resourcesIPage.getRecords()){
+            ResourcesVo resourcesVo = new ResourcesVo();
+            BeanUtils.copyProperties(resources,resourcesVo);
+            if(localDateTimeOfNow.isAfter(resources.getBeginTime()) || localDateTimeOfNow.isBefore(resources.getEndTime())) {
+                resourcesVo.setStatus(2);
+            }
+            if(localDateTimeOfNow.isAfter(resources.getEndTime())) {
+                resourcesVo.setStatus(3);
+            }
+            if(localDateTimeOfNow.isBefore(resources.getBeginTime())) {
+                resourcesVo.setStatus(1);
+            }
+            list.add(resourcesVo);
+        }
+        PageSerializable<ResourcesVo> pageSerializable = new PageSerializable<>(list);
+        pageSerializable.setTotal(resourcesIPage.getTotal());
+        return pageSerializable;
     }
 
     @Override
-    public ResourcesDetailDto selectResources(Long id) {
-        return null;
+    public ResourcesDetailVo selectResources(Long id) {
+        Resources resources = resourcesMapper.selectById(id);
+        ResourcesDetailVo resourcesVo = new ResourcesDetailVo();
+        BeanUtils.copyProperties(resources,resourcesVo);
+        resourcesVo.setTags(JSONArray.parseArray(resources.getTags(),TagsDto.class));
+
+        //查询明星
+        QueryWrapper<StarResourcesRel> wrapper = new QueryWrapper<>();
+        wrapper.lambda().in(StarResourcesRel::getResourcesId,id);
+        List<StarResourcesRel> starResourcesRels = starResourcesRelMapper.selectList(wrapper);
+        List<Long> starIds = starResourcesRels.stream().map(StarResourcesRel::getStarId).collect(Collectors.toList());
+        resourcesVo.setStarIds(starIds);
+        return resourcesVo;
+    }
+
+    @Override
+    public void addOrUpdateListAward(ListAwardDto listAwardDto) {
+        if(!"WEEK".equals(listAwardDto.getCode()) && !"MONTH".equals(listAwardDto.getCode())){
+            throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(),"CODE错误");
+        }
+        ListAward listAward = new ListAward();
+        BeanUtils.copyProperties(listAwardDto,listAward);
+
+        QueryWrapper<ListAward> wrapper = new QueryWrapper<>();
+        wrapper.lambda().in(ListAward::getCode,listAwardDto.getCode());
+        Integer count = listAwardMapper.selectCount(wrapper);
+        LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
+        if(count != null && count > 0){
+            listAward.setAddTime(localDateTimeOfNow);
+            listAwardMapper.update(listAward,wrapper);
+        }else {
+            listAward.setId(SnowflakeId.getInstance().nextId());
+            listAward.setAddTime(localDateTimeOfNow);
+            listAwardMapper.insert(listAward);
+        }
+    }
+
+
+    @Override
+    public ListAwardVo selectListAward(String code) {
+        QueryWrapper<ListAward> wrapper = new QueryWrapper<>();
+        wrapper.lambda().in(ListAward::getCode,code);
+        ListAward listAward = listAwardMapper.selectOne(wrapper);
+        ListAwardVo listAwardVo = new ListAwardVo();
+        if(listAward == null){
+            return listAwardVo;
+        }
+        BeanUtils.copyProperties(listAward,listAwardVo);
+        return listAwardVo;
     }
 }

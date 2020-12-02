@@ -57,4 +57,7 @@ public class ResourcesVo implements Serializable {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime addTime;
 
+    @ApiModelProperty(value = "1-待开始 2-进行中 3-已结束")
+    private Integer status;
+
 }
