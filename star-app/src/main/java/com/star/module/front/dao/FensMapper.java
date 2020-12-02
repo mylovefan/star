@@ -7,6 +7,8 @@ import com.star.module.operation.dto.GiveDto;
 import com.star.module.operation.vo.GiveVo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  * 微信用户信息 Mapper 接口
@@ -30,5 +32,12 @@ public interface FensMapper extends BaseMapper<Fens> {
      * @param vigourVal
      */
     void updateVigour(@Param("id") Long id,@Param("vigourVal") int vigourVal);
+
+    /**
+     * 查询所有粉丝id
+     *
+     * @return
+     */
+    List<Long> selectFensIds();
 
 }

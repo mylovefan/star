@@ -8,12 +8,14 @@ import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
 import com.star.module.front.dao.FensMapper;
 import com.star.module.front.entity.Fens;
+import com.star.module.operation.util.RandomUtils;
 import com.star.module.user.common.TokenManager;
 import com.star.module.user.service.WeixinAuthService;
 import com.star.module.user.util.HttpClientUtil;
 import com.star.module.user.vo.UserLoginVo;
 import com.star.util.SnowflakeId;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
@@ -29,6 +31,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -87,6 +90,11 @@ public class WeixinAuthServiceImpl implements WeixinAuthService {
             //解密敏感信息
             JSONObject jsonObject = getUserInfo(encrypteData,sessionKey,iv);
             fens.setPhone(jsonObject.getString("phoneNumber"));
+
+            List<Long> longs = fensMapper.selectFensIds();
+            Long fensId = RandomUtils.randomNumber6(longs);
+            fens.setFensId(fensId);
+
             fensMapper.insert(fens);
         }else {
             fens.setLastVisitTime(localDateTimeOfNow);
