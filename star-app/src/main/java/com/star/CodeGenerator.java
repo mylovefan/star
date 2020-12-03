@@ -42,7 +42,7 @@ public class CodeGenerator {
         //设置功能名称
         //pc.setModuleName("report");
         //生成父包
-        pc.setParent("com.star.module.operation");
+        pc.setParent("com.star.module.front");
         mpg.setPackageInfo(pc);
 
         // 策略配置
@@ -58,7 +58,7 @@ public class CodeGenerator {
         //控制层是否使用RestController
         strategy.setRestControllerStyle(true);
         //生成代码的表
-        strategy.setInclude("list_award");
+        strategy.setInclude("guard");
         strategy.setControllerMappingHyphenStyle(true);
         //设置表前缀，生成类将去掉前缀
         strategy.setTablePrefix(pc.getModuleName() + "_");
