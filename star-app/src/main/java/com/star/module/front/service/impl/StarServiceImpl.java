@@ -13,7 +13,9 @@ import com.star.module.front.dao.StarMapper;
 import com.star.module.front.entity.Star;
 import com.star.module.front.service.IStarService;
 import com.star.module.operation.entity.StarTags;
+import com.star.module.operation.entity.Tags;
 import com.star.module.operation.service.IStarTagsService;
+import com.star.module.operation.service.ITagsService;
 import com.star.module.operation.util.ListUtils;
 import com.star.module.operation.util.RandomUtils;
 import com.star.module.operation.dto.StarDto;
@@ -52,7 +54,8 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
     private ListUtils listUtils;
     @Autowired
     private IStarTagsService iStarTagsService;
-
+    @Autowired
+    private ITagsService iTagsService;
 
     @Override
     public PageSerializable<StartVo> selectPage(StarPageDto starPageDto) {
@@ -140,6 +143,12 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
                 if(StringUtil.isEmpty(m.getValue())){
                     throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"标签为空");
                 }
+                QueryWrapper<Tags> wrapper = new QueryWrapper();
+                wrapper.lambda().eq(Tags::getId, m.getValue());
+                Tags t = iTagsService.getOne(wrapper);
+                if(t==null){
+                    throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"标签不存在，请先添加标签再关联明星");
+                }
                 StarTags tag = new StarTags();
                 tag.setStarId(star.getId());
                 tag.setTagsId(m.getKey());
@@ -148,8 +157,7 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
                 sb.append(m.getValue()).append(",");
             }
             iStarTagsService.saveBatch(starTagsList);
-
-            star.setTags(sb.toString());
+            star.setTags(sb.toString().substring(0, sb.length() -1));
             starMapper.updateById(star);
         }
     }
