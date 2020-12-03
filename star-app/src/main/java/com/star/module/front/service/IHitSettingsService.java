@@ -2,6 +2,8 @@ package com.star.module.front.service;
 
 import com.star.module.front.entity.HitSettings;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.star.module.operation.dto.HitSettingsDto;
+import com.star.module.operation.vo.HitSettingsVo;
 
 /**
  * <p>
@@ -13,4 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IHitSettingsService extends IService<HitSettings> {
 
+    void setHitSettings(HitSettingsDto dto);
+
+    HitSettingsVo selectHisSettings();
 }

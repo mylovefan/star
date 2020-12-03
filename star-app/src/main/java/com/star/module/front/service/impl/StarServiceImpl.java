@@ -161,5 +161,5 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
             starMapper.updateById(star);
         }
     }
-    //eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6IjEiLCJpYXQiOjE2MDY5NjE2MTMsInVzZXJfbmFtZSI6IueuoeeQhuWRmCIsInVwZGF0ZVNlY29uZHMiOjE2MDY5NjUyMTMzMTMsImV4cCI6MTYwNjk3MjQxM30.t7RdBqwW0ozuS_SfBo_sCQZGqKN825x3o6SAqxIvb8bN_YYHwmQUNnMvtZwBy9KynY51z3nvOlHxUkza4Pr9xw
+    //eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6IjEiLCJpYXQiOjE2MDY5ODEyMDUsInVzZXJfbmFtZSI6IueuoeeQhuWRmCIsInVwZGF0ZVNlY29uZHMiOjE2MDY5ODQ4MDUwMDgsImV4cCI6MTYwNjk5MjAwNX0.2SiLVRM30WBysvfLf-p1EDSj6236QT6w4o9rNovHh9WiLIEC1eL_X4rTH5jzP7e5YFgZEckBsJ07Fd8U45mb4w
 }
