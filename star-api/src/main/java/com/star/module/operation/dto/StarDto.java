@@ -3,6 +3,8 @@ package com.star.module.operation.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class StarDto {
 
@@ -25,7 +27,7 @@ public class StarDto {
     private String avatar;
 
     @ApiModelProperty(value = "标签")
-    private String tags;
+    private Map<Long, String> tags;
 
     @ApiModelProperty(value = "是否热门搜索")
     private Integer hotSearch;

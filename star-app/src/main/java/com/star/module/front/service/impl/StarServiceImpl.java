@@ -12,6 +12,8 @@ import com.star.common.ServiceException;
 import com.star.module.front.dao.StarMapper;
 import com.star.module.front.entity.Star;
 import com.star.module.front.service.IStarService;
+import com.star.module.operation.entity.StarTags;
+import com.star.module.operation.service.IStarTagsService;
 import com.star.module.operation.util.ListUtils;
 import com.star.module.operation.util.RandomUtils;
 import com.star.module.operation.dto.StarDto;
@@ -28,6 +30,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -42,11 +45,13 @@ import java.util.stream.Collectors;
 public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IStarService {
 
     private static final String HOTSEARCH = "热门搜索";
-    @Autowired
-    private StarMapper starMapper;
 
     @Autowired
+    private StarMapper starMapper;
+    @Autowired
     private ListUtils listUtils;
+    @Autowired
+    private IStarTagsService iStarTagsService;
 
 
     @Override
@@ -96,6 +101,7 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
         star.setCreateTime(localDateTimeOfNow);
         starMapper.insert(star);
+        this.tagsSet(dto, star);
     }
 
     @Override
@@ -104,6 +110,9 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
             throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),ErrorCodeEnum.PARAM_ERROR.getValue());
         }
         Star star = starMapper.selectById(dto.getId());
+        if(star==null){
+            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"明星信息不存在");
+        }
         BeanUtils.copyProperties(dto,star);
         if(StringUtils.isNotEmpty(star.getTags())){
             if (star.getTags().contains(HOTSEARCH)) {
@@ -112,8 +121,37 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
                 star.setHotSearch(NumberUtils.INTEGER_ZERO);
             }
         }
-
         starMapper.updateById(star);
+        this.tagsSet(dto, star);
+    }
+
+    private void tagsSet(StarDto dto, Star star){
+        /** 标签关联标签处理 */
+        if(dto.getTags()!=null && !dto.getTags().isEmpty()){
+            iStarTagsService.deleteByStarId(star.getId());
+
+            List<StarTags> starTagsList = new ArrayList<>();
+            StringBuffer sb = new StringBuffer();
+            Map<Long, String> tags = dto.getTags();
+            for (Map.Entry<Long, String> m : tags.entrySet()) {
+                if(m.getKey()==null){
+                    throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"标签id错误");
+                }
+                if(StringUtil.isEmpty(m.getValue())){
+                    throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"标签为空");
+                }
+                StarTags tag = new StarTags();
+                tag.setStarId(star.getId());
+                tag.setTagsId(m.getKey());
+                tag.setTagsName(m.getValue());
+                starTagsList.add(tag);
+                sb.append(m.getValue()).append(",");
+            }
+            iStarTagsService.saveBatch(starTagsList);
+
+            star.setTags(sb.toString());
+            starMapper.updateById(star);
+        }
     }
     //eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6IjEiLCJpYXQiOjE2MDY5NjE2MTMsInVzZXJfbmFtZSI6IueuoeeQhuWRmCIsInVwZGF0ZVNlY29uZHMiOjE2MDY5NjUyMTMzMTMsImV4cCI6MTYwNjk3MjQxM30.t7RdBqwW0ozuS_SfBo_sCQZGqKN825x3o6SAqxIvb8bN_YYHwmQUNnMvtZwBy9KynY51z3nvOlHxUkza4Pr9xw
 }
