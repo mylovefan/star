@@ -1,4 +1,4 @@
-package com.star.module.user.vo;
+package com.star.module.operation.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

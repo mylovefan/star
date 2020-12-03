@@ -3,10 +3,10 @@ package com.star.module.front.service;
 import com.github.pagehelper.PageSerializable;
 import com.star.module.front.entity.HitList;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.star.module.user.dto.FensMarkRankDto;
-import com.star.module.user.dto.HitListDto;
-import com.star.module.user.vo.FensMarkVo;
-import com.star.module.user.vo.HitListVo;
+import com.star.module.operation.dto.FensMarkRankDto;
+import com.star.module.operation.dto.HitListDto;
+import com.star.module.operation.vo.FensMarkVo;
+import com.star.module.operation.vo.HitListVo;
 
 import java.util.Date;
 

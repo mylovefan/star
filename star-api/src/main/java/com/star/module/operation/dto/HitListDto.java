@@ -1,4 +1,4 @@
-package com.star.module.user.dto;
+package com.star.module.operation.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

@@ -2,12 +2,11 @@ package com.star.module.front.dao;
 
 import com.star.module.front.entity.HitList;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.star.module.user.vo.FensMarkVo;
-import com.star.module.user.vo.HitListVo;
+import com.star.module.operation.vo.FensMarkVo;
+import com.star.module.operation.vo.HitListVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 /**

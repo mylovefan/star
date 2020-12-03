@@ -2,7 +2,7 @@ package com.star.module.operation.service;
 
 import com.star.module.operation.entity.Tags;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.star.module.user.vo.TagsVo;
+import com.star.module.operation.vo.TagsVo;
 
 import java.util.List;
 

@@ -1,14 +1,14 @@
-package com.star.module.user.facade;
+package com.star.module.operation.facade;
 
 import com.github.pagehelper.PageSerializable;
-import com.star.module.user.dto.FensMarkRankDto;
-import com.star.module.user.dto.HitListDto;
-import com.star.module.user.dto.StarDto;
-import com.star.module.user.dto.StarPageDto;
-import com.star.module.user.vo.FensMarkVo;
-import com.star.module.user.vo.HitListVo;
-import com.star.module.user.vo.StartVo;
-import com.star.module.user.vo.TagsVo;
+import com.star.module.operation.dto.FensMarkRankDto;
+import com.star.module.operation.dto.HitListDto;
+import com.star.module.operation.dto.StarDto;
+import com.star.module.operation.dto.StarPageDto;
+import com.star.module.operation.vo.FensMarkVo;
+import com.star.module.operation.vo.HitListVo;
+import com.star.module.operation.vo.StartVo;
+import com.star.module.operation.vo.TagsVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Api(value = "明星管理", tags = "明星管理")
-@RequestMapping("backend/")
-public interface BackendFacade {
+@RequestMapping("star/")
+public interface StarFacade {
 
 
     @ApiOperation(value = "明星列表")

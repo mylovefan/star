@@ -1,6 +1,6 @@
 package com.star.module.user.facade;
 
-import com.star.module.user.dto.LoginDto;
+import com.star.module.operation.dto.LoginDto;
 import com.star.module.user.dto.ModifyPassCodeDTO;
 import com.star.module.user.vo.UserLoginVo;
 import com.star.module.user.vo.UserMenuVo;

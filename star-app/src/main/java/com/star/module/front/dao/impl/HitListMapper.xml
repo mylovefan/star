@@ -3,7 +3,7 @@
 <mapper namespace="com.star.module.front.dao.HitListMapper">
 
 
-    <select id="selectHitRankByStar" resultType="com.star.module.user.vo.HitListVo">
+    <select id="selectHitRankByStar" resultType="com.star.module.operation.vo.HitListVo">
         SELECT
         st.name AS starName,
         st.id AS starId,
@@ -49,7 +49,7 @@
         </where>
     </select>
 
-    <select id="selectFensMarkRankByFens" resultType="com.star.module.user.vo.FensMarkVo">
+    <select id="selectFensMarkRankByFens" resultType="com.star.module.operation.vo.FensMarkVo">
         SELECT
         fs.nick_name AS fensName,
         hl.fens_id AS fensId,

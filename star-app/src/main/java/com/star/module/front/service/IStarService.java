@@ -1,12 +1,11 @@
 package com.star.module.front.service;
 
 import com.github.pagehelper.PageSerializable;
-import com.star.commen.dto.PageDTO;
 import com.star.module.front.entity.Star;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.star.module.user.dto.StarDto;
-import com.star.module.user.dto.StarPageDto;
-import com.star.module.user.vo.StartVo;
+import com.star.module.operation.dto.StarDto;
+import com.star.module.operation.dto.StarPageDto;
+import com.star.module.operation.vo.StartVo;
 
 /**
  * <p>

@@ -1,4 +1,4 @@
-package com.star.module.user.vo;
+package com.star.module.operation.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

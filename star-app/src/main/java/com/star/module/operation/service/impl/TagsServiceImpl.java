@@ -9,7 +9,7 @@ import com.star.module.operation.dao.TagsMapper;
 import com.star.module.operation.entity.Tags;
 import com.star.module.operation.service.ITagsService;
 import com.star.module.operation.util.ListUtils;
-import com.star.module.user.vo.TagsVo;
+import com.star.module.operation.vo.TagsVo;
 import com.star.util.SnowflakeId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

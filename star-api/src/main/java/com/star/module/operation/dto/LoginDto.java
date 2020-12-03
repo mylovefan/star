@@ -1,4 +1,4 @@
-package com.star.module.user.dto;
+package com.star.module.operation.dto;
 
 import lombok.Data;
 

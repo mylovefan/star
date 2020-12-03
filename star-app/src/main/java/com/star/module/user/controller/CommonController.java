@@ -2,7 +2,7 @@ package com.star.module.user.controller;
 
 
 import com.star.module.user.common.IgnoreSecurity;
-import com.star.module.user.dto.LoginDto;
+import com.star.module.operation.dto.LoginDto;
 import com.star.module.user.dto.ModifyPassCodeDTO;
 import com.star.module.user.facade.CommonFacade;
 import com.star.module.user.service.CommonService;
