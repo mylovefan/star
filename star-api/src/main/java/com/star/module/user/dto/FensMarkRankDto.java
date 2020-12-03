@@ -21,4 +21,7 @@ public class FensMarkRankDto extends PageDTO {
 
     @ApiModelProperty(value = "周结束时间")
     private String endTime;
+
+    @ApiModelProperty(value = "排序 0：正序；1：倒序；")
+    private int sortType;
 }

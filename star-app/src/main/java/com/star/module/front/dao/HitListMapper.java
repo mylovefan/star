@@ -2,6 +2,7 @@ package com.star.module.front.dao;
 
 import com.star.module.front.entity.HitList;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.star.module.user.vo.FensMarkVo;
 import com.star.module.user.vo.HitListVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -24,4 +25,9 @@ public interface HitListMapper extends BaseMapper<HitList> {
                                         @Param(value = "pageNum")Integer pageNum, @Param(value = "pageSize")Integer pageSize, @Param(value = "sortType")int sortType, @Param(value = "needLimit") boolean needLimit);
 
     int totalCount(@Param(value = "startTime") String startTime, @Param(value = "endTime")String endTime);
+
+    List<FensMarkVo> selectFensMarkRankByFens(@Param(value = "starId") Long starId, @Param(value = "pageNum")Integer pageNum, @Param(value = "pageSize")Integer pageSize,
+                                              @Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime, @Param(value = "sortType")int sortType, @Param(value = "needLimit") boolean needLimit);
+
+    int totalCountFensMark(@Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime);
 }

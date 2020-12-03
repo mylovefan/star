@@ -1,12 +1,8 @@
 package com.star.module.operation.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageSerializable;
-import com.star.commen.dto.PageDTO;
-import com.star.module.front.service.IFensMarkLogService;
 import com.star.module.front.service.IHitListService;
-import com.star.module.operation.entity.Tags;
 import com.star.module.operation.service.ITagsService;
 import com.star.module.user.dto.FensMarkRankDto;
 import com.star.module.user.dto.HitListDto;
@@ -14,6 +10,7 @@ import com.star.module.user.dto.StarDto;
 import com.star.module.user.dto.StarPageDto;
 import com.star.module.user.facade.BackendFacade;
 import com.star.module.front.service.IStarService;
+import com.star.module.user.vo.FensMarkVo;
 import com.star.module.user.vo.HitListVo;
 import com.star.module.user.vo.StartVo;
 import com.star.module.user.vo.TagsVo;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,8 +38,6 @@ public class StarController implements BackendFacade {
     private ITagsService iTagsService;
     @Autowired
     private IHitListService hitListService;
-    @Autowired
-    private IFensMarkLogService iFensMarkLogService;
 
     @Override
     public PageSerializable<StartVo> getStars(@RequestBody StarPageDto starPageDto) {
@@ -81,9 +75,8 @@ public class StarController implements BackendFacade {
     }
 
     @Override
-    public PageSerializable<HitListVo> fensMarkRankList(@RequestBody FensMarkRankDto fensMarkRankDto) {
-        //return iFensMarkLogService.selectPage(fensMarkRankDto);
-        return null;
+    public PageSerializable<FensMarkVo> fensMarkRankList(@RequestBody FensMarkRankDto fensMarkRankDto) {
+        return hitListService.selectFensRankPage(fensMarkRankDto);
     }
 
 }

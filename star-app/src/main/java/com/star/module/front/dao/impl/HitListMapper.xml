@@ -48,4 +48,54 @@
             </if>
         </where>
     </select>
+
+    <select id="selectFensMarkRankByFens" resultType="com.star.module.user.vo.FensMarkVo">
+        SELECT
+        fs.nick_name AS fensName,
+        hl.fens_id AS fensId,
+        hl.star_id AS starId,
+        IFNULL(SUM(hl.vigour_val),0) AS totalVigourVal
+        FROM hit_list hl
+        LEFT JOIN fens fs ON fs.id = hl.fens_id
+        <where>
+            <if test="startTime != null">
+                and	hl.create_time <![CDATA[>= ]]> #{startTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null">
+                and	hl.create_time <![CDATA[<= ]]> #{endTime,jdbcType=VARCHAR}
+            </if>
+            <if test="starId != null and starId!=''">
+                and	hl.star_id = #{starId}
+            </if>
+        </where>
+        GROUP BY hl.fens_id ORDER BY
+        <if test="sortType==0">
+            totalVigourVal asc
+        </if>
+        <if test="sortType==1">
+            totalVigourVal desc
+        </if>
+        <choose>
+            <when test="needLimit">
+                LIMIT ${(pageNum-1) * pageSize}, ${pageSize}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="totalCountFensMark" resultType="java.lang.Integer">
+        SELECT
+        COUNT(DISTINCT hl.fens_id) AS totalCount
+        FROM hit_list hl
+        LEFT JOIN fens fs ON fs.id = hl.fens_id
+        <where>
+            <if test="startTime != null">
+                and	hl.create_time <![CDATA[>= ]]> #{startTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null">
+                and	hl.create_time <![CDATA[<= ]]> #{endTime,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
 </mapper>

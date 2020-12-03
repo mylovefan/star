@@ -9,7 +9,9 @@ import com.star.module.front.dao.HitListMapper;
 import com.star.module.front.entity.HitList;
 import com.star.module.front.service.IHitListService;
 import com.star.module.operation.util.DateUtils;
+import com.star.module.user.dto.FensMarkRankDto;
 import com.star.module.user.dto.HitListDto;
+import com.star.module.user.vo.FensMarkVo;
 import com.star.module.user.vo.HitListVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -183,6 +185,59 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
             }
         } else {
             pageSerializable = new PageSerializable<>();
+        }
+        return pageSerializable;
+    }
+
+
+    @Override
+    public PageSerializable<FensMarkVo> selectFensRankPage(FensMarkRankDto fensMarkRankDto) {
+        PageSerializable<FensMarkVo> pageSerializable = null;
+
+        if (fensMarkRankDto.getStarId() == null) {
+            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(), "明星id为空，无法统计榜单");
+        }
+        //是否分页标识
+        boolean needLimit = true;
+        //根据姓名查询 不分页以便算排名
+        if (StringUtils.isNotEmpty(fensMarkRankDto.getFensName())) {
+            needLimit = false;
+        }
+        //根据id查询 不分页以便算排名
+        if (fensMarkRankDto.getFensId() != null) {
+            needLimit = false;
+        }
+
+        //返回结果
+        List<FensMarkVo> fensMarkRankList = hitListMapper.selectFensMarkRankByFens(fensMarkRankDto.getStarId(), fensMarkRankDto.getPageNum(), fensMarkRankDto.getPageSize(),
+                fensMarkRankDto.getStartTime(), fensMarkRankDto.getEndTime(), fensMarkRankDto.getSortType(), needLimit);
+
+        for (int i = 0; i < fensMarkRankList.size(); i++) {
+            fensMarkRankList.get(i).setWeekTime(fensMarkRankDto.getStartTime() + "-" + fensMarkRankDto.getEndTime());
+            fensMarkRankList.get(i).setRank(i + 1);
+        }
+
+        if(needLimit){//需要分页查询代表没带明星参数
+            int totalCount = hitListMapper.totalCountFensMark(fensMarkRankDto.getStartTime(), fensMarkRankDto.getEndTime());
+            pageSerializable = new PageSerializable<>(fensMarkRankList);
+            pageSerializable.setTotal(totalCount);
+        }else {
+            if (fensMarkRankList.size() > 0) {
+                //根据姓名查询，返回一条数据及排名
+                if (StringUtils.isNotEmpty(fensMarkRankDto.getFensName())) {
+                    List<FensMarkVo> resultList = fensMarkRankList.stream().filter(li -> li.getFensName().equals(fensMarkRankDto.getFensName())).collect(Collectors.toList());
+                    pageSerializable = new PageSerializable<>(resultList);
+                    pageSerializable.setTotal(resultList.size());
+                }
+                //根据id查询，返回一条数据及排名
+                if (fensMarkRankDto.getFensId() != null) {
+                    List<FensMarkVo> resultList = fensMarkRankList.stream().filter(li -> li.getFensId().equals(fensMarkRankDto.getFensId())).collect(Collectors.toList());
+                    pageSerializable = new PageSerializable<>(resultList);
+                    pageSerializable.setTotal(resultList.size());
+                }
+            } else {
+                pageSerializable = new PageSerializable<>();
+            }
         }
         return pageSerializable;
     }

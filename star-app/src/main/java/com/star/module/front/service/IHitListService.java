@@ -3,7 +3,9 @@ package com.star.module.front.service;
 import com.github.pagehelper.PageSerializable;
 import com.star.module.front.entity.HitList;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.star.module.user.dto.FensMarkRankDto;
 import com.star.module.user.dto.HitListDto;
+import com.star.module.user.vo.FensMarkVo;
 import com.star.module.user.vo.HitListVo;
 
 import java.util.Date;
@@ -33,4 +35,11 @@ public interface IHitListService extends IService<HitList> {
      * @return
      */
     PageSerializable<HitListVo> selectPage(HitListDto hitListDto);
+
+    /**
+     * 粉丝打榜列表
+     * @param fensMarkRankDto
+     * @return
+     */
+    PageSerializable<FensMarkVo> selectFensRankPage(FensMarkRankDto fensMarkRankDto);
 }
