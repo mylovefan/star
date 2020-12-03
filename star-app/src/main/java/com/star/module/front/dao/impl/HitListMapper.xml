@@ -7,6 +7,7 @@
         SELECT
         st.name AS starName,
         st.id AS starId,
+        st.avatar AS starAvatar,
         IFNULL(SUM(hl.vigour_val),0) AS totalVigourVal
         FROM hit_list hl
         LEFT JOIN star st ON hl.star_id = st.id
