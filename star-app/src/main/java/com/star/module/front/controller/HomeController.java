@@ -7,6 +7,7 @@ import com.star.module.front.facade.HomeFacade;
 import com.star.module.front.service.IFensService;
 import com.star.module.front.service.IGuardService;
 import com.star.module.front.service.IHitListService;
+import com.star.module.front.service.IStarService;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.front.vo.MyGuardVo;
 import com.star.module.front.vo.PersonalVo;
@@ -30,7 +31,7 @@ public class HomeController implements HomeFacade {
     @Autowired
     private ICarouselService iCarouselService;
     @Autowired
-    private StarRankTask starRankTask;
+    private IStarService iStarService;
     @Autowired
     private IGuardService iGuardService;
     @Autowired
@@ -60,5 +61,10 @@ public class HomeController implements HomeFacade {
     @Override
     public PageSerializable<FensMarkVo> selectFensRankPage(@RequestBody FensMarkRankDto fensMarkRankDto) {
         return iHitListService.selectFensRankPage(fensMarkRankDto);
+    }
+
+    @Override
+    public List<String> hotSearch() {
+        return iStarService.hotSearch();
     }
 }

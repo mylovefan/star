@@ -10,6 +10,7 @@ import com.star.module.operation.vo.StartVo;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -42,4 +43,10 @@ public interface IStarService extends IService<Star> {
      * @param endTime
      */
     void getStarRank(int type, Date startTime, Date endTime);
+
+    /**
+     * 热门搜索的明星
+     * @return
+     */
+    List<String> hotSearch();
 }

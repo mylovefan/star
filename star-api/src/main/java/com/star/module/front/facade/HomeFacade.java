@@ -11,6 +11,7 @@ import com.star.module.operation.vo.HitListVo;
 import com.star.module.front.dto.RankDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,5 +42,8 @@ public interface HomeFacade {
     @PostMapping("fensRank/list")
     PageSerializable<FensMarkVo> selectFensRankPage(@RequestBody FensMarkRankDto fensMarkRankDto);
 
+    @ApiOperation("热门搜索关键字")
+    @GetMapping("hotSearch")
+    List<String> hotSearch();
 
 }
