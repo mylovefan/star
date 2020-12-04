@@ -2,7 +2,9 @@ package com.star.module.front.service.impl;
 
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
+import com.star.common.CommonConstants;
 import com.star.module.front.dao.FensMapper;
+import com.star.module.front.dto.UpdatePersonalCenterInfoDto;
 import com.star.module.front.entity.Fens;
 import com.star.module.front.service.IFensService;
 import com.star.module.front.vo.MyGuardVo;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Slf4j
 @Service
@@ -34,5 +38,17 @@ public class FensServiceImpl implements IFensService {
         return personalVo;
     }
 
+
+    @Override
+    public void updatePersonalCenterInfo(UpdatePersonalCenterInfoDto updatePersonalCenterInfoDto) {
+        Long id = UserUtil.getCurrentUserId(request);
+        Fens fens = new Fens();
+        fens.setId(id);
+        fens.setAvatarUrl(updatePersonalCenterInfoDto.getAvatarUrl());
+        fens.setNickName(updatePersonalCenterInfoDto.getNickName());
+        LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
+        fens.setUpdateTime(localDateTimeOfNow);
+        fensMapper.updateById(fens);
+    }
 }
 

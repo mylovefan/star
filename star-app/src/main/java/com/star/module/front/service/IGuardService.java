@@ -5,6 +5,7 @@ import com.star.commen.dto.PageDTO;
 import com.star.module.front.entity.Guard;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.star.module.front.vo.MyGuardVo;
+import com.star.module.front.vo.MyHitListVo;
 
 /**
  * <p>
@@ -23,5 +24,13 @@ public interface IGuardService extends IService<Guard> {
      * @return
      */
     PageSerializable<MyGuardVo> selectMyGuard(PageDTO pageDTO);
+
+    /**
+     * 我的打榜记录
+     *
+     * @param pageDTO
+     * @return
+     */
+    PageSerializable<MyHitListVo> selectHitList(PageDTO pageDTO);
 
 }
