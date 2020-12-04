@@ -1724,8 +1724,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 //		System.out.println(formatDate(date4));
 		Date vipEndDate = DateUtils.parseDate("2020-11-28 00:00:00", DATE_FORMAT_DATETIME);
 		/*Date vipRealEndDate = DateUtils.addDay(vipEndDate, -19632);*/
-		Date thisMonday = DateUtils.getWeekStart(vipEndDate);
-		Date thisSunday = DateUtils.getWeekEnd(vipEndDate);
+		Date thisMonday = DateUtils.getMonthStart(new Date());
+		Date thisSunday = DateUtils.getMonthEnd(new Date());
 
 		System.out.println(DateUtils.getTimeStampStr(thisMonday));
 		System.out.println(DateUtils.getTimeStampStr(thisSunday));

@@ -1,7 +1,6 @@
 package com.star.module.front.controller;
 
 import com.github.pagehelper.PageSerializable;
-import com.star.module.front.dto.RankDto;
 import com.star.module.front.dto.StarFensRankDto;
 import com.star.module.front.facade.StarDetailFacede;
 import com.star.module.front.service.IHitListService;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class StarDetailController implements StarDetailFacede {
+public class StarDetailController implements StarDetailFacade {
 
     @Autowired
     private IStarService starService;

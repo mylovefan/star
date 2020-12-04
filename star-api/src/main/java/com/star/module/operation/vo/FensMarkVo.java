@@ -16,6 +16,9 @@ public class FensMarkVo {
     @ApiModelProperty(value = "粉丝id")
     private Long fensId;
 
+    @ApiModelProperty(value = "粉丝头像")
+    private String fensAvatarUrl;
+
     @ApiModelProperty(value = "明星id")
     private Long starId;
 

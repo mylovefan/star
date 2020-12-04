@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(value = "明星详情页",tags = "明星详情页")
 @RequestMapping("starDetail/")
-public interface StarDetailFacede {
+public interface StarDetailFacade {
 
     @ApiOperation("明星详情页明星信息")
     @GetMapping("selectStarInfo")

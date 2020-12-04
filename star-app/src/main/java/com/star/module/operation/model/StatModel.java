@@ -10,6 +10,8 @@ public class StatModel {
 
     private Long id;
 
+    private Long starId;
+
     private String name;
 
     private String avatar;

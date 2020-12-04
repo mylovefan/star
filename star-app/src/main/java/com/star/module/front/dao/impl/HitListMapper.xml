@@ -53,6 +53,7 @@
     <select id="selectFensMarkRankByFens" resultType="com.star.module.operation.vo.FensMarkVo">
         SELECT
         fs.nick_name AS fensName,
+        fs.avatar_url AS fensAvatarUrl,
         hl.fens_id AS fensId,
         hl.star_id AS starId,
         IFNULL(SUM(hl.vigour_val),0) AS totalVigourVal

@@ -9,6 +9,9 @@ import com.star.module.operation.dto.StarPageDto;
 import com.star.module.operation.vo.StartVo;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * <p>
  * 明星表 服务类
@@ -32,4 +35,18 @@ public interface IStarService extends IService<Star> {
      * @return
      */
     StarInfoVo selectStarInfo(Long id);
+
+    /**
+     * 更新明星本周排名/本月排名
+     * @param type 0本周；1本月
+     * @param startTime
+     * @param endTime
+     */
+    void getStarRank(int type, Date startTime, Date endTime);
+
+    /**
+     * 热门搜索的明星
+     * @return
+     */
+    List<String> hotSearch();
 }

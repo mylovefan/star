@@ -212,9 +212,9 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
     public PageSerializable<FensMarkVo> selectFensRankPage(FensMarkRankDto fensMarkRankDto) {
         PageSerializable<FensMarkVo> pageSerializable = null;
 
-        if (fensMarkRankDto.getStarId() == null) {
+        /*if (fensMarkRankDto.getStarId() == null) {
             throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(), "明星id为空，无法统计榜单");
-        }
+        }*/
         //是否分页标识
         boolean needLimit = true;
         //根据姓名查询 不分页以便算排名
@@ -231,7 +231,9 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
                 fensMarkRankDto.getStartTime(), fensMarkRankDto.getEndTime(), fensMarkRankDto.getSortType(), needLimit);
 
         for (int i = 0; i < fensMarkRankList.size(); i++) {
-            fensMarkRankList.get(i).setWeekTime(fensMarkRankDto.getStartTime() + "-" + fensMarkRankDto.getEndTime());
+            if(fensMarkRankDto.getStartTime()!=null && fensMarkRankDto.getEndTime()!=null){
+                fensMarkRankList.get(i).setWeekTime(fensMarkRankDto.getStartTime() + "-" + fensMarkRankDto.getEndTime());
+            }
             fensMarkRankList.get(i).setRank(i + 1);
         }
 
@@ -269,55 +271,21 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
                 //查询条件都为空时，默认统计本周
                 startTime = DateUtils.getTimeStampStr(DateUtils.getWeekStart(new Date()));
                 endTime = DateUtils.getTimeStampStr(DateUtils.getWeekEnd(new Date()));
+                break;
             case 1:
                 //查询条件都为空时，默认统计本月
                 startTime = DateUtils.getTimeStampStr(DateUtils.getMonthStart(new Date()));
                 endTime = DateUtils.getTimeStampStr(DateUtils.getMonthEnd(new Date()));
-            case 2:
-            case 3:
-
+                break;
         }
 
         //返回结果
         List<HitListVo> weekRankList = hitListMapper.selectHitRankByStar(startTime, endTime, rankDto.getPageNum(), rankDto.getPageSize(), NumberUtils.INTEGER_ONE, true);
-
         int totalCount = hitListMapper.totalCount(startTime, endTime);
         PageSerializable<HitListVo> pageSerializable = new PageSerializable<>(weekRankList);
         pageSerializable.setTotal(totalCount);
         return pageSerializable;
     }
-
-    public void getStarRank(int type, Date startTime, Date endTime){
-        List<Star> starList = starMapper.selectList(new QueryWrapper<>());
-        log.info("==============被统计明星数："+starList.size()+"==============");
-        if(starList.size()>0) {
-            starList.stream().forEach(sl -> {
-                sl.setThisMonthRank(NumberUtils.INTEGER_ZERO);
-                sl.setThisWeekRank(NumberUtils.INTEGER_ZERO);
-            });
-
-            List<StatModel> modelList = new ArrayList<>();
-            listUtils.copyList(starList, modelList, StatModel.class);
-            modelList.stream().forEach(item ->{
-                int vigourVal = statisticsRankByTime(item.getId(), startTime, endTime);
-                item.setVigourVal(vigourVal);
-            });
-            modelList.sort(Comparator.comparing(StatModel::getVigourVal).reversed());
-
-            for (int i = 0; i < modelList.size() ; i++) {
-                Star star = new Star();
-                BeanUtils.copyProperties(modelList.get(i), star);
-
-                if(type ==0) {
-                    star.setThisWeekRank(i+1);
-                }else{
-                    star.setThisMonthRank(i+1);
-                }
-                starMapper.updateById(star);
-            }
-        }
-    }
-
 
     @Override
     public PageSerializable<FensVigourRankVo> selectFensRank(StarFensRankDto rankDto) {
@@ -337,5 +305,6 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
 
         return null;
     }
+
 }
 
