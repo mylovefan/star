@@ -1,12 +1,17 @@
 package com.star.module.front.controller;
 
 import com.github.pagehelper.PageSerializable;
+import com.star.commen.dto.PageDTO;
 import com.star.module.front.dto.RankDto;
 import com.star.module.front.facade.HomeFacede;
+import com.star.module.front.service.IGuardService;
 import com.star.module.front.service.IHitListService;
 import com.star.module.front.vo.HomeCarouselVo;
+import com.star.module.front.vo.MyGuardVo;
+import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.service.ICarouselService;
 import com.star.module.operation.tesk.StarRankTask;
+import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
 import com.star.module.user.common.IgnoreSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +29,27 @@ public class HomeController implements HomeFacede {
     private ICarouselService iCarouselService;
     @Autowired
     private StarRankTask starRankTask;
-
+    @Autowired
+    private IGuardService iGuardService;
 
     @Override
     @IgnoreSecurity
     public List<HomeCarouselVo> carouselList() {
-        starRankTask.starRankByWeek();
         return iCarouselService.carouselList();
+    }
+
+    @Override
+    public PageSerializable<MyGuardVo> selectMyGuard(@RequestBody PageDTO pageDTO) {
+        return iGuardService.selectMyGuard(pageDTO);
     }
 
     @Override
     public PageSerializable<HitListVo> pageListRank(@RequestBody RankDto rankDto) {
         return iHitListService.pageListRank(rankDto);
+    }
+
+    @Override
+    public PageSerializable<FensMarkVo> selectFensRankPage(@RequestBody FensMarkRankDto fensMarkRankDto) {
+        return iHitListService.selectFensRankPage(fensMarkRankDto);
     }
 }

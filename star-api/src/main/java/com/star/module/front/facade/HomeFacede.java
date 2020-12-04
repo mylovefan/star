@@ -1,7 +1,11 @@
 package com.star.module.front.facade;
 
 import com.github.pagehelper.PageSerializable;
+import com.star.commen.dto.PageDTO;
 import com.star.module.front.vo.HomeCarouselVo;
+import com.star.module.front.vo.MyGuardVo;
+import com.star.module.operation.dto.FensMarkRankDto;
+import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
 import com.star.module.front.dto.RankDto;
 import io.swagger.annotations.Api;
@@ -20,8 +24,17 @@ public interface HomeFacede {
     @PostMapping("carousel/list")
     List<HomeCarouselVo> carouselList();
 
+    @ApiOperation(value = "我的守护")
+    @PostMapping("selectMyGuard")
+    PageSerializable<MyGuardVo> selectMyGuard(@RequestBody PageDTO pageDTO);
+
     @ApiOperation("周榜月榜总榜排名")
     @PostMapping("weekRank/list")
     PageSerializable<HitListVo> pageListRank(@RequestBody RankDto rankDto);
+
+    @ApiOperation("粉丝排名")
+    @PostMapping("fensRank/list")
+    PageSerializable<FensMarkVo> selectFensRankPage(@RequestBody FensMarkRankDto fensMarkRankDto);
+
 
 }
