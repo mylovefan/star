@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class MyGuardVo {
     @ApiModelProperty(value = "明星id")
-    private String id;
+    private Long id;
 
     @ApiModelProperty(value = "姓名")
     private String name;
