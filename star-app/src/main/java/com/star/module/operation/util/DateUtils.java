@@ -749,7 +749,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		calendar.get(Calendar.WEEK_OF_YEAR);
-		int firstDay = calendar.getFirstDayOfWeek();
+		int firstDay = calendar.getFirstDayOfWeek()+1;
 		calendar.set(Calendar.DAY_OF_WEEK, firstDay);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
@@ -765,16 +765,24 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 * @return
 	 */
 	public static Date getWeekEnd(Date date) {
-		Calendar calendar = Calendar.getInstance();
+		Calendar cal=Calendar.getInstance();
+		cal.setFirstDayOfWeek(Calendar.MONDAY);
+		cal.setTime(date);
+		cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek() + 6); // Sunday
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+
+		/*Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		calendar.get(Calendar.WEEK_OF_YEAR);
-		int firstDay = calendar.getFirstDayOfWeek();
+		int firstDay = calendar.getFirstDayOfWeek()+1;
 		calendar.set(Calendar.DAY_OF_WEEK, 8 - firstDay);
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
-		calendar.set(Calendar.MILLISECOND, 0);
-		return calendar.getTime();
+		calendar.set(Calendar.MILLISECOND, 0);*/
+		return cal.getTime();
 	}
 
 	public static Date getLastWeekMonday() {
@@ -1714,14 +1722,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
 //		Date date4 = DateUtils.addMonths(new Date(), 1);
 //		System.out.println(formatDate(date4));
-		/*Date vipEndDate = DateUtils.parseDate("2072-03-22", "yyyy-MM-dd");
-		Date vipRealEndDate = DateUtils.addDay(vipEndDate, -19632);*/
-		Date thisMonday = DateUtils.addDay(DateUtils.getWeekStart(new Date()),1);
+		Date vipEndDate = DateUtils.parseDate("2020-11-28 00:00:00", DATE_FORMAT_DATETIME);
+		/*Date vipRealEndDate = DateUtils.addDay(vipEndDate, -19632);*/
+		Date thisMonday = DateUtils.getWeekStart(vipEndDate);
+		Date thisSunday = DateUtils.getWeekEnd(vipEndDate);
 
-		Date thisMonthFirst = DateUtils.getFirstDateOfMonth(new Date());
-		DateUtils.getDayEnd(DateUtils.getLastSundayEndDay());
-		System.out.println(DateUtils.getDayStart(DateUtils.getLastWeekMonday()));
-		System.out.println(formatDate(getLastSundayEndDay()));
+		System.out.println(DateUtils.getTimeStampStr(thisMonday));
+		System.out.println(DateUtils.getTimeStampStr(thisSunday));
+
 		//System.out.println((int)getDistanceOfTwoDate1(sdfDateOnly.parse("2021-04-17 23:59:59"),sdfDateOnly.parse("2020-10-10 00：00：00")));
 
 	}
