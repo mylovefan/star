@@ -285,35 +285,6 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
         return pageSerializable;
     }
 
-    public void getStarRank(int type, Date startTime, Date endTime){
-        List<Star> starList = starMapper.selectList(new QueryWrapper<>());
-        log.info("==============被统计明星数："+starList.size()+"==============");
-        if(starList.size()>0) {
-            starList.stream().forEach(sl -> {
-                sl.setThisMonthRank(NumberUtils.INTEGER_ZERO);
-                sl.setThisWeekRank(NumberUtils.INTEGER_ZERO);
-            });
 
-            List<StatModel> modelList = new ArrayList<>();
-            listUtils.copyList(starList, modelList, StatModel.class);
-            modelList.stream().forEach(item ->{
-                int vigourVal = statisticsRankByTime(item.getId(), startTime, endTime);
-                item.setVigourVal(vigourVal);
-            });
-            modelList.sort(Comparator.comparing(StatModel::getVigourVal).reversed());
-
-            for (int i = 0; i < modelList.size() ; i++) {
-                Star star = new Star();
-                BeanUtils.copyProperties(modelList.get(i), star);
-
-                if(type ==0) {
-                    star.setThisWeekRank(i+1);
-                }else{
-                    star.setThisMonthRank(i+1);
-                }
-                starMapper.updateById(star);
-            }
-        }
-    }
 }
 

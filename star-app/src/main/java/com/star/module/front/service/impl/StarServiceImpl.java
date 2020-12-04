@@ -11,17 +11,21 @@ import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
 import com.star.module.front.dao.StarMapper;
 import com.star.module.front.entity.Star;
+import com.star.module.front.service.IHitListService;
 import com.star.module.front.service.IStarService;
 import com.star.module.operation.entity.StarTags;
 import com.star.module.operation.entity.Tags;
+import com.star.module.operation.model.StatModel;
 import com.star.module.operation.service.IStarTagsService;
 import com.star.module.operation.service.ITagsService;
+import com.star.module.operation.util.DateUtils;
 import com.star.module.operation.util.ListUtils;
 import com.star.module.operation.util.RandomUtils;
 import com.star.module.operation.dto.StarDto;
 import com.star.module.operation.dto.StarPageDto;
 import com.star.module.operation.vo.StartVo;
 import com.star.util.SnowflakeId;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
@@ -30,9 +34,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -44,6 +46,7 @@ import java.util.stream.Collectors;
  * @since 2020-11-30
  */
 @Service
+@Slf4j
 public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IStarService {
 
     private static final String HOTSEARCH = "热门搜索";
@@ -56,9 +59,15 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
     private IStarTagsService iStarTagsService;
     @Autowired
     private ITagsService iTagsService;
+    @Autowired
+    private IHitListService iHitListService;
 
     @Override
     public PageSerializable<StartVo> selectPage(StarPageDto starPageDto) {
+
+        getStarRank(0, DateUtils.getWeekStart(new Date()), DateUtils.getWeekEnd(new Date()));
+        getStarRank(1, DateUtils.getMonthStart(new Date()), DateUtils.getMonthEnd(new Date()));
+
         QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
         if(StringUtil.isNotEmpty(starPageDto.getName())){
             queryWrapper.lambda().like(Star::getName,starPageDto.getName());
@@ -159,6 +168,37 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
             iStarTagsService.saveBatch(starTagsList);
             star.setTags(sb.toString().substring(0, sb.length() -1));
             starMapper.updateById(star);
+        }
+    }
+
+    public void getStarRank(int type, Date startTime, Date endTime){
+        List<Star> starList = starMapper.selectList(new QueryWrapper<>());
+        log.info("==============被统计明星数："+starList.size()+"==============");
+        if(starList.size()>0) {
+            starList.stream().forEach(sl -> {
+                if(type==1)sl.setThisMonthRank(NumberUtils.INTEGER_ZERO);
+                if(type==0)sl.setThisWeekRank(NumberUtils.INTEGER_ZERO);
+            });
+
+            List<StatModel> modelList = new ArrayList<>();
+            listUtils.copyList(starList, modelList, StatModel.class);
+            modelList.stream().forEach(item ->{
+                int vigourVal = iHitListService.statisticsRankByTime(item.getId(), startTime, endTime);
+                item.setVigourVal(vigourVal);
+            });
+            modelList.sort(Comparator.comparing(StatModel::getVigourVal).reversed());
+
+            for (int i = 0; i < modelList.size() ; i++) {
+                Star star = new Star();
+                BeanUtils.copyProperties(modelList.get(i), star);
+
+                if(type ==0) {
+                    star.setThisWeekRank(i+1);
+                }else{
+                    star.setThisMonthRank(i+1);
+                }
+                starMapper.updateById(star);
+            }
         }
     }
     //eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6IjEiLCJpYXQiOjE2MDY5OTMzMDgsInVzZXJfbmFtZSI6IueuoeeQhuWRmCIsInVwZGF0ZVNlY29uZHMiOjE2MDY5OTY5MDg1MTUsImV4cCI6MTYwNzAwNDEwOH0.hS5XylOJ7Au9bshty9dM4VLrmldXxVAnho5OFgxRi0494L6lKE5KnTbf1N0A9PYKmq5d5pHP7gp8MV67DVzH4A
