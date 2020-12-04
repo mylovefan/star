@@ -2,7 +2,7 @@ package com.star.module.front.controller;
 
 import com.github.pagehelper.PageSerializable;
 import com.star.module.front.dto.StarFensRankDto;
-import com.star.module.front.facade.StarDetailFacede;
+import com.star.module.front.facade.StarDetailFacade;
 import com.star.module.front.service.IHitListService;
 import com.star.module.front.service.IStarService;
 import com.star.module.front.vo.FensVigourRankVo;
