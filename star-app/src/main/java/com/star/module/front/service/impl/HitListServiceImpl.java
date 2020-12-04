@@ -3,11 +3,14 @@ package com.star.module.front.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageSerializable;
+import com.star.commen.dto.PageDTO;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
 import com.star.module.front.dao.HitListMapper;
+import com.star.module.front.dto.RankDto;
 import com.star.module.front.entity.HitList;
 import com.star.module.front.service.IHitListService;
+import com.star.module.front.vo.WeekRankVo;
 import com.star.module.operation.util.DateUtils;
 import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.dto.HitListDto;
@@ -239,6 +242,33 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
                 pageSerializable = new PageSerializable<>();
             }
         }
+        return pageSerializable;
+    }
+
+    @Override
+    public PageSerializable<HitListVo> pageListRank(RankDto rankDto) {
+        String startTime = null;
+        String endTime = null;
+        switch (rankDto.getRankType()){
+            case 0:
+                //查询条件都为空时，默认统计本周
+                startTime = DateUtils.getTimeStampStr(DateUtils.getWeekStart(new Date()));
+                endTime = DateUtils.getTimeStampStr(DateUtils.getWeekEnd(new Date()));
+            case 1:
+                //查询条件都为空时，默认统计本月
+                startTime = DateUtils.getTimeStampStr(DateUtils.getMonthStart(new Date()));
+                endTime = DateUtils.getTimeStampStr(DateUtils.getMonthEnd(new Date()));
+            case 2:
+            case 3:
+
+        }
+
+        //返回结果
+        List<HitListVo> weekRankList = hitListMapper.selectHitRankByStar(startTime, endTime, rankDto.getPageNum(), rankDto.getPageSize(), NumberUtils.INTEGER_ONE, true);
+
+        int totalCount = hitListMapper.totalCount(startTime, endTime);
+        PageSerializable<HitListVo> pageSerializable = new PageSerializable<>(weekRankList);
+        pageSerializable.setTotal(totalCount);
         return pageSerializable;
     }
 }

@@ -1,8 +1,11 @@
 package com.star.module.front.service;
 
 import com.github.pagehelper.PageSerializable;
+import com.star.commen.dto.PageDTO;
+import com.star.module.front.dto.RankDto;
 import com.star.module.front.entity.HitList;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.star.module.front.vo.WeekRankVo;
 import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.dto.HitListDto;
 import com.star.module.operation.vo.FensMarkVo;
@@ -42,4 +45,11 @@ public interface IHitListService extends IService<HitList> {
      * @return
      */
     PageSerializable<FensMarkVo> selectFensRankPage(FensMarkRankDto fensMarkRankDto);
+
+    /**
+     * 周榜列表
+     * @param rankDto
+     * @return
+     */
+    PageSerializable<HitListVo> pageListRank(RankDto rankDto);
 }

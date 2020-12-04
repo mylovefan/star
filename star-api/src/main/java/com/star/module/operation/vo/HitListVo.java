@@ -17,6 +17,9 @@ public class HitListVo {
     @ApiModelProperty(value = "明星")
     private String starName;
 
+    @ApiModelProperty(value = "明星头像")
+    private String starAvatar;
+
     @ApiModelProperty(value = "明星id")
     private Long starId;
 
