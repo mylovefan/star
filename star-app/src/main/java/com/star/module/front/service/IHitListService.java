@@ -5,6 +5,7 @@ import com.star.commen.dto.PageDTO;
 import com.star.module.front.dto.RankDto;
 import com.star.module.front.entity.HitList;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.star.module.front.entity.Star;
 import com.star.module.front.vo.WeekRankVo;
 import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.dto.HitListDto;
@@ -12,6 +13,7 @@ import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -52,4 +54,6 @@ public interface IHitListService extends IService<HitList> {
      * @return
      */
     PageSerializable<HitListVo> pageListRank(RankDto rankDto);
+
+    int getStarRank(int type, Date startTime, Date endTime);
 }
