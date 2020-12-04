@@ -275,8 +275,6 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
                 startTime = DateUtils.getTimeStampStr(DateUtils.getMonthStart(new Date()));
                 endTime = DateUtils.getTimeStampStr(DateUtils.getMonthEnd(new Date()));
                 break;
-            case 2:
-
         }
 
         //返回结果

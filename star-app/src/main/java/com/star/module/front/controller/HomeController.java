@@ -3,11 +3,13 @@ package com.star.module.front.controller;
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
 import com.star.module.front.dto.RankDto;
-import com.star.module.front.facade.HomeFacede;
+import com.star.module.front.facade.HomeFacade;
+import com.star.module.front.service.IFensService;
 import com.star.module.front.service.IGuardService;
 import com.star.module.front.service.IHitListService;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.front.vo.MyGuardVo;
+import com.star.module.front.vo.PersonalVo;
 import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.service.ICarouselService;
 import com.star.module.operation.tesk.StarRankTask;
@@ -21,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class HomeController implements HomeFacede {
+public class HomeController implements HomeFacade {
 
     @Autowired
     private IHitListService iHitListService;
@@ -31,6 +33,13 @@ public class HomeController implements HomeFacede {
     private StarRankTask starRankTask;
     @Autowired
     private IGuardService iGuardService;
+    @Autowired
+    private IFensService iFensService;
+
+    @Override
+    public PersonalVo getFens() {
+        return iFensService.personalCenterInfo();
+    }
 
     @Override
     @IgnoreSecurity

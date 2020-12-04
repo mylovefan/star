@@ -49,7 +49,7 @@ public interface IHitListService extends IService<HitList> {
     PageSerializable<FensMarkVo> selectFensRankPage(FensMarkRankDto fensMarkRankDto);
 
     /**
-     * 周榜列表
+     * 首页榜单列表
      * @param rankDto
      * @return
      */

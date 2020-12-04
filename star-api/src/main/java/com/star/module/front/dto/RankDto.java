@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Data
 public class RankDto extends PageDTO {
 
-    @ApiModelProperty(value = "排名类型：0周榜；1月榜；2总榜；3粉丝榜")
+    @ApiModelProperty(value = "排名类型：0周榜；1月榜；2总榜")
     private int rankType;
 
 }

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.front.vo.MyGuardVo;
+import com.star.module.front.vo.PersonalVo;
 import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
@@ -18,7 +19,11 @@ import java.util.List;
 
 @Api(value = "首页",tags = "首页")
 @RequestMapping("home/")
-public interface HomeFacede {
+public interface HomeFacade {
+
+    @ApiOperation("我的信息")
+    @PostMapping("fens")
+    PersonalVo getFens();
 
     @ApiOperation("轮播图列表")
     @PostMapping("carousel/list")

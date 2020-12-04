@@ -8,13 +8,13 @@ import lombok.Data;
 public class FensMarkRankDto extends PageDTO {
 
     @ApiModelProperty(value = "明星ID")
-    private Long starId;
+    private Long starId = null;
 
     @ApiModelProperty(value = "粉丝ID")
-    private Long fensId;
+    private Long fensId = null;
 
     @ApiModelProperty(value = "粉丝名称")
-    private String fensName;
+    private String fensName = null;
 
     @ApiModelProperty(value = "周开始时间")
     private String startTime;
