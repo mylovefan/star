@@ -2,6 +2,7 @@ package com.star.module.operation.tesk;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.star.module.front.dao.StarMapper;
 import com.star.module.front.entity.Star;
 import com.star.module.front.service.IHitListService;
 import com.star.module.front.service.IStarService;
@@ -29,7 +30,7 @@ import java.util.List;
 public class StarRankTask {
 
     @Autowired
-    private IStarService iStarService;
+    private StarMapper starMapper;
     @Autowired
     private IHitListService iHitListService;
     @Autowired
@@ -42,7 +43,8 @@ public class StarRankTask {
     public void starRankByWeek() {
         long beginTime = System.currentTimeMillis();
         log.info("==============周一统计明星榜单开始，运行时间："+DateUtils.getTimeStampStr(new Date())+"==============");
-
+        log.info("==============统计开始时间："+DateUtils.getTimeStampStr(DateUtils.getDayStart(DateUtils.getLastWeekMonday()))+"==============");
+        log.info("==============统计结束时间："+DateUtils.getTimeStampStr(DateUtils.getDayEnd(DateUtils.getLastSundayEndDay()))+"==============");
         statisticsStarRank(NumberUtils.INTEGER_ZERO, DateUtils.getDayStart(DateUtils.getLastWeekMonday()), DateUtils.getDayEnd(DateUtils.getLastSundayEndDay()));
 
         long endTime = System.currentTimeMillis();
@@ -56,6 +58,8 @@ public class StarRankTask {
     public void starRankByMonth() {
         long beginTime = System.currentTimeMillis();
         log.info("==============一号统计明星榜单开始，运行时间："+DateUtils.getTimeStampStr(new Date())+"==============");
+        log.info("==============统计开始时间："+DateUtils.getTimeStampStr(DateUtils.getDayStart(DateUtils.getPreviousMonthFirstDay()))+"==============");
+        log.info("==============统计结束时间："+DateUtils.getTimeStampStr(DateUtils.getDayEnd(DateUtils.getPreviousMonthLastDay()))+"==============");
         statisticsStarRank(NumberUtils.INTEGER_ONE, DateUtils.getDayStart(DateUtils.getPreviousMonthFirstDay()), DateUtils.getDayEnd(DateUtils.getPreviousMonthLastDay()));
 
         long endTime = System.currentTimeMillis();
@@ -64,7 +68,7 @@ public class StarRankTask {
     }
 
     private void statisticsStarRank(int timeType, Date startTime, Date endTime){
-        List<Star> starList = iStarService.list(new QueryWrapper<>());
+        List<Star> starList = starMapper.selectList(new QueryWrapper<>());
         log.info("==============被统计明星数："+starList.size()+"==============");
         if(starList.size()>0){
             List<StatModel> modelList = new ArrayList<>();
@@ -78,8 +82,7 @@ public class StarRankTask {
             for (int i = 0; i < modelList.size() ; i++) {
                 Star star = new Star();
                 BeanUtils.copyProperties(modelList.get(i), star);
-                if(star.getId()!=null){
-
+                if(star.getId()!=null && modelList.get(i).getVigourVal()>0){
                     switch (i){
                         case 0:
                             if(timeType ==0) {
@@ -111,7 +114,8 @@ public class StarRankTask {
                     }else{
                         star.setThisMonthRank(i+1);
                     }
-                    iStarService.updateById(star);
+
+                    starMapper.updateById(star);
                 }
             }
         }

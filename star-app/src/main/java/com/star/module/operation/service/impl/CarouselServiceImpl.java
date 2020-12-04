@@ -2,18 +2,26 @@ package com.star.module.operation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.util.StringUtil;
 import com.star.common.CommonConstants;
+import com.star.module.front.dao.StarMapper;
+import com.star.module.front.entity.Star;
+import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.operation.dao.CarouselMapper;
 import com.star.module.operation.entity.Carousel;
 import com.star.module.operation.service.ICarouselService;
 import com.star.module.user.dto.CarouselDto;
 import com.star.module.user.vo.CarouselVo;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * <p>
@@ -28,6 +36,8 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
 
     @Autowired
     private CarouselMapper carouselMapper;
+    @Autowired
+    private StarMapper starMapper;
 
     @Override
     public void addOrUpdateCarousel(CarouselDto carouselDto) {
@@ -52,5 +62,47 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
         }
         BeanUtils.copyProperties(carousel,carouselVo);
         return carouselVo;
+    }
+
+
+    @Override
+    public List<HomeCarouselVo> carouselList() {
+        List<HomeCarouselVo> list = new ArrayList<>();
+        Carousel carousel = carouselMapper.selectOne(new QueryWrapper<>());
+        if(carousel!=null){
+            if(carousel.getOpen().equals(NumberUtils.INTEGER_ONE)){
+                if(StringUtil.isNotEmpty(carousel.getHome1())){
+                    HomeCarouselVo vo1 = new HomeCarouselVo();
+                    vo1.setImg(carousel.getHome1());
+                    list.add(vo1);
+                }
+                if(StringUtil.isNotEmpty(carousel.getHome2())){
+                    HomeCarouselVo vo2 = new HomeCarouselVo();
+                    vo2.setImg(carousel.getHome2());
+                    list.add(vo2);
+                }
+            }
+        }
+
+        QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Star::getThisMonthRank, 1);
+        Star star = starMapper.selectOne(queryWrapper);
+        if(star !=null){
+            HomeCarouselVo vo3 = new HomeCarouselVo();
+            vo3.setImg(star.getHomeImg());
+            vo3.setStarName(star.getName());
+            list.add(vo3);
+        }
+
+        QueryWrapper<Star> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.lambda().eq(Star::getThisWeekRank, 1);
+        Star star1 = starMapper.selectOne(queryWrapper1);
+        if(star1 !=null){
+            HomeCarouselVo vo4 = new HomeCarouselVo();
+            vo4.setImg(star1.getHomeImg());
+            vo4.setStarName(star1.getName());
+            list.add(vo4);
+        }
+        return list;
     }
 }

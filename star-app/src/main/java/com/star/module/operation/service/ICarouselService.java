@@ -1,9 +1,12 @@
 package com.star.module.operation.service;
 
+import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.operation.entity.Carousel;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.star.module.user.dto.CarouselDto;
 import com.star.module.user.vo.CarouselVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -28,4 +31,6 @@ public interface ICarouselService extends IService<Carousel> {
      * @return
      */
     CarouselVo selectCarousel();
+
+    List<HomeCarouselVo> carouselList();
 }
