@@ -7,20 +7,28 @@ import com.star.commen.dto.PageDTO;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
 import com.star.module.front.dao.HitListMapper;
+import com.star.module.front.dao.StarMapper;
 import com.star.module.front.dto.RankDto;
 import com.star.module.front.entity.HitList;
+import com.star.module.front.entity.Star;
 import com.star.module.front.service.IHitListService;
 import com.star.module.front.vo.WeekRankVo;
+import com.star.module.operation.model.StatModel;
 import com.star.module.operation.util.DateUtils;
 import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.dto.HitListDto;
+import com.star.module.operation.util.ListUtils;
 import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,10 +42,15 @@ import java.util.stream.Collectors;
  * @since 2020-11-30
  */
 @Service
+@Slf4j
 public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> implements IHitListService {
 
     @Autowired
     private HitListMapper hitListMapper;
+    @Autowired
+    private StarMapper starMapper;
+    @Autowired
+    private ListUtils listUtils;
 
     @Override
     public int statisticsRankByTime(Long starId, Date startTime, Date endTime) {
@@ -270,6 +283,37 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
         PageSerializable<HitListVo> pageSerializable = new PageSerializable<>(weekRankList);
         pageSerializable.setTotal(totalCount);
         return pageSerializable;
+    }
+
+    public void getStarRank(int type, Date startTime, Date endTime){
+        List<Star> starList = starMapper.selectList(new QueryWrapper<>());
+        log.info("==============被统计明星数："+starList.size()+"==============");
+        if(starList.size()>0) {
+            starList.stream().forEach(sl -> {
+                sl.setThisMonthRank(NumberUtils.INTEGER_ZERO);
+                sl.setThisWeekRank(NumberUtils.INTEGER_ZERO);
+            });
+
+            List<StatModel> modelList = new ArrayList<>();
+            listUtils.copyList(starList, modelList, StatModel.class);
+            modelList.stream().forEach(item ->{
+                int vigourVal = statisticsRankByTime(item.getId(), startTime, endTime);
+                item.setVigourVal(vigourVal);
+            });
+            modelList.sort(Comparator.comparing(StatModel::getVigourVal).reversed());
+
+            for (int i = 0; i < modelList.size() ; i++) {
+                Star star = new Star();
+                BeanUtils.copyProperties(modelList.get(i), star);
+
+                if(type ==0) {
+                    star.setThisWeekRank(i+1);
+                }else{
+                    star.setThisMonthRank(i+1);
+                }
+                starMapper.updateById(star);
+            }
+        }
     }
 }
 

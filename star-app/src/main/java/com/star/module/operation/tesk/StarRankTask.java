@@ -71,6 +71,7 @@ public class StarRankTask {
         List<Star> starList = starMapper.selectList(new QueryWrapper<>());
         log.info("==============被统计明星数："+starList.size()+"==============");
         if(starList.size()>0){
+
             List<StatModel> modelList = new ArrayList<>();
             listUtils.copyList(starList, modelList, StatModel.class);
             modelList.stream().forEach(item ->{
@@ -109,12 +110,6 @@ public class StarRankTask {
                                 break;
                             }
                     }
-                    if(timeType ==0) {
-                        star.setThisWeekRank(i+1);
-                    }else{
-                        star.setThisMonthRank(i+1);
-                    }
-
                     starMapper.updateById(star);
                 }
             }
