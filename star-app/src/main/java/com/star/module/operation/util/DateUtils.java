@@ -749,7 +749,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		calendar.get(Calendar.WEEK_OF_YEAR);
-		int firstDay = calendar.getFirstDayOfWeek();
+		int firstDay = calendar.getFirstDayOfWeek() + 1;
 		calendar.set(Calendar.DAY_OF_WEEK, firstDay);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);

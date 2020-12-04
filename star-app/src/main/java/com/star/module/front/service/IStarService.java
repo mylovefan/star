@@ -3,9 +3,11 @@ package com.star.module.front.service;
 import com.github.pagehelper.PageSerializable;
 import com.star.module.front.entity.Star;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.star.module.front.vo.StarInfoVo;
 import com.star.module.operation.dto.StarDto;
 import com.star.module.operation.dto.StarPageDto;
 import com.star.module.operation.vo.StartVo;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * <p>
@@ -22,4 +24,12 @@ public interface IStarService extends IService<Star> {
     void addStar(StarDto dto);
 
     void updateStar(StarDto dto);
+
+    /**
+     * 前端明星详情页
+     *
+     * @param id
+     * @return
+     */
+    StarInfoVo selectStarInfo(Long id);
 }

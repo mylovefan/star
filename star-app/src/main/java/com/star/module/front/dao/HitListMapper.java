@@ -29,4 +29,14 @@ public interface HitListMapper extends BaseMapper<HitList> {
                                               @Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime, @Param(value = "sortType")int sortType, @Param(value = "needLimit") boolean needLimit);
 
     int totalCountFensMark(@Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime);
+
+    /**
+     * 明星本周排名
+     *
+     * @param id
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    int getThisRank(@Param(value = "id") Long id,@Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime);
 }
