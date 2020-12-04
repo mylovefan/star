@@ -55,5 +55,11 @@ public interface IHitListService extends IService<HitList> {
      */
     PageSerializable<HitListVo> pageListRank(RankDto rankDto);
 
-    int getStarRank(int type, Date startTime, Date endTime);
+    /**
+     * 更新明星本周排名/本月排名
+     * @param type
+     * @param startTime
+     * @param endTime
+     */
+    void getStarRank(int type, Date startTime, Date endTime);
 }

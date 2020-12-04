@@ -285,14 +285,13 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
         return pageSerializable;
     }
 
-    public int getStarRank(int type, Date startTime, Date endTime){
+    public void getStarRank(int type, Date startTime, Date endTime){
         List<Star> starList = starMapper.selectList(new QueryWrapper<>());
         log.info("==============被统计明星数："+starList.size()+"==============");
         if(starList.size()>0) {
             starList.stream().forEach(sl -> {
                 sl.setThisMonthRank(NumberUtils.INTEGER_ZERO);
                 sl.setThisWeekRank(NumberUtils.INTEGER_ZERO);
-                starMapper.updateById(sl);
             });
 
             List<StatModel> modelList = new ArrayList<>();
@@ -312,11 +311,9 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
                 }else{
                     star.setThisMonthRank(i+1);
                 }
-
                 starMapper.updateById(star);
             }
         }
-        return  1;
     }
 }
 
