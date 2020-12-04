@@ -46,7 +46,6 @@ import java.util.stream.Collectors;
  * @since 2020-11-30
  */
 @Service
-@Slf4j
 public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IStarService {
 
     private static final String HOTSEARCH = "热门搜索";
@@ -62,6 +61,9 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
     @Autowired
     private IHitListService iHitListService;
 
+    @Autowired
+    private HitListMapper hitListMapper;
+
     @Override
     public PageSerializable<StartVo> selectPage(StarPageDto starPageDto) {
 
@@ -69,16 +71,16 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         getStarRank(1, DateUtils.getMonthStart(new Date()), DateUtils.getMonthEnd(new Date()));
 
         QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
-        if(StringUtil.isNotEmpty(starPageDto.getName())){
-            queryWrapper.lambda().like(Star::getName,starPageDto.getName());
+        if (StringUtil.isNotEmpty(starPageDto.getName())) {
+            queryWrapper.lambda().like(Star::getName, starPageDto.getName());
         }
-        if(starPageDto.getId()!=null){
-            queryWrapper.lambda().like(Star::getId,starPageDto.getId());
+        if (starPageDto.getId() != null) {
+            queryWrapper.lambda().like(Star::getId, starPageDto.getId());
         }
         IPage page = new Page(starPageDto.getPageNum(), starPageDto.getPageSize());
         IPage<Star> pageList = starMapper.selectPage(page, queryWrapper);
         List<StartVo> list = new ArrayList<>();
-        listUtils.copyList(pageList.getRecords(),list, StartVo.class);
+        listUtils.copyList(pageList.getRecords(), list, StartVo.class);
 
         PageSerializable<StartVo> pageSerializable = new PageSerializable<>(list);
         pageSerializable.setTotal(pageList.getTotal());
@@ -90,12 +92,12 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(Star::getName, dto.getName());
         Star star = starMapper.selectOne(queryWrapper);
-        if(star!=null){
-            throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(),"该明星已存在");
+        if (star != null) {
+            throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(), "该明星已存在");
         }
         star = new Star();
-        BeanUtils.copyProperties(dto,star);
-        if(StringUtils.isNotEmpty(star.getTags())){
+        BeanUtils.copyProperties(dto, star);
+        if (StringUtils.isNotEmpty(star.getTags())) {
             if (star.getTags().contains(HOTSEARCH)) {
                 star.setHotSearch(NumberUtils.INTEGER_ONE);
             } else {
@@ -118,15 +120,15 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
 
     @Override
     public void updateStar(StarDto dto) {
-        if(dto.getId()==null){
-            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),ErrorCodeEnum.PARAM_ERROR.getValue());
+        if (dto.getId() == null) {
+            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(), ErrorCodeEnum.PARAM_ERROR.getValue());
         }
         Star star = starMapper.selectById(dto.getId());
-        if(star==null){
-            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"明星信息不存在");
+        if (star == null) {
+            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(), "明星信息不存在");
         }
-        BeanUtils.copyProperties(dto,star);
-        if(StringUtils.isNotEmpty(star.getTags())){
+        BeanUtils.copyProperties(dto, star);
+        if (StringUtils.isNotEmpty(star.getTags())) {
             if (star.getTags().contains(HOTSEARCH)) {
                 star.setHotSearch(NumberUtils.INTEGER_ONE);
             } else {
@@ -137,26 +139,26 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         this.tagsSet(dto, star);
     }
 
-    private void tagsSet(StarDto dto, Star star){
+    private void tagsSet(StarDto dto, Star star) {
         /** 标签关联标签处理 */
-        if(dto.getTags()!=null && !dto.getTags().isEmpty()){
+        if (dto.getTags() != null && !dto.getTags().isEmpty()) {
             iStarTagsService.deleteByStarId(star.getId());
 
             List<StarTags> starTagsList = new ArrayList<>();
             StringBuffer sb = new StringBuffer();
             Map<Long, String> tags = dto.getTags();
             for (Map.Entry<Long, String> m : tags.entrySet()) {
-                if(m.getKey()==null){
-                    throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"标签id错误");
+                if (m.getKey() == null) {
+                    throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(), "标签id错误");
                 }
-                if(StringUtil.isEmpty(m.getValue())){
-                    throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"标签为空");
+                if (StringUtil.isEmpty(m.getValue())) {
+                    throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(), "标签为空");
                 }
                 QueryWrapper<Tags> wrapper = new QueryWrapper();
                 wrapper.lambda().eq(Tags::getId, m.getValue());
                 Tags t = iTagsService.getOne(wrapper);
-                if(t==null){
-                    throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"标签不存在，请先添加标签再关联明星");
+                if (t == null) {
+                    throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(), "标签不存在，请先添加标签再关联明星");
                 }
                 StarTags tag = new StarTags();
                 tag.setStarId(star.getId());
@@ -166,7 +168,7 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
                 sb.append(m.getValue()).append(",");
             }
             iStarTagsService.saveBatch(starTagsList);
-            star.setTags(sb.toString().substring(0, sb.length() -1));
+            star.setTags(sb.toString().substring(0, sb.length() - 1));
             starMapper.updateById(star);
         }
     }
@@ -201,5 +203,24 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
             }
         }
     }
-    //eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6IjEiLCJpYXQiOjE2MDY5OTMzMDgsInVzZXJfbmFtZSI6IueuoeeQhuWRmCIsInVwZGF0ZVNlY29uZHMiOjE2MDY5OTY5MDg1MTUsImV4cCI6MTYwNzAwNDEwOH0.hS5XylOJ7Au9bshty9dM4VLrmldXxVAnho5OFgxRi0494L6lKE5KnTbf1N0A9PYKmq5d5pHP7gp8MV67DVzH4A
+
+    @Override
+    public StarInfoVo selectStarInfo(Long id) {
+        Star star = starMapper.selectById(id);
+        StarInfoVo starInfoVo = new StarInfoVo();
+        BeanUtils.copyProperties(star, starInfoVo);
+
+        //查询周榜名词
+        String weekStart = DateUtils.getTimeStampStr(DateUtils.getWeekStart(new Date()));
+        String weekEnd = DateUtils.getTimeStampStr(DateUtils.getWeekEnd(new Date()));
+        int weekRank = hitListMapper.getThisRank(id,weekStart,weekEnd);
+        starInfoVo.setThisWeekRank(weekRank);
+        //查询月榜名称
+        String monthStart = DateUtils.getTimeStampStr(DateUtils.getMonthStart(new Date()));
+        String monthEnd = DateUtils.getTimeStampStr(DateUtils.getMonthEnd(new Date()));
+        hitListMapper.getThisRank(id,monthStart,monthEnd);
+        starInfoVo.setThisMonthRank(weekRank);
+        return starInfoVo;
+    }
+//eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6IjEiLCJpYXQiOjE2MDY5OTMzMDgsInVzZXJfbmFtZSI6IueuoeeQhuWRmCIsInVwZGF0ZVNlY29uZHMiOjE2MDY5OTY5MDg1MTUsImV4cCI6MTYwNzAwNDEwOH0.hS5XylOJ7Au9bshty9dM4VLrmldXxVAnho5OFgxRi0494L6lKE5KnTbf1N0A9PYKmq5d5pHP7gp8MV67DVzH4A
 }

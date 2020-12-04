@@ -99,4 +99,21 @@
             </if>
         </where>
     </select>
+
+    <select id="getThisRank" resultType="java.lang.Integer">
+        SELECT t.rank_no FROM (
+            SELECT
+                @rownum:=@rownum + 1 AS rank_no,
+                star_id,
+                sum( vigour_val ) as val
+                FROM
+                ( SELECT @rownum := 0 ) r,
+                hit_list
+                WHERE
+                create_time <![CDATA[>= ]]>  #{startTime,jdbcType=VARCHAR}
+                AND create_time <![CDATA[<= ]]>  #{endTime,jdbcType=VARCHAR}
+                GROUP BY
+                star_id  order by val desc
+        ) t where star_id = #{id}
+    </select>
 </mapper>
