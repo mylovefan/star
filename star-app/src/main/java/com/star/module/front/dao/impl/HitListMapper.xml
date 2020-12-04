@@ -116,4 +116,23 @@
                 star_id  order by val desc
         ) t where star_id = #{id}
     </select>
+
+    <select id="getFensThisRank" resultType="com.star.module.front.vo.FensVigourRankVo">
+       SELECT
+            @rownum:=@rownum + 1 AS rank_no,
+            fens_id,
+            sum( vigour_val ) as val
+            FROM
+            ( SELECT @rownum := 0 ) r,
+            hit_list
+            WHERE
+            1 = 1
+            <if test="startTime != null and endTime!=null">
+                AND create_time <![CDATA[>= ]]>  #{startTime,jdbcType=VARCHAR}
+                AND create_time <![CDATA[<= ]]>  #{endTime,jdbcType=VARCHAR}
+            </if>
+            AND where star_id = #{id}
+            GROUP BY
+            fens_id  order by val desc
+    </select>
 </mapper>

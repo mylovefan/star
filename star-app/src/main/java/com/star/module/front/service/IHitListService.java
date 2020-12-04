@@ -3,9 +3,11 @@ package com.star.module.front.service;
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
 import com.star.module.front.dto.RankDto;
+import com.star.module.front.dto.StarFensRankDto;
 import com.star.module.front.entity.HitList;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.star.module.front.entity.Star;
+import com.star.module.front.vo.FensVigourRankVo;
 import com.star.module.front.vo.WeekRankVo;
 import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.dto.HitListDto;
@@ -62,4 +64,12 @@ public interface IHitListService extends IService<HitList> {
      * @param endTime
      */
     void getStarRank(int type, Date startTime, Date endTime);
+
+    /**
+     * 粉丝周榜月榜总榜
+     *
+     * @param rankDto
+     * @return
+     */
+    PageSerializable<FensVigourRankVo> selectFensRank(StarFensRankDto rankDto);
 }

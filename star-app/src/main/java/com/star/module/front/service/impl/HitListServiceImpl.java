@@ -9,9 +9,11 @@ import com.star.common.ServiceException;
 import com.star.module.front.dao.HitListMapper;
 import com.star.module.front.dao.StarMapper;
 import com.star.module.front.dto.RankDto;
+import com.star.module.front.dto.StarFensRankDto;
 import com.star.module.front.entity.HitList;
 import com.star.module.front.entity.Star;
 import com.star.module.front.service.IHitListService;
+import com.star.module.front.vo.FensVigourRankVo;
 import com.star.module.front.vo.WeekRankVo;
 import com.star.module.operation.model.StatModel;
 import com.star.module.operation.util.DateUtils;
@@ -314,6 +316,26 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
                 starMapper.updateById(star);
             }
         }
+    }
+
+
+    @Override
+    public PageSerializable<FensVigourRankVo> selectFensRank(StarFensRankDto rankDto) {
+        String star ="",end="";
+        if(rankDto.getRankType() == 0){
+            star = DateUtils.getTimeStampStr(DateUtils.getWeekStart(new Date()));
+            star = DateUtils.getTimeStampStr(DateUtils.getWeekEnd(new Date()));
+        }else if(rankDto.getRankType() == 1){
+            star = DateUtils.getTimeStampStr(DateUtils.getMonthStart(new Date()));
+            star = DateUtils.getTimeStampStr(DateUtils.getMonthEnd(new Date()));
+        }else {
+
+        }
+        hitListMapper.getFensThisRank(rankDto.getId(),star,end);
+
+
+
+        return null;
     }
 }
 

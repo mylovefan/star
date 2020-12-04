@@ -1,7 +1,9 @@
 package com.star.module.front.dao;
 
+import com.github.pagehelper.Page;
 import com.star.module.front.entity.HitList;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.star.module.front.vo.FensVigourRankVo;
 import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
 import org.apache.ibatis.annotations.Param;
@@ -31,7 +33,7 @@ public interface HitListMapper extends BaseMapper<HitList> {
     int totalCountFensMark(@Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime);
 
     /**
-     * 明星本周排名
+     * 明星本周|本月排名
      *
      * @param id
      * @param startTime
@@ -39,4 +41,15 @@ public interface HitListMapper extends BaseMapper<HitList> {
      * @return
      */
     int getThisRank(@Param(value = "id") Long id,@Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime);
+
+
+    /**
+     * 粉丝本周|本月排名
+     *
+     * @param id
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    Page<FensVigourRankVo> getFensThisRank(@Param(value = "id") Long id, @Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime);
 }
