@@ -9,10 +9,12 @@ import com.github.pagehelper.util.StringUtil;
 import com.star.common.CommonConstants;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
+import com.star.module.front.dao.HitListMapper;
 import com.star.module.front.dao.StarMapper;
 import com.star.module.front.entity.Star;
 import com.star.module.front.service.IHitListService;
 import com.star.module.front.service.IStarService;
+import com.star.module.front.vo.StarInfoVo;
 import com.star.module.operation.entity.StarTags;
 import com.star.module.operation.entity.Tags;
 import com.star.module.operation.model.StatModel;
@@ -46,6 +48,7 @@ import java.util.stream.Collectors;
  * @since 2020-11-30
  */
 @Service
+@Slf4j
 public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IStarService {
 
     private static final String HOTSEARCH = "热门搜索";
@@ -60,7 +63,6 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
     private ITagsService iTagsService;
     @Autowired
     private IHitListService iHitListService;
-
     @Autowired
     private HitListMapper hitListMapper;
 
@@ -222,5 +224,4 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         starInfoVo.setThisMonthRank(weekRank);
         return starInfoVo;
     }
-//eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6IjEiLCJpYXQiOjE2MDY5OTMzMDgsInVzZXJfbmFtZSI6IueuoeeQhuWRmCIsInVwZGF0ZVNlY29uZHMiOjE2MDY5OTY5MDg1MTUsImV4cCI6MTYwNzAwNDEwOH0.hS5XylOJ7Au9bshty9dM4VLrmldXxVAnho5OFgxRi0494L6lKE5KnTbf1N0A9PYKmq5d5pHP7gp8MV67DVzH4A
 }
