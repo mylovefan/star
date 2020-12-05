@@ -2,4 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.star.module.front.dao.GuardMapper">
 
+    <select id="selectStarGuardList" resultType="com.star.module.front.vo.StarGuardVo">
+        SELECT
+            h.fens_id fensId,
+            h.vigour_val vigourVal,
+            f.nick_name nickName,
+            f.avatar_url avatarUrl
+        FROM
+            hit_list h
+            LEFT JOIN guard g ON h.star_id = g.star_id
+            LEFT JOIN fens f on h.fens_id = f.id
+        WHERE
+            h.star_id = #{starId}
+            AND g.STATUS = 1
+            ORDER BY h.create_time desc
+            limit 20
+    </select>
 </mapper>

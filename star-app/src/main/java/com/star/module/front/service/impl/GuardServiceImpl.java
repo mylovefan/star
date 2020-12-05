@@ -15,6 +15,7 @@ import com.star.module.front.entity.Star;
 import com.star.module.front.service.IGuardService;
 import com.star.module.front.vo.MyGuardVo;
 import com.star.module.front.vo.MyHitListVo;
+import com.star.module.front.vo.StarGuardVo;
 import com.star.module.user.common.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,5 +93,12 @@ public class GuardServiceImpl extends ServiceImpl<GuardMapper, Guard> implements
         PageSerializable<MyHitListVo> pageSerializable = new PageSerializable<>(list);
         pageSerializable.setTotal(hitListIPage.getTotal());
         return pageSerializable;
+    }
+
+
+    @Override
+    public List<StarGuardVo> selectStarGuardList(Long starId) {
+        List<StarGuardVo> starGuardVos = guardMapper.selectStarGuardList(starId);
+        return starGuardVos;
     }
 }

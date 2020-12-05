@@ -2,4 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.star.module.operation.dao.ResourcesMapper">
 
+    <select id="selectStarResources" resultType="com.star.module.front.vo.StarResourcesVo">
+
+        SELECT
+            s.id,
+            type,
+            mark,
+            target,
+            r.join_num joinNum,
+            r.reach_num reachNum
+        FROM
+            star_resources_rel r
+            LEFT JOIN resources s ON r.resources_id = s.id
+            WHERE r.star_id =#{starId}
+            AND r.begin_time <![CDATA[<= ]]>  #{nowTime,jdbcType=VARCHAR}
+                AND r.end_time <![CDATA[>= ]]>  #{endTime,jdbcType=VARCHAR}
+    </select>
+
 </mapper>

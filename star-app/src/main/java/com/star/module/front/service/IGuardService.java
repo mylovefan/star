@@ -6,6 +6,9 @@ import com.star.module.front.entity.Guard;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.star.module.front.vo.MyGuardVo;
 import com.star.module.front.vo.MyHitListVo;
+import com.star.module.front.vo.StarGuardVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -32,5 +35,12 @@ public interface IGuardService extends IService<Guard> {
      * @return
      */
     PageSerializable<MyHitListVo> selectHitList(PageDTO pageDTO);
+
+    /**
+     * 打榜弹窗
+     *
+     * @return
+     */
+    List<StarGuardVo> selectStarGuardList(Long starId);
 
 }

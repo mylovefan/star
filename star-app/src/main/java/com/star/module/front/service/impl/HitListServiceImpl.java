@@ -2,35 +2,35 @@ package com.star.module.front.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
-import com.star.commen.dto.PageDTO;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
+import com.star.module.front.dao.FensMapper;
 import com.star.module.front.dao.HitListMapper;
 import com.star.module.front.dao.StarMapper;
 import com.star.module.front.dto.RankDto;
 import com.star.module.front.dto.StarFensRankDto;
+import com.star.module.front.entity.Fens;
 import com.star.module.front.entity.HitList;
-import com.star.module.front.entity.Star;
 import com.star.module.front.service.IHitListService;
+import com.star.module.front.vo.FensVigourLogVo;
 import com.star.module.front.vo.FensVigourRankVo;
-import com.star.module.front.vo.WeekRankVo;
-import com.star.module.operation.model.StatModel;
-import com.star.module.operation.util.DateUtils;
 import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.dto.HitListDto;
+import com.star.module.operation.util.DateUtils;
 import com.star.module.operation.util.ListUtils;
 import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
+import com.star.module.user.common.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,6 +53,12 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
     private StarMapper starMapper;
     @Autowired
     private ListUtils listUtils;
+
+    @Autowired
+    private FensMapper fensMapper;
+
+    @Autowired
+    private HttpServletRequest request;
 
     @Override
     public int statisticsRankByTime(Long starId, Date startTime, Date endTime) {
@@ -289,7 +295,8 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
 
     @Override
     public PageSerializable<FensVigourRankVo> selectFensRank(StarFensRankDto rankDto) {
-        String star ="",end="";
+        Long id = UserUtil.getCurrentUserId(request);
+        String star =null ,end =null;
         if(rankDto.getRankType() == 0){
             star = DateUtils.getTimeStampStr(DateUtils.getWeekStart(new Date()));
             star = DateUtils.getTimeStampStr(DateUtils.getWeekEnd(new Date()));
@@ -299,11 +306,22 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
         }else {
 
         }
-        hitListMapper.getFensThisRank(rankDto.getId(),star,end);
+        PageHelper.startPage(rankDto.getPageNum(),rankDto.getPageSize());
+        Page<FensVigourRankVo> fensThisRank = hitListMapper.getFensThisRank(rankDto.getId(), star, end);
+        for (FensVigourRankVo fensVigourRankVo:fensThisRank.getResult()){
+            Fens fens = fensMapper.selectById(fensVigourRankVo.getFensId());
+            fensVigourRankVo.setAvatarUrl(fens.getAvatarUrl());
+            fensVigourRankVo.setNickName(fens.getNickName());
+            if(id!= null && fensVigourRankVo.getFensId().longValue() == id.longValue()){
+                fensVigourRankVo.setFlag(true);
+            }else {
+                fensVigourRankVo.setFlag(false);
+            }
 
-
-
-        return null;
+        }
+        PageSerializable<FensVigourRankVo> pageSerializable = new PageSerializable<>(fensThisRank.getResult());
+        pageSerializable.setTotal(fensThisRank.getTotal());
+        return pageSerializable;
     }
 
 }

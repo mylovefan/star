@@ -46,6 +46,7 @@ public class FensServiceImpl implements IFensService {
         fens.setId(id);
         fens.setAvatarUrl(updatePersonalCenterInfoDto.getAvatarUrl());
         fens.setNickName(updatePersonalCenterInfoDto.getNickName());
+        fens.setSlogan(updatePersonalCenterInfoDto.getSlogan());
         LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
         fens.setUpdateTime(localDateTimeOfNow);
         fensMapper.updateById(fens);

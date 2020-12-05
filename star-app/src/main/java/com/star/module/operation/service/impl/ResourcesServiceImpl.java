@@ -6,21 +6,23 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
 import com.github.pagehelper.util.StringUtil;
 import com.star.common.CommonConstants;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
+import com.star.module.front.dao.FensJoinMapper;
 import com.star.module.front.dao.StarMapper;
+import com.star.module.front.dto.ResourcesRankDto;
 import com.star.module.front.entity.Star;
+import com.star.module.front.vo.FensJoinResVo;
+import com.star.module.front.vo.StarResourcesVo;
 import com.star.module.operation.dao.ListAwardMapper;
 import com.star.module.operation.dao.ResourcesMapper;
 import com.star.module.operation.dao.StarResourcesRelMapper;
 import com.star.module.operation.dao.StarTagsMapper;
-import com.star.module.operation.dto.ListAwardDto;
-import com.star.module.operation.dto.ResourcesDto;
-import com.star.module.operation.dto.ResourcesPageDto;
-import com.star.module.operation.dto.TagsDto;
+import com.star.module.operation.dto.*;
 import com.star.module.operation.entity.ListAward;
 import com.star.module.operation.entity.Resources;
 import com.star.module.operation.entity.StarResourcesRel;
@@ -29,15 +31,18 @@ import com.star.module.operation.service.IResourcesService;
 import com.star.module.operation.vo.ListAwardVo;
 import com.star.module.operation.vo.ResourcesDetailVo;
 import com.star.module.operation.vo.ResourcesVo;
+import com.star.module.user.common.UserUtil;
 import com.star.util.SnowflakeId;
-import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,6 +72,12 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
 
     @Autowired
     private ListAwardMapper listAwardMapper;
+
+    @Autowired
+    private FensJoinMapper fensJoinMapper;
+
+    @Autowired
+    private HttpServletRequest request;
 
     @Override
     @Transactional
@@ -226,5 +237,38 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         }
         BeanUtils.copyProperties(listAward,listAwardVo);
         return listAwardVo;
+    }
+
+    @Override
+    public PageSerializable<StarResourcesVo> selectResources(StarPageDto starPageDto) {
+
+        LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        PageHelper.startPage(starPageDto.getPageNum(),starPageDto.getPageSize());
+        com.github.pagehelper.Page<StarResourcesVo> resourcesIPage = resourcesMapper.selectStarResources(starPageDto.getId(), localDateTimeOfNow.format(df));
+        for (StarResourcesVo starResourcesVo : resourcesIPage.getResult()){
+            List<String> fens = fensJoinMapper.selectFens(starResourcesVo.getResourcesRelId());
+            starResourcesVo.setFensList(fens);
+        }
+        PageSerializable<StarResourcesVo> pageSerializable = new PageSerializable<>(resourcesIPage.getResult());
+        pageSerializable.setTotal(resourcesIPage.getTotal());
+        return pageSerializable;
+    }
+
+    @Override
+    public PageSerializable<FensJoinResVo> selectResourcesRank(ResourcesRankDto resourcesRankDto) {
+        Long id = UserUtil.getCurrentUserId(request);
+        PageHelper.startPage(resourcesRankDto.getPageNum(),resourcesRankDto.getPageSize());
+        com.github.pagehelper.Page<FensJoinResVo> resourcesIPage = fensJoinMapper.selectFensResources(resourcesRankDto.getResourcesRelId());
+        for (FensJoinResVo fensJoinResVo : resourcesIPage.getResult()){
+            if(id != null && id.longValue() == fensJoinResVo.getFensId().longValue()){
+                fensJoinResVo.setFlag(true);
+            }else {
+                fensJoinResVo.setFlag(false);
+            }
+        }
+        PageSerializable<FensJoinResVo> pageSerializable = new PageSerializable<>(resourcesIPage.getResult());
+        pageSerializable.setTotal(resourcesIPage.getTotal());
+        return pageSerializable;
     }
 }

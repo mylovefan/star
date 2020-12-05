@@ -2,8 +2,10 @@ package com.star.module.front.service;
 
 import com.star.module.front.entity.HitSettings;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.star.module.front.vo.StarHitSettingsVo;
 import com.star.module.operation.dto.HitSettingsDto;
 import com.star.module.operation.vo.HitSettingsVo;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * <p>
@@ -18,4 +20,7 @@ public interface IHitSettingsService extends IService<HitSettings> {
     void setHitSettings(HitSettingsDto dto);
 
     HitSettingsVo selectHisSettings();
+
+
+    StarHitSettingsVo selectHitSettings(@RequestParam("starId") Long starId);
 }

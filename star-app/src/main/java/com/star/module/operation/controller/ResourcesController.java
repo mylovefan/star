@@ -53,6 +53,6 @@ public class ResourcesController implements ResourcesFacade {
 
     @Override
     public ListAwardVo selectListAward(@RequestParam("code") String code) {
-        return null;
+        return resourcesService.selectListAward(code);
     }
 }

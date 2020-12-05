@@ -1,9 +1,14 @@
 package com.star.module.operation.service;
 
 import com.github.pagehelper.PageSerializable;
+import com.star.commen.dto.PageDTO;
+import com.star.module.front.dto.ResourcesRankDto;
+import com.star.module.front.vo.FensJoinResVo;
+import com.star.module.front.vo.StarResourcesVo;
 import com.star.module.operation.dto.ListAwardDto;
 import com.star.module.operation.dto.ResourcesDto;
 import com.star.module.operation.dto.ResourcesPageDto;
+import com.star.module.operation.dto.StarPageDto;
 import com.star.module.operation.entity.Resources;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.star.module.operation.vo.ListAwardVo;
@@ -58,5 +63,21 @@ public interface IResourcesService extends IService<Resources> {
      * @return
      */
     ListAwardVo selectListAward(String code);
+
+    /**
+     * 明星详情页资源列表
+     *
+     * @param starPageDto
+     * @return
+     */
+    PageSerializable<StarResourcesVo> selectResources(StarPageDto starPageDto);
+
+    /**
+     * 粉丝资源排名
+     *
+     * @param resourcesRankDto
+     * @return
+     */
+    PageSerializable<FensJoinResVo> selectResourcesRank(ResourcesRankDto resourcesRankDto);
 
 }

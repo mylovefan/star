@@ -4,9 +4,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class FensVigourRankVo {
+public class StarGuardVo {
 
-    @ApiModelProperty(value = "粉丝Id")
+    @ApiModelProperty(value = "粉丝id")
     private Long fensId;
 
     @ApiModelProperty(value = "昵称")
@@ -17,8 +17,4 @@ public class FensVigourRankVo {
 
     @ApiModelProperty(value = "头像")
     private String avatarUrl;
-
-    @ApiModelProperty(value = "是否是自己")
-    private boolean flag;
-
 }

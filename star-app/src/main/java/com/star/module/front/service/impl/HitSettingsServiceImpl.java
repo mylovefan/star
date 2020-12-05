@@ -4,13 +4,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.star.common.CommonConstants;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
+import com.star.module.front.dao.FensVigourLogMapper;
+import com.star.module.front.entity.FensVigourLog;
 import com.star.module.front.entity.HitSettings;
 import com.star.module.front.dao.HitSettingsMapper;
 import com.star.module.front.entity.Star;
+import com.star.module.front.enums.VigourTypeEnums;
 import com.star.module.front.service.IHitSettingsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.star.module.front.vo.StarHitSettingsVo;
 import com.star.module.operation.dto.HitSettingsDto;
 import com.star.module.operation.vo.HitSettingsVo;
+import com.star.module.user.common.UserUtil;
 import com.star.util.SnowflakeId;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -18,6 +23,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
@@ -36,6 +43,12 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
 
     @Autowired
     private HitSettingsMapper hitSettingsMapper;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private FensVigourLogMapper fensVigourLogMapper;
 
     @Override
     public void setHitSettings(HitSettingsDto dto) {
@@ -75,5 +88,32 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
             vo.setDrawFieldNums(Arrays.asList(str));
         }
         return vo;
+    }
+
+
+    @Override
+    public StarHitSettingsVo selectHitSettings(Long starId) {
+        HitSettings hitSettings = hitSettingsMapper.selectOne(new QueryWrapper<HitSettings>());
+        StarHitSettingsVo starHitSettingsVo = new StarHitSettingsVo();
+        if(hitSettings == null){
+            return starHitSettingsVo;
+        }
+        BeanUtils.copyProperties(hitSettings,starHitSettingsVo);
+        Long id = UserUtil.getCurrentUserId(request);
+        if(id == null){
+            starHitSettingsVo.setSignFlag(false);
+            return starHitSettingsVo;
+        }
+        QueryWrapper<FensVigourLog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(FensVigourLog::getFensId,id).eq(FensVigourLog::getStarId,starId)
+                .eq(FensVigourLog::getType, VigourTypeEnums.SIGN.getCode())
+                .eq(FensVigourLog::getVigTime, LocalDate.now());
+        Integer count = fensVigourLogMapper.selectCount(queryWrapper);
+        if(count !=null && count>0){
+            starHitSettingsVo.setSignFlag(true);
+        }else {
+            starHitSettingsVo.setSignFlag(false);
+        }
+        return starHitSettingsVo;
     }
 }

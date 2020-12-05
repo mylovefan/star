@@ -11,4 +11,7 @@ public class UpdatePersonalCenterInfoDto {
 
     @ApiModelProperty(value = "头像")
     private String avatarUrl;
+
+    @ApiModelProperty(value = "个人标语")
+    private String slogan;
 }

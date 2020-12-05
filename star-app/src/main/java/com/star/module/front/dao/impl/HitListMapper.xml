@@ -121,8 +121,8 @@
     <select id="getFensThisRank" resultType="com.star.module.front.vo.FensVigourRankVo">
        SELECT
             @rownum:=@rownum + 1 AS rank_no,
-            fens_id,
-            sum( vigour_val ) as val
+            fens_id fensId,
+            sum( vigour_val ) as vigourVal
             FROM
             ( SELECT @rownum := 0 ) r,
             hit_list
@@ -134,6 +134,6 @@
             </if>
             AND where star_id = #{id}
             GROUP BY
-            fens_id  order by val desc
+            fens_id  order by vigourVal desc
     </select>
 </mapper>

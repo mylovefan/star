@@ -2,4 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.star.module.front.dao.FensJoinMapper">
 
+    <select id="selectCompleteNum" resultType="java.lang.String">
+        select sum(complete_num) from fens_join j
+        where j.resources_rel_id =#{resourcesRelId}
+    </select>
+
+    <select id="selectFens" resultType="java.lang.String">
+        select f.avatar_url from  fens_join j left join fens f on j.fens_id = f.id
+        where j.resources_rel_id =#{resourcesRelId} order by complete_num desc limit 7
+    </select>
+
+    <select id="selectFensResources" resultType="com.star.module.front.vo.FensJoinResVo">
+         select f.id fensId,f.avatar_url avatarUrl,f.nick_name nickName,j.complete_num completeNum from  fens_join j left join fens f on j.fens_id = f.id
+        where j.resources_rel_id =#{resourcesRelId} order by complete_num desc
+    </select>
+
 </mapper>
