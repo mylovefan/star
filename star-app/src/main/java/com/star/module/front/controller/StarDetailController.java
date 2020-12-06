@@ -71,7 +71,7 @@ public class StarDetailController implements StarDetailFacade {
 
     @Override
     @IgnoreSecurity
-    public PageSerializable<FensJoinResVo> selectResourcesRank(ResourcesRankDto resourcesRankDto) {
+    public PageSerializable<FensJoinResVo> selectResourcesRank(@RequestBody ResourcesRankDto resourcesRankDto) {
         return resourcesService.selectResourcesRank(resourcesRankDto);
     }
 }
