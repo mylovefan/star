@@ -2,6 +2,7 @@ package com.star.module.front.facade;
 
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
+import com.star.module.front.dto.FinishTaskVigourDto;
 import com.star.module.front.dto.RankDto;
 import com.star.module.front.dto.ResourcesRankDto;
 import com.star.module.front.dto.StarFensRankDto;
@@ -40,4 +41,8 @@ public interface StarDetailFacade {
     @ApiOperation("粉丝资源排名")
     @PostMapping("selectResourcesRank")
     PageSerializable<FensJoinResVo> selectResourcesRank(@RequestBody ResourcesRankDto resourcesRankDto);
+
+    @ApiOperation("完成任务之后获得热力值接口")
+    @PostMapping("getVigourVal")
+    void getVigourVal(@RequestBody FinishTaskVigourDto finishTaskVigourDto);
 }

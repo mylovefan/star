@@ -4,12 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.star.common.CommonConstants;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
+import com.star.module.front.dao.FensMapper;
 import com.star.module.front.dao.FensVigourLogMapper;
+import com.star.module.front.dto.FinishTaskVigourDto;
+import com.star.module.front.entity.Fens;
 import com.star.module.front.entity.FensVigourLog;
 import com.star.module.front.entity.HitSettings;
 import com.star.module.front.dao.HitSettingsMapper;
 import com.star.module.front.entity.Star;
 import com.star.module.front.enums.VigourTypeEnums;
+import com.star.module.front.service.IFensVigourLogService;
 import com.star.module.front.service.IHitSettingsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.star.module.front.vo.StarHitSettingsVo;
@@ -29,6 +33,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * <p>
@@ -49,6 +54,12 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
 
     @Autowired
     private FensVigourLogMapper fensVigourLogMapper;
+
+    @Autowired
+    private IFensVigourLogService fensVigourLogService;
+
+    @Autowired
+    private FensMapper fensMapper;
 
     @Override
     public void setHitSettings(HitSettingsDto dto) {
@@ -115,5 +126,84 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
             starHitSettingsVo.setSignFlag(false);
         }
         return starHitSettingsVo;
+    }
+
+
+    @Override
+    public void getVigourVal(FinishTaskVigourDto finishTaskVigourDto) {
+        Long id = UserUtil.getCurrentUserId(request);
+        HitSettings hitSettings = hitSettingsMapper.selectOne(new QueryWrapper<HitSettings>());
+        if(hitSettings == null){
+            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"热力设置不存在");
+        }
+        FensVigourLog fensVigourLog = new FensVigourLog();
+        fensVigourLog.setFensId(id);
+        fensVigourLog.setType(finishTaskVigourDto.getType());
+        fensVigourLog.setStarId(finishTaskVigourDto.getStarId());
+        QueryWrapper<FensVigourLog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(FensVigourLog::getFensId,id).eq(FensVigourLog::getVigTime, LocalDate.now())
+                .eq(FensVigourLog::getType, finishTaskVigourDto.getType());
+        Integer count = fensVigourLogMapper.selectCount(queryWrapper);
+        if(VigourTypeEnums.SIGN.getCode() == finishTaskVigourDto.getType()){
+            //签到
+            if(count !=null && count >hitSettings.getSignMaxNum()){
+                throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"每日签到次数达到上限，请明日再来吧!");
+            }
+            queryWrapper.lambda().eq(FensVigourLog::getStarId,finishTaskVigourDto.getStarId());
+            Integer starSign = fensVigourLogMapper.selectCount(queryWrapper);
+            if(starSign != null && starSign >0){
+                throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"今日你已为该明星签到，不可重复签到!");
+            }
+            fensVigourLog.setVigourVal(hitSettings.getVigourSignNum());
+        }else if(VigourTypeEnums.LUCK.getCode() == finishTaskVigourDto.getType()){
+            //抽奖
+            if(count !=null && count >hitSettings.getDeawMaxNum()){
+                throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"每日抽奖次数达到上限，请明日再来吧!");
+            }
+            Fens fensDo = new Fens();
+            fensDo.setId(id);
+            Fens fens = fensMapper.selectById(id);
+            if(hitSettings.getScoreStrategyFlag() == 1){
+                if(fens.getDrawNum() >= hitSettings.getStrategyDeawMinNum()){
+                    List<String> list = Arrays.asList(hitSettings.getVigourSendNum().split(","));
+                    if(list.size() == 1){
+                        Random df = new Random();
+                        int random = df.nextInt(list.size());
+                        fensVigourLog.setVigourVal(Integer.parseInt(list.get(random)));
+                        fensDo.setDrawNum(0);
+                    }
+                }else {
+                    fensDo.setDrawNum(fens.getDrawNum() + 1);
+                }
+            }else {
+                List<String> list = Arrays.asList(hitSettings.getDrawFieldNums().split(","));
+                Random df = new Random();
+                int random = df.nextInt(list.size());
+                fensVigourLog.setVigourVal(Integer.parseInt(list.get(random)));
+                fensDo.setDrawNum(fens.getDrawNum() + 1);
+            }
+            fensMapper.updateById(fensDo);
+            fensVigourLog.setVigourVal(hitSettings.getVigourSignNum());
+        }else if(VigourTypeEnums.VIEW.getCode() == finishTaskVigourDto.getType()){
+            //看视频
+            if(count !=null && count >hitSettings.getVideoMaxNum()){
+                throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"每日看视频次数达到上限，请明日再来吧!");
+            }
+            fensVigourLog.setVigourVal(hitSettings.getVigourVideoNum());
+        }else if(VigourTypeEnums.SHARE.getCode() == finishTaskVigourDto.getType()){
+            //分享
+            if(count !=null && count >hitSettings.getShareMaxNum()){
+                throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"每日分享次数达到上限，请明日再来吧!");
+            }
+            fensVigourLog.setVigourVal(hitSettings.getVigourShareNum());
+        }
+        fensVigourLogService.addVigour(fensVigourLog);
+
+    }
+
+
+    public static void main(String[] args) {
+        Random df = new Random();
+        System.out.println(df.nextInt(2));
     }
 }

@@ -91,6 +91,10 @@ public class Fens implements Serializable {
     @TableField("slogan")
     private String slogan;
 
+    @ApiModelProperty(value = "抽奖次数")
+    @TableField("draw_num")
+    private Integer drawNum;
+
     @ApiModelProperty(value = "创建时间")
     @TableField("add_time")
     private LocalDateTime addTime;

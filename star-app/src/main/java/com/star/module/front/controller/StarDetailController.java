@@ -2,6 +2,7 @@ package com.star.module.front.controller;
 
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
+import com.star.module.front.dto.FinishTaskVigourDto;
 import com.star.module.front.dto.ResourcesRankDto;
 import com.star.module.front.dto.StarFensRankDto;
 import com.star.module.front.facade.StarDetailFacade;
@@ -73,5 +74,11 @@ public class StarDetailController implements StarDetailFacade {
     @IgnoreSecurity
     public PageSerializable<FensJoinResVo> selectResourcesRank(@RequestBody ResourcesRankDto resourcesRankDto) {
         return resourcesService.selectResourcesRank(resourcesRankDto);
+    }
+
+
+    @Override
+    public void getVigourVal(@RequestBody FinishTaskVigourDto finishTaskVigourDto) {
+        hitSettingsService.getVigourVal(finishTaskVigourDto);
     }
 }
