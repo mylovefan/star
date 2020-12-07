@@ -5,18 +5,17 @@ import com.star.commen.dto.PageDTO;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.front.vo.MyGuardVo;
 import com.star.module.front.vo.PersonalVo;
+import com.star.module.front.vo.StarInfoVo;
 import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
 import com.star.module.front.dto.RankDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(value = "首页",tags = "首页")
 @RequestMapping("home/")
@@ -44,6 +43,10 @@ public interface HomeFacade {
 
     @ApiOperation("热门搜索关键字")
     @GetMapping("hotSearch")
-    List<String> hotSearch();
+    Map<Long, String> hotSearch();
+
+    @ApiOperation("搜索明星信息")
+    @GetMapping("selectStarInfo")
+    List<StarInfoVo> selectStarInfo(@RequestParam("name") String name);
 
 }
