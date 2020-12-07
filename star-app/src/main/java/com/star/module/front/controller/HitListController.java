@@ -1,7 +1,6 @@
 package com.star.module.front.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020-11-30
  */
 @RestController
-@RequestMapping("/hit-list")
 public class HitListController {
 
 }

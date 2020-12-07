@@ -218,12 +218,25 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
     }
 
     @Override
-    public List<String> hotSearch() {
+    public Map<Long, String> hotSearch() {
         QueryWrapper<Star> wrapper = new QueryWrapper();
         wrapper.lambda().eq(Star::getHotSearch, NumberUtils.INTEGER_ONE);
         List<Star> list = starMapper.selectList(wrapper);
-        List<String> strList = list.stream().map(Star::getName).collect(Collectors.toList());
-        return strList;
+        Map<Long, String> map = new HashMap<>();
+        for (Star star:list) {
+            map.put(star.getId(), star.getName());
+        }
+        return map;
+    }
+
+    @Override
+    public List<StarInfoVo> selectStar(String name) {
+        List<StarInfoVo> list = new ArrayList<>();
+        QueryWrapper<Star> wrapper = new QueryWrapper();
+        wrapper.lambda().like(Star::getName, name);
+        List<Star> star = starMapper.selectList(wrapper);
+        listUtils.copyList(star, list, StarInfoVo.class);
+        return list;
     }
 
     @Override

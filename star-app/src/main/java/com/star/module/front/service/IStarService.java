@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -50,6 +51,13 @@ public interface IStarService extends IService<Star> {
      * @return
      */
     List<String> hotSearch();
+
+    /**
+     * 明星信息
+     * @param name
+     * @return
+     */
+    List<StarInfoVo> selectStar(String name);
 
     /**
      * 打榜详情

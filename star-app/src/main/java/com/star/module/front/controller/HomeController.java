@@ -12,6 +12,7 @@ import com.star.module.front.vo.HitDetailVo;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.front.vo.MyGuardVo;
 import com.star.module.front.vo.PersonalVo;
+import com.star.module.front.vo.StarInfoVo;
 import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.service.ICarouselService;
 import com.star.module.operation.tesk.StarRankTask;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class HomeController implements HomeFacade {
@@ -66,8 +68,13 @@ public class HomeController implements HomeFacade {
     }
 
     @Override
-    public List<String> hotSearch() {
+    public Map<Long, String> hotSearch() {
         return iStarService.hotSearch();
+    }
+
+    @Override
+    public List<StarInfoVo> selectStarInfo(String name) {
+        return iStarService.selectStar(name);
     }
 
     @Override
@@ -77,6 +84,6 @@ public class HomeController implements HomeFacade {
 
     @Override
     public void hit(@RequestParam("starId") Long starId, @RequestParam("vigourVal") Integer vigourVal) {
-
+        iHitListService.hit(starId,vigourVal);
     }
 }
