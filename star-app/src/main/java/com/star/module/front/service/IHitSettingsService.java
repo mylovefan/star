@@ -1,5 +1,6 @@
 package com.star.module.front.service;
 
+import com.star.module.front.dto.FinishTaskVigourDto;
 import com.star.module.front.entity.HitSettings;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.star.module.front.vo.StarHitSettingsVo;
@@ -23,4 +24,11 @@ public interface IHitSettingsService extends IService<HitSettings> {
 
 
     StarHitSettingsVo selectHitSettings(@RequestParam("starId") Long starId);
+
+    /**
+     * 获得热力值
+     *
+     * @param finishTaskVigourDto
+     */
+    void getVigourVal(FinishTaskVigourDto finishTaskVigourDto);
 }

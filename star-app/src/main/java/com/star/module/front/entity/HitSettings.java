@@ -51,7 +51,7 @@ public class HitSettings implements Serializable {
 
     @ApiModelProperty(value = "具体赠送热力值")
     @TableField("vigour_send_num")
-    private Integer vigourSendNum;
+    private String vigourSendNum;
 
     @ApiModelProperty(value = "每日最高签到次数")
     @TableField("sign_max_num")
