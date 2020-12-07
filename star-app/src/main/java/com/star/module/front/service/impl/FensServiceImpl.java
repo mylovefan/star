@@ -1,13 +1,10 @@
 package com.star.module.front.service.impl;
 
-import com.github.pagehelper.PageSerializable;
-import com.star.commen.dto.PageDTO;
 import com.star.common.CommonConstants;
 import com.star.module.front.dao.FensMapper;
 import com.star.module.front.dto.UpdatePersonalCenterInfoDto;
 import com.star.module.front.entity.Fens;
 import com.star.module.front.service.IFensService;
-import com.star.module.front.vo.MyGuardVo;
 import com.star.module.front.vo.PersonalVo;
 import com.star.module.user.common.UserUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +22,6 @@ public class FensServiceImpl implements IFensService {
 
     @Autowired
     private FensMapper fensMapper;
-
     @Autowired
     private HttpServletRequest request;
 

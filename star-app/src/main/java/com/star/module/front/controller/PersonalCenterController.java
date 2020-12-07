@@ -34,7 +34,6 @@ public class PersonalCenterController implements PersonalCenterFacade {
 
     @Override
     public PageSerializable<MyGuardVo> selectMyGuard(@RequestBody PageDTO pageDTO) {
-        pageDTO.setPageSize(5);
         return guardService.selectMyGuard(pageDTO);
     }
 

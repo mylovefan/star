@@ -1,11 +1,6 @@
 package com.star.module.front.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.github.pagehelper.PageSerializable;
-import com.star.commen.dto.PageDTO;
 import com.star.module.front.dto.UpdatePersonalCenterInfoDto;
-import com.star.module.front.entity.Fens;
-import com.star.module.front.vo.MyGuardVo;
 import com.star.module.front.vo.PersonalVo;
 
 /**
@@ -31,6 +26,5 @@ public interface IFensService{
      * @param updatePersonalCenterInfoDto
      */
     void updatePersonalCenterInfo(UpdatePersonalCenterInfoDto updatePersonalCenterInfoDto);
-
 
 }
