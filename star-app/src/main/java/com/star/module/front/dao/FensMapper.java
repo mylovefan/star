@@ -33,6 +33,9 @@ public interface FensMapper extends BaseMapper<Fens> {
      */
     void updateVigour(@Param("id") Long id,@Param("vigourVal") int vigourVal);
 
+
+    void updateReduceVigour(@Param("id") Long id,@Param("vigourVal") int vigourVal);
+
     /**
      * 查询所有粉丝id
      *

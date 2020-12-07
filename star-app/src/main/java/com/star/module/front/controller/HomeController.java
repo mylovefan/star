@@ -8,6 +8,7 @@ import com.star.module.front.service.IFensService;
 import com.star.module.front.service.IGuardService;
 import com.star.module.front.service.IHitListService;
 import com.star.module.front.service.IStarService;
+import com.star.module.front.vo.HitDetailVo;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.front.vo.MyGuardVo;
 import com.star.module.front.vo.PersonalVo;
@@ -19,6 +20,7 @@ import com.star.module.operation.vo.HitListVo;
 import com.star.module.user.common.IgnoreSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -66,5 +68,15 @@ public class HomeController implements HomeFacade {
     @Override
     public List<String> hotSearch() {
         return iStarService.hotSearch();
+    }
+
+    @Override
+    public HitDetailVo selectHitDetail(@RequestParam("starId") Long starId) {
+        return iStarService.selectHitDetail(starId);
+    }
+
+    @Override
+    public void hit(@RequestParam("starId") Long starId, @RequestParam("vigourVal") Integer vigourVal) {
+
     }
 }

@@ -2,6 +2,7 @@ package com.star.module.front.facade;
 
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
+import com.star.module.front.vo.HitDetailVo;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.front.vo.MyGuardVo;
 import com.star.module.front.vo.PersonalVo;
@@ -11,10 +12,7 @@ import com.star.module.operation.vo.HitListVo;
 import com.star.module.front.dto.RankDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,5 +43,13 @@ public interface HomeFacade {
     @ApiOperation("热门搜索关键字")
     @GetMapping("hotSearch")
     List<String> hotSearch();
+
+    @ApiOperation("打榜详情数据")
+    @GetMapping("selectHitDetail")
+    HitDetailVo selectHitDetail(@RequestParam("starId") Long starId);
+
+    @ApiOperation("打榜")
+    @PostMapping("hit")
+    void hit(@RequestParam("starId") Long starId,@RequestParam("vigourVal") Integer vigourVal);
 
 }

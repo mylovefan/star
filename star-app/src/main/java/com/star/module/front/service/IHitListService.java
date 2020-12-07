@@ -10,6 +10,7 @@ import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.dto.HitListDto;
 import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 
@@ -60,4 +61,12 @@ public interface IHitListService extends IService<HitList> {
      * @return
      */
     PageSerializable<FensVigourRankVo> selectFensRank(StarFensRankDto rankDto);
+
+    /**
+     * 打榜
+     *
+     * @param starId
+     * @param vigourVal
+     */
+    void hit( Long starId, Integer vigourVal);
 }

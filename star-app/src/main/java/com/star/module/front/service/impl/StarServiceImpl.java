@@ -9,11 +9,14 @@ import com.github.pagehelper.util.StringUtil;
 import com.star.common.CommonConstants;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
+import com.star.module.front.dao.FensMapper;
 import com.star.module.front.dao.HitListMapper;
 import com.star.module.front.dao.StarMapper;
+import com.star.module.front.entity.Fens;
 import com.star.module.front.entity.Star;
 import com.star.module.front.service.IHitListService;
 import com.star.module.front.service.IStarService;
+import com.star.module.front.vo.HitDetailVo;
 import com.star.module.front.vo.StarInfoVo;
 import com.star.module.operation.entity.StarTags;
 import com.star.module.operation.entity.Tags;
@@ -26,6 +29,7 @@ import com.star.module.operation.util.RandomUtils;
 import com.star.module.operation.dto.StarDto;
 import com.star.module.operation.dto.StarPageDto;
 import com.star.module.operation.vo.StartVo;
+import com.star.module.user.common.UserUtil;
 import com.star.util.SnowflakeId;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +38,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -65,6 +70,12 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
     private IHitListService iHitListService;
     @Autowired
     private HitListMapper hitListMapper;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private FensMapper fensMapper;
 
     @Override
     public PageSerializable<StartVo> selectPage(StarPageDto starPageDto) {
@@ -232,5 +243,17 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         hitListMapper.getThisRank(id,monthStart,monthEnd);
         starInfoVo.setThisMonthRank(weekRank);
         return starInfoVo;
+    }
+
+
+    @Override
+    public HitDetailVo selectHitDetail(Long starId) {
+        Long id = UserUtil.getCurrentUserId(request);
+        Fens fens = fensMapper.selectById(id);
+        HitDetailVo hitDetailVo = new HitDetailVo();
+        hitDetailVo.setVigourVal(fens.getVigourVal());
+        Star star = starMapper.selectById(starId);
+        hitDetailVo.setHitPopupImg(star.getHitPopupImg());
+        return hitDetailVo;
     }
 }

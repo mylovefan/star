@@ -5,14 +5,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
+import com.star.common.CommonConstants;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
-import com.star.module.front.dao.FensMapper;
-import com.star.module.front.dao.HitListMapper;
-import com.star.module.front.dao.StarMapper;
+import com.star.module.front.dao.*;
 import com.star.module.front.dto.RankDto;
 import com.star.module.front.dto.StarFensRankDto;
 import com.star.module.front.entity.Fens;
+import com.star.module.front.entity.Guard;
 import com.star.module.front.entity.HitList;
 import com.star.module.front.service.IHitListService;
 import com.star.module.front.vo.FensVigourLogVo;
@@ -24,6 +24,7 @@ import com.star.module.operation.util.ListUtils;
 import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
 import com.star.module.user.common.UserUtil;
+import com.star.util.SnowflakeId;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -31,6 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,6 +62,9 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private GuardMapper guardMapper;
 
     @Override
     public int statisticsRankByTime(Long starId, Date startTime, Date endTime) {
@@ -324,5 +330,44 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
         return pageSerializable;
     }
 
+
+    @Override
+    public void hit(Long starId, Integer vigourVal) {
+        HitList hitList = new HitList();
+        LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
+        hitList.setCreateTime(localDateTimeOfNow);
+        Long id = UserUtil.getCurrentUserId(request);
+        hitList.setFensId(id);
+        hitList.setStarId(starId);
+        hitList.setVigourVal(vigourVal);
+        hitListMapper.insert(hitList);
+
+        QueryWrapper<Guard> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Guard::getStarId,starId).eq(Guard::getFensId,id);
+        Guard guard = guardMapper.selectOne(queryWrapper);
+        boolean flag = false;
+        if(vigourVal >= 999){
+            flag = true;
+        }
+        if(guard == null){
+            Guard guardDo = new Guard();
+            guardDo.setId(SnowflakeId.getInstance().nextId());
+            guardDo.setAddTime(localDateTimeOfNow);
+            guardDo.setFensId(id);
+            guardDo.setStarId(starId);
+            guardDo.setStatus(flag ? 1:0);
+            guardMapper.insert(guardDo);
+        }else {
+            if(flag){
+                Guard guardDo = new Guard();
+                guardDo.setId(guard.getId());
+                guardDo.setStatus(1);
+                guardMapper.updateById(guardDo);
+            }
+
+        }
+        fensMapper.updateReduceVigour(id,vigourVal);
+
+    }
 }
 
