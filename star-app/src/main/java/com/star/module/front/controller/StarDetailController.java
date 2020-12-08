@@ -81,4 +81,10 @@ public class StarDetailController implements StarDetailFacade {
     public void getVigourVal(@RequestBody FinishTaskVigourDto finishTaskVigourDto) {
         hitSettingsService.getVigourVal(finishTaskVigourDto);
     }
+
+
+    @Override
+    public void joinResources(@RequestParam("resourcesRelId") Long resourcesRelId,@RequestParam("status") Integer status) {
+        resourcesService.joinResources(resourcesRelId, status);
+    }
 }

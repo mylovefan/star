@@ -9,6 +9,8 @@ import com.star.module.front.dto.StarFensRankDto;
 import com.star.module.front.vo.*;
 import com.star.module.operation.dto.StarPageDto;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,4 +47,12 @@ public interface StarDetailFacade {
     @ApiOperation("完成任务之后获得热力值接口")
     @PostMapping("getVigourVal")
     void getVigourVal(@RequestBody FinishTaskVigourDto finishTaskVigourDto);
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "resourcesRelId", value = "活动列表返回", dataType = "Long", paramType = "query"),
+            @ApiImplicitParam(name = "status", value = "是否看完视频", dataType = "Integer", paramType = "query")
+    })
+    @ApiOperation("参与活动")
+    @PostMapping("joinResources")
+    void joinResources(@RequestParam("resourcesRelId") Long resourcesRelId,@RequestParam("status") Integer status);
 }
