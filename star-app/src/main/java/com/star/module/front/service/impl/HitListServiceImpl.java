@@ -121,10 +121,10 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
 
 
                 for (int i = 0; i < weekRankList.size(); i++) {
-                    weekRankList.get(i).setWeekTime(hitListDto.getStartTime() + "-" + hitListDto.getEndTime());
+                    weekRankList.get(i).setWeekTime(hitListDto.getStartTime().substring(0,10) + "-" + hitListDto.getEndTime().substring(0,10));
                     weekRankList.get(i).setRank(i + 1);
                 }
-                if(needLimit){//需要分页查询代表没带明星参数
+                if(needLimit){//需要分页查询代表没带参数
                     int totalCount = hitListMapper.totalCount(hitListDto.getStartTime(), hitListDto.getEndTime());
                     pageSerializable = new PageSerializable<>(weekRankList);
                     pageSerializable.setTotal(totalCount);
