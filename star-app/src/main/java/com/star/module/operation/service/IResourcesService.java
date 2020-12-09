@@ -80,4 +80,11 @@ public interface IResourcesService extends IService<Resources> {
      */
     PageSerializable<FensJoinResVo> selectResourcesRank(ResourcesRankDto resourcesRankDto);
 
+
+    /**
+     * 参与活动
+     * @param resourcesRelId
+     */
+    void joinResources( Long resourcesRelId,Integer status);
+
 }

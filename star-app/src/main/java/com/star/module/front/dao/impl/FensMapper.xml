@@ -29,6 +29,10 @@
         update fens SET vigour_val = vigour_val + #{vigourVal} , total_vigour_val = total_vigour_val + #{vigourVal} where id = #{id}
     </update>
 
+    <update id="updateReduceVigour">
+        update fens SET vigour_val = vigour_val - #{vigourVal} , consume_vigour_val = consume_vigour_val - #{vigourVal} where id = #{id}
+    </update>
+
     <select id="selectFensIds" resultType="java.lang.Long">
         select fens_id from fens
     </select>

@@ -15,6 +15,7 @@ import com.star.common.ServiceException;
 import com.star.module.front.dao.FensJoinMapper;
 import com.star.module.front.dao.StarMapper;
 import com.star.module.front.dto.ResourcesRankDto;
+import com.star.module.front.entity.FensJoin;
 import com.star.module.front.entity.Star;
 import com.star.module.front.vo.FensJoinResVo;
 import com.star.module.front.vo.StarResourcesVo;
@@ -270,5 +271,58 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         PageSerializable<FensJoinResVo> pageSerializable = new PageSerializable<>(resourcesIPage.getResult());
         pageSerializable.setTotal(resourcesIPage.getTotal());
         return pageSerializable;
+    }
+
+
+    @Override
+    public void joinResources(Long resourcesRelId,Integer status) {
+        StarResourcesRel starResourcesRelDo = starResourcesRelMapper.selectById(resourcesRelId);
+        if(starResourcesRelDo == null){
+            throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(),"数据不存在，请检查Id是否错误");
+        }
+
+        Long id = UserUtil.getCurrentUserId(request);
+
+        QueryWrapper<FensJoin> wrapper = new QueryWrapper<>();
+        wrapper.lambda().in(FensJoin::getFensId,id).eq(FensJoin::getResourcesRelId,resourcesRelId);
+        FensJoin fensJoin = fensJoinMapper.selectOne(wrapper);
+        LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
+
+        StarResourcesRel starResourcesRel = new StarResourcesRel();
+        starResourcesRel.setId(resourcesRelId);
+        int joinNum = 0;
+        int reachNum =0;
+        int rstatus = 0;
+        if(fensJoin == null){
+            FensJoin fensJoinDo = new FensJoin();
+            fensJoinDo.setAddTime(localDateTimeOfNow);
+            fensJoinDo.setId(SnowflakeId.getInstance().nextId());
+            fensJoinDo.setCompleteNum(status);
+            fensJoinDo.setFensId(id);
+            fensJoinDo.setResourcesRelId(resourcesRelId);
+            fensJoinMapper.insert(fensJoinDo);
+            joinNum = 1;
+            if(status == 1){
+                reachNum = 1;
+            }
+        }else {
+            if(status == 1){
+                FensJoin fensJoinDo = new FensJoin();
+                fensJoinDo.setId(fensJoin.getId());
+                fensJoinDo.setUpdateTime(localDateTimeOfNow);
+                fensJoinDo.setCompleteNum(fensJoin.getCompleteNum()+1);
+                fensJoinMapper.updateById(fensJoinDo);
+                reachNum = 1;
+            }
+        }
+        int count = starResourcesRelDo.getReachNum() + reachNum;
+
+        Resources resources = resourcesMapper.selectById(starResourcesRelDo.getResourcesId());
+        if(count == resources.getTarget()){
+            rstatus = 1;
+        }
+        starResourcesRel.setUpdateTime(localDateTimeOfNow);
+
+        starResourcesRelMapper.updateNum(resourcesRelId,joinNum,reachNum,rstatus);
     }
 }

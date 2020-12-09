@@ -2,6 +2,7 @@ package com.star.module.front.facade;
 
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
+import com.star.module.front.vo.HitDetailVo;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.front.vo.MyGuardVo;
 import com.star.module.front.vo.PersonalVo;
@@ -48,5 +49,13 @@ public interface HomeFacade {
     @ApiOperation("搜索明星信息")
     @GetMapping("selectStarInfo")
     List<StarInfoVo> selectStarInfo(@RequestParam("name") String name);
+
+    @ApiOperation("打榜详情数据")
+    @GetMapping("selectHitDetail")
+    HitDetailVo selectHitDetail(@RequestParam("starId") Long starId);
+
+    @ApiOperation("打榜")
+    @PostMapping("hit")
+    void hit(@RequestParam("starId") Long starId,@RequestParam("vigourVal") Integer vigourVal);
 
 }
