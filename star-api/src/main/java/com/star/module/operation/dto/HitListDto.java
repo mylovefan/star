@@ -18,7 +18,7 @@ public class HitListDto extends PageDTO {
     private int hitListType;
 
     @ApiModelProperty(value = "列表类型 默认空， 0：本周；1：近三个月周时间段；2：具体某个月份")
-    private Integer listType;
+    private Integer listType =null;
 
     @ApiModelProperty(value = "周开始时间")
     private String startTime;
@@ -33,7 +33,7 @@ public class HitListDto extends PageDTO {
     private String starName;
 
     @ApiModelProperty(value = "明星ID")
-    private Long starId;
+    private Long starId = null;
 
     @ApiModelProperty(value = "排序 0：正序；1：倒序；")
     private int sortType;

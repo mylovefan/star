@@ -27,7 +27,7 @@ public interface HomeFacade {
     PersonalVo getFens();
 
     @ApiOperation("轮播图列表")
-    @PostMapping("carousel/list")
+    @GetMapping("carousel/list")
     List<HomeCarouselVo> carouselList();
 
     @ApiOperation(value = "我的守护")
