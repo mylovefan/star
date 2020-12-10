@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 public class WeixinLongDto {
 
-    @ApiModelProperty(value = "openid")
-    private String openid;
+    @ApiModelProperty(value = "code")
+    private String code;
 
     @ApiModelProperty(value = "非敏感信息")
     private String rawData;

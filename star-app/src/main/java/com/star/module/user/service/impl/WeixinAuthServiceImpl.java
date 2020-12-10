@@ -52,45 +52,60 @@ public class WeixinAuthServiceImpl implements WeixinAuthService {
 
 
     @Override
-    public UserLoginVo weiXinLong(String openid, String rawData, String signature, String encrypteData, String iv) {
-        QueryWrapper<Fens> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Fens::getOpenId, openid);
-        Fens fens = fensMapper.selectOne(queryWrapper);
-        if(fens == null){
-            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"用户未授权操作");
-        }
+    public UserLoginVo weiXinLong(String code, String rawData, String signature, String encrypteData, String iv) {
+
         JSONObject rawDataJson = JSON.parseObject( rawData );
+        JSONObject SessionKeyOpenId = getSessionKeyOrOpenId( code );
+        if(StringUtil.isNotEmpty(SessionKeyOpenId.getString("errcode"))){
+            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),SessionKeyOpenId.getString("errmsg"));
+        }
+        String openid = SessionKeyOpenId.getString("openid" );
+        String sessionKey = SessionKeyOpenId.getString( "session_key" );
 
         // 4.校验签名 小程序发送的签名signature与服务器端生成的签名signature2 = sha1(rawData + sessionKey)
-        String signature2 = DigestUtils.sha1Hex(rawData + fens.getSessionKey());
+        String signature2 = DigestUtils.sha1Hex(rawData + sessionKey);
         if (!signature.equals(signature2)) {
             throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"签名校验失败");
         }
-
+        //查询用户是否存在
+        QueryWrapper<Fens> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Fens::getOpenId, openid);
+        Fens fens = fensMapper.selectOne(queryWrapper);
         LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
+        if(fens == null){
+            // 用户信息入库
+            String nickName = rawDataJson.getString("nickName");
+            String avatarUrl = rawDataJson.getString("avatarUrl");
+            String gender = rawDataJson.getString("gender");
+            String city = rawDataJson.getString("city");
+            String country = rawDataJson.getString("country");
+            String province = rawDataJson.getString("province");
+            fens = new Fens();
+            fens.setId(SnowflakeId.getInstance().nextId());
+            fens.setOpenId(openid);
+            fens.setAddTime(localDateTimeOfNow);
+            fens.setLastVisitTime(localDateTimeOfNow);
+            fens.setSessionKey(sessionKey);
+            fens.setCity(city);
+            fens.setProvince(province);
+            fens.setCountry(country);
+            fens.setAvatarUrl(avatarUrl);
+            fens.setGender(Integer.parseInt(gender));
+            fens.setNickName(nickName);
+            //解密敏感信息
+            JSONObject jsonObject = getUserInfo(encrypteData,sessionKey,iv);
+            fens.setPhone(jsonObject.getString("phoneNumber"));
 
-        // 用户信息入库
-        String nickName = rawDataJson.getString("nickName");
-        String avatarUrl = rawDataJson.getString("avatarUrl");
-        String gender = rawDataJson.getString("gender");
-        String city = rawDataJson.getString("city");
-        String country = rawDataJson.getString("country");
-        String province = rawDataJson.getString("province");
-        fens.setOpenId(openid);
-        fens.setAddTime(localDateTimeOfNow);
-        fens.setLastVisitTime(localDateTimeOfNow);
-        fens.setCity(city);
-        fens.setProvince(province);
-        fens.setCountry(country);
-        fens.setAvatarUrl(avatarUrl);
-        fens.setGender(Integer.parseInt(gender));
-        fens.setNickName(nickName);
-        //解密敏感信息
-        JSONObject jsonObject = getUserInfo(encrypteData,fens.getSessionKey(),iv);
-        fens.setPhone(jsonObject.getString("phoneNumber"));
-        fens.setLastVisitTime(localDateTimeOfNow);
-        fens.setUpdateTime(localDateTimeOfNow);
-        fensMapper.updateById(fens);
+            List<Long> longs = fensMapper.selectFensIds();
+            Long fensId = RandomUtils.randomNumber6(longs);
+            fens.setFensId(fensId);
+
+            fensMapper.insert(fens);
+        }else {
+            fens.setLastVisitTime(localDateTimeOfNow);
+            fens.setUpdateTime(localDateTimeOfNow);
+            fensMapper.updateById(fens);
+        }
 
         String token = tokenManager.createToken(fens.getId(),openid,fens.getNickName());
 
@@ -103,34 +118,6 @@ public class WeixinAuthServiceImpl implements WeixinAuthService {
 
     }
 
-    @Override
-    public String getSessionKey(String code) {
-        JSONObject SessionKeyOpenId = getSessionKeyOrOpenId( code );
-        if(StringUtil.isNotEmpty(SessionKeyOpenId.getString("errcode"))){
-            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),SessionKeyOpenId.getString("errmsg"));
-        }
-        String openid = SessionKeyOpenId.getString("openid" );
-        String sessionKey = SessionKeyOpenId.getString( "session_key" );
-        QueryWrapper<Fens> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Fens::getOpenId, openid);
-        Fens fens = fensMapper.selectOne(queryWrapper);
-        LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
-        if(fens == null){
-            fens = new Fens();
-            fens.setId(SnowflakeId.getInstance().nextId());
-            fens.setOpenId(openid);
-            fens.setAddTime(localDateTimeOfNow);
-            List<Long> longs = fensMapper.selectFensIds();
-            Long fensId = RandomUtils.randomNumber6(longs);
-            fens.setFensId(fensId);
-            fensMapper.insert(fens);
-        }else {
-            fens.setSessionKey(sessionKey);
-            fens.setUpdateTime(localDateTimeOfNow);
-            fensMapper.updateById(fens);
-        }
-        return sessionKey;
-    }
 
     @Override
     public UserLoginVo testLogin(Long id) {

@@ -63,14 +63,8 @@ public class CommonController implements CommonFacade {
     @Override
     @IgnoreSecurity
     public UserLoginVo weiXinLong(@RequestBody WeixinLongDto weixinLongDto) {
-        return weixinAuthService.weiXinLong(weixinLongDto.getOpenid(), weixinLongDto.getRawData(), weixinLongDto.getSignature(), weixinLongDto.getEncrypteData(), weixinLongDto.getIv());
+        return weixinAuthService.weiXinLong(weixinLongDto.getCode(), weixinLongDto.getRawData(), weixinLongDto.getSignature(), weixinLongDto.getEncrypteData(), weixinLongDto.getIv());
 
-    }
-
-    @Override
-    @IgnoreSecurity
-    public String getSessionKey(@RequestParam("code") String code) {
-        return null;
     }
 
     @Override
