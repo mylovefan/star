@@ -16,10 +16,10 @@ public class FensMarkRankDto extends PageDTO {
     @ApiModelProperty(value = "粉丝名称")
     private String fensName = null;
 
-    @ApiModelProperty(value = "周开始时间")
+    @ApiModelProperty(value = "开始时间")
     private String startTime;
 
-    @ApiModelProperty(value = "周结束时间")
+    @ApiModelProperty(value = "结束时间")
     private String endTime;
 
     @ApiModelProperty(value = "排序 0：正序；1：倒序；")

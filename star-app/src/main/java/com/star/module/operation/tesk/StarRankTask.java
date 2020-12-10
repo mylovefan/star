@@ -23,6 +23,7 @@ import java.util.List;
 
 /**
  * 明星排行榜统计定时任务
+ * 统计冠亚季军
  */
 
 @Component
@@ -68,7 +69,7 @@ public class StarRankTask {
     }
 
     private void statisticsStarRank(int timeType, Date startTime, Date endTime){
-        List<Star> starList = starMapper.selectList(new QueryWrapper<>());
+         List<Star> starList = starMapper.selectList(new QueryWrapper<>());
         log.info("==============被统计明星数："+starList.size()+"==============");
         if(starList.size()>0){
 

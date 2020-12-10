@@ -127,10 +127,10 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
 
 
                 for (int i = 0; i < weekRankList.size(); i++) {
-                    weekRankList.get(i).setWeekTime(hitListDto.getStartTime() + "-" + hitListDto.getEndTime());
+                    weekRankList.get(i).setWeekTime(hitListDto.getStartTime().substring(0,10) + "~" + hitListDto.getEndTime().substring(0,10));
                     weekRankList.get(i).setRank(i + 1);
                 }
-                if(needLimit){//需要分页查询代表没带明星参数
+                if(needLimit){//需要分页查询代表没带参数
                     int totalCount = hitListMapper.totalCount(hitListDto.getStartTime(), hitListDto.getEndTime());
                     pageSerializable = new PageSerializable<>(weekRankList);
                     pageSerializable.setTotal(totalCount);
@@ -244,7 +244,7 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
 
         for (int i = 0; i < fensMarkRankList.size(); i++) {
             if(fensMarkRankDto.getStartTime()!=null && fensMarkRankDto.getEndTime()!=null){
-                fensMarkRankList.get(i).setWeekTime(fensMarkRankDto.getStartTime() + "-" + fensMarkRankDto.getEndTime());
+                fensMarkRankList.get(i).setWeekTime(fensMarkRankDto.getStartTime() + "~" + fensMarkRankDto.getEndTime());
             }
             fensMarkRankList.get(i).setRank(i + 1);
         }
@@ -305,10 +305,10 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
         String star =null ,end =null;
         if(rankDto.getRankType() == 0){
             star = DateUtils.getTimeStampStr(DateUtils.getWeekStart(new Date()));
-            star = DateUtils.getTimeStampStr(DateUtils.getWeekEnd(new Date()));
+            end = DateUtils.getTimeStampStr(DateUtils.getWeekEnd(new Date()));
         }else if(rankDto.getRankType() == 1){
             star = DateUtils.getTimeStampStr(DateUtils.getMonthStart(new Date()));
-            star = DateUtils.getTimeStampStr(DateUtils.getMonthEnd(new Date()));
+            end = DateUtils.getTimeStampStr(DateUtils.getMonthEnd(new Date()));
         }else {
 
         }

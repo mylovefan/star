@@ -44,7 +44,7 @@ public interface StarFacade {
     @PostMapping("hitList/rankList")
     PageSerializable<HitListVo> hilListRankList(@RequestBody HitListDto hitListDto);
 
-    @ApiOperation(value = "粉丝打榜排行榜列表")
+    @ApiOperation(value = "粉丝贡献榜列表")
     @PostMapping("fensMark/rankList")
     PageSerializable<FensMarkVo> fensMarkRankList(@RequestBody FensMarkRankDto fensMarkRankDto);
 
