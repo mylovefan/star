@@ -47,4 +47,9 @@ public interface CommonFacade {
     @ApiOperation(value = "开发获取token")
     @PostMapping("testLogin")
     UserLoginVo testLogin(@RequestParam(value = "id") Long id);
+
+
+    @ApiOperation(value = "获取sessoinKey")
+    @GetMapping("getSessionKey")
+    String getSessionKey(@RequestParam("code") String code);
 }
