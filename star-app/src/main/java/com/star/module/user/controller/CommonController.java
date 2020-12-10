@@ -4,6 +4,7 @@ package com.star.module.user.controller;
 import com.star.module.user.common.IgnoreSecurity;
 import com.star.module.operation.dto.LoginDto;
 import com.star.module.user.dto.ModifyPassCodeDTO;
+import com.star.module.user.dto.WeixinLongDto;
 import com.star.module.user.facade.CommonFacade;
 import com.star.module.user.service.CommonService;
 import com.star.module.user.service.WeixinAuthService;
@@ -61,13 +62,8 @@ public class CommonController implements CommonFacade {
 
     @Override
     @IgnoreSecurity
-    public UserLoginVo weiXinLong(@RequestParam(value = "code", required = false) String code,
-                           @RequestParam(value = "rawData", required = false) String rawData,
-                           @RequestParam(value = "signature", required = false) String signature,
-                           @RequestParam(value = "encrypteData", required = false) String encrypteData,
-                           @RequestParam(value = "iv", required = false) String iv) {
-
-        return weixinAuthService.weiXinLong(code, rawData, signature, encrypteData, iv);
+    public UserLoginVo weiXinLong(@RequestBody WeixinLongDto weixinLongDto) {
+        return weixinAuthService.weiXinLong(weixinLongDto.getCode(), weixinLongDto.getRawData(), weixinLongDto.getSignature(), weixinLongDto.getEncrypteData(), weixinLongDto.getIv());
 
     }
 

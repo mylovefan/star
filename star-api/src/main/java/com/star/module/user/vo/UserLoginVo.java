@@ -10,4 +10,6 @@ public class UserLoginVo {
     private Long userId;
 
     private String account;
+
+    private String phone;
 }

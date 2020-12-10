@@ -2,6 +2,7 @@ package com.star.module.user.facade;
 
 import com.star.module.operation.dto.LoginDto;
 import com.star.module.user.dto.ModifyPassCodeDTO;
+import com.star.module.user.dto.WeixinLongDto;
 import com.star.module.user.vo.UserLoginVo;
 import com.star.module.user.vo.UserMenuVo;
 import io.swagger.annotations.Api;
@@ -33,20 +34,10 @@ public interface CommonFacade {
     @PostMapping("modifyPass")
     Boolean modifyPassCode(@RequestBody ModifyPassCodeDTO modifyPassCodeDTO);
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "code", value = "code", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "rawData", value = "非敏感信息", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "signature", value = "签名", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "encrypteData", value = "敏感加密信息", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "iv", value = "偏移向量", dataType = "string", paramType = "query")
-    })
+
     @ApiOperation(value = "微信登录")
     @PostMapping("weiXinLong")
-    UserLoginVo weiXinLong(@RequestParam(value = "code") String code,
-                    @RequestParam(value = "rawData") String rawData,
-                    @RequestParam(value = "signature") String signature,
-                    @RequestParam(value = "encrypteData") String encrypteData,
-                    @RequestParam(value = "iv") String iv);
+    UserLoginVo weiXinLong(@RequestBody WeixinLongDto weixinLongDto);
 
     @ApiOperation(value = "上传文件")
     @PostMapping("upload")

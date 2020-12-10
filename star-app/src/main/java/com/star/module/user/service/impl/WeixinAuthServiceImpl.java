@@ -3,6 +3,7 @@ package com.star.module.user.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.util.StringUtil;
 import com.star.common.CommonConstants;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
@@ -21,6 +22,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -38,9 +40,9 @@ import java.util.Map;
 @Slf4j
 public class WeixinAuthServiceImpl implements WeixinAuthService {
 
-    public String appId ="";
+    public String appId ="wxcf8c06040676fecd";
 
-    public String secret ="";
+    public String secret ="bfa8089fdfbb2addeb5de83af974561f";
 
     @Autowired
     private FensMapper fensMapper;
@@ -54,6 +56,9 @@ public class WeixinAuthServiceImpl implements WeixinAuthService {
 
         JSONObject rawDataJson = JSON.parseObject( rawData );
         JSONObject SessionKeyOpenId = getSessionKeyOrOpenId( code );
+        if(StringUtil.isNotEmpty(SessionKeyOpenId.getString("errcode"))){
+            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),SessionKeyOpenId.getString("errmsg"));
+        }
         String openid = SessionKeyOpenId.getString("openid" );
         String sessionKey = SessionKeyOpenId.getString( "session_key" );
 
@@ -108,6 +113,7 @@ public class WeixinAuthServiceImpl implements WeixinAuthService {
         userLoginVo.setToken(token);
         userLoginVo.setAccount(openid);
         userLoginVo.setUserId(fens.getId());
+        userLoginVo.setPhone(fens.getPhone());
         return userLoginVo;
 
     }
