@@ -132,7 +132,7 @@
                 AND create_time <![CDATA[>= ]]>  #{startTime,jdbcType=VARCHAR}
                 AND create_time <![CDATA[<= ]]>  #{endTime,jdbcType=VARCHAR}
             </if>
-            AND where star_id = #{id}
+            AND star_id = #{id}
             GROUP BY
             fens_id  order by vigourVal desc
     </select>
