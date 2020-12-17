@@ -293,6 +293,9 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
 
         //返回结果
         List<HitListVo> weekRankList = hitListMapper.selectHitRankByStar(startTime, endTime, rankDto.getPageNum(), rankDto.getPageSize(), NumberUtils.INTEGER_ONE, true);
+        for (int i = 0; i < weekRankList.size(); i++) {
+            weekRankList.get(i).setRank(i + 1);
+        }
         int totalCount = hitListMapper.totalCount(startTime, endTime);
         PageSerializable<HitListVo> pageSerializable = new PageSerializable<>(weekRankList);
         pageSerializable.setTotal(totalCount);
