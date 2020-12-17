@@ -77,7 +77,7 @@ public class GuardServiceImpl extends ServiceImpl<GuardMapper, Guard> implements
         IPage<HitList> page = new Page<>(pageDTO.getPageNum(),pageDTO.getPageSize());
         QueryWrapper<HitList> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(HitList::getFensId,id);
-        queryWrapper.orderByDesc("add_time");
+        queryWrapper.orderByDesc("create_time");
         IPage<HitList> hitListIPage = hitListMapper.selectPage(page, queryWrapper);
         List<MyHitListVo> list = new ArrayList<>();
         for (HitList hitList : hitListIPage.getRecords()){
