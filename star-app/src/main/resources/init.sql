@@ -211,3 +211,14 @@ CREATE TABLE `hit_settings` (
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='热力设置表';
+
+
+INSERT INTO `star`.`function`(`id`, `parent_id`, `code`, `name`, `description`, `uri`, `http_method`, `sort_val`, `status`, `icon`, `add_time`, `update_time`) VALUES (1, 0, NULL, '明星列表', NULL, NULL, NULL, 1, 1, NULL, NULL, NULL);
+INSERT INTO `star`.`function`(`id`, `parent_id`, `code`, `name`, `description`, `uri`, `http_method`, `sort_val`, `status`, `icon`, `add_time`, `update_time`) VALUES (2, 0, NULL, '粉丝管理', NULL, NULL, NULL, 2, 1, NULL, NULL, NULL);
+INSERT INTO `star`.`function`(`id`, `parent_id`, `code`, `name`, `description`, `uri`, `http_method`, `sort_val`, `status`, `icon`, `add_time`, `update_time`) VALUES (3, 0, NULL, '热力设置', NULL, NULL, NULL, 3, 1, NULL, NULL, NULL);
+INSERT INTO `star`.`function`(`id`, `parent_id`, `code`, `name`, `description`, `uri`, `http_method`, `sort_val`, `status`, `icon`, `add_time`, `update_time`) VALUES (4, 0, NULL, '轮播设置', NULL, NULL, NULL, 4, 1, NULL, NULL, NULL);
+INSERT INTO `star`.`function`(`id`, `parent_id`, `code`, `name`, `description`, `uri`, `http_method`, `sort_val`, `status`, `icon`, `add_time`, `update_time`) VALUES (5, 0, NULL, '轮播设置', NULL, NULL, NULL, 5, 1, NULL, NULL, NULL);
+INSERT INTO `star`.`function`(`id`, `parent_id`, `code`, `name`, `description`, `uri`, `http_method`, `sort_val`, `status`, `icon`, `add_time`, `update_time`) VALUES (6, 0, NULL, '账号管理', NULL, NULL, NULL, 6, 1, NULL, NULL, NULL);
+
+
+INSERT INTO `star`.`user`(`id`, `account`, `name`, `pwd`, `status`, `add_time`, `update_time`) VALUES (1, 'admin', '管理员', 'e10adc3949ba59abbe56e057f20f883e', 1, '2020-12-18 16:25:04', '2020-12-18 16:25:08');
