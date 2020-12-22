@@ -746,16 +746,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 * @return
 	 */
 	public static Date getWeekStart(Date date) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		calendar.get(Calendar.WEEK_OF_YEAR);
-		int firstDay = calendar.getFirstDayOfWeek()+1;
-		calendar.set(Calendar.DAY_OF_WEEK, firstDay);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		return calendar.getTime();
+		Calendar cal=Calendar.getInstance();
+		cal.setFirstDayOfWeek(Calendar.MONDAY);
+		cal.setTime(date);
+		cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek()); // Sunday
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		return cal.getTime();
 	}
 
 	/**
