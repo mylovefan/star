@@ -18,6 +18,7 @@ import com.star.module.front.dto.ResourcesRankDto;
 import com.star.module.front.entity.FensJoin;
 import com.star.module.front.entity.Star;
 import com.star.module.front.vo.FensJoinResVo;
+import com.star.module.front.vo.ListAwardPersionVo;
 import com.star.module.front.vo.StarResourcesVo;
 import com.star.module.operation.dao.ListAwardMapper;
 import com.star.module.operation.dao.ResourcesMapper;
@@ -324,5 +325,21 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         starResourcesRel.setUpdateTime(localDateTimeOfNow);
 
         starResourcesRelMapper.updateNum(resourcesRelId,joinNum,reachNum,rstatus);
+    }
+
+
+    @Override
+    public List<ListAwardPersionVo> listAward() {
+        QueryWrapper<ListAward> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(ListAward::getOpen,1);
+        List<ListAward> list = listAwardMapper.selectList(wrapper);
+        List<ListAwardPersionVo> listAwardPersionVos = new ArrayList<>();
+        for (ListAward listAward:list){
+            ListAwardPersionVo listAwardPersionVo = new ListAwardPersionVo();
+            listAwardPersionVo.setCode(listAward.getCode());
+            listAwardPersionVo.setImg(listAward.getImg());
+            listAwardPersionVos.add(listAwardPersionVo);
+        }
+        return listAwardPersionVos;
     }
 }

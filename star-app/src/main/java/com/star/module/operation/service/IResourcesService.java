@@ -4,6 +4,7 @@ import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
 import com.star.module.front.dto.ResourcesRankDto;
 import com.star.module.front.vo.FensJoinResVo;
+import com.star.module.front.vo.ListAwardPersionVo;
 import com.star.module.front.vo.StarResourcesVo;
 import com.star.module.operation.dto.ListAwardDto;
 import com.star.module.operation.dto.ResourcesDto;
@@ -15,6 +16,8 @@ import com.star.module.operation.vo.ListAwardVo;
 import com.star.module.operation.vo.ResourcesDetailVo;
 import com.star.module.operation.vo.ResourcesVo;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * <p>
@@ -86,5 +89,12 @@ public interface IResourcesService extends IService<Resources> {
      * @param resourcesRelId
      */
     void joinResources( Long resourcesRelId,Integer status);
+
+    /**
+     * 榜单
+     *
+     * @return
+     */
+    List<ListAwardPersionVo> listAward();
 
 }

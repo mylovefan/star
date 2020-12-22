@@ -7,13 +7,13 @@ import com.star.module.front.facade.PersonalCenterFacade;
 import com.star.module.front.service.IFensService;
 import com.star.module.front.service.IFensVigourLogService;
 import com.star.module.front.service.IGuardService;
-import com.star.module.front.vo.FensVigourLogVo;
-import com.star.module.front.vo.MyGuardVo;
-import com.star.module.front.vo.MyHitListVo;
-import com.star.module.front.vo.PersonalVo;
+import com.star.module.front.vo.*;
+import com.star.module.operation.service.IResourcesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class PersonalCenterController implements PersonalCenterFacade {
@@ -26,6 +26,9 @@ public class PersonalCenterController implements PersonalCenterFacade {
 
     @Autowired
     private IFensVigourLogService fensVigourLogService;
+
+    @Autowired
+    private IResourcesService resourcesService;
 
     @Override
     public PersonalVo personalCenterInfo() {
@@ -50,5 +53,10 @@ public class PersonalCenterController implements PersonalCenterFacade {
     @Override
     public void updatePersonalCenterInfo(@RequestBody UpdatePersonalCenterInfoDto updatePersonalCenterInfoDto) {
         fensService.updatePersonalCenterInfo(updatePersonalCenterInfoDto);
+    }
+
+    @Override
+    public List<ListAwardPersionVo> listAward() {
+        return resourcesService.listAward();
     }
 }

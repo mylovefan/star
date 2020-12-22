@@ -3,16 +3,15 @@ package com.star.module.front.facade;
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
 import com.star.module.front.dto.UpdatePersonalCenterInfoDto;
-import com.star.module.front.vo.FensVigourLogVo;
-import com.star.module.front.vo.MyGuardVo;
-import com.star.module.front.vo.MyHitListVo;
-import com.star.module.front.vo.PersonalVo;
+import com.star.module.front.vo.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Api(value = "个人中心", tags = "个人中心")
 @RequestMapping("personalCenter/")
@@ -38,5 +37,9 @@ public interface PersonalCenterFacade {
     @ApiOperation(value = "修改我的信息")
     @GetMapping("updatePersonalCenterInfo")
     void updatePersonalCenterInfo(@RequestBody UpdatePersonalCenterInfoDto updatePersonalCenterInfoDto);
+
+    @ApiOperation(value = "榜单")
+    @GetMapping("listAward")
+    List<ListAwardPersionVo> listAward();
 
 }
