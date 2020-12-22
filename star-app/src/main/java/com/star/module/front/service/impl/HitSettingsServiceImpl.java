@@ -130,7 +130,7 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
 
 
     @Override
-    public void getVigourVal(FinishTaskVigourDto finishTaskVigourDto) {
+    public Integer getVigourVal(FinishTaskVigourDto finishTaskVigourDto) {
         Long id = UserUtil.getCurrentUserId(request);
         HitSettings hitSettings = hitSettingsMapper.selectOne(new QueryWrapper<HitSettings>());
         if(hitSettings == null){
@@ -199,6 +199,7 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
         }
         fensVigourLogService.addVigour(fensVigourLog);
 
+        return fensVigourLog.getVigourVal();
     }
 
 

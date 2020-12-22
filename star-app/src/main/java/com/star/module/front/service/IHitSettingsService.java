@@ -30,5 +30,5 @@ public interface IHitSettingsService extends IService<HitSettings> {
      *
      * @param finishTaskVigourDto
      */
-    void getVigourVal(FinishTaskVigourDto finishTaskVigourDto);
+    Integer getVigourVal(FinishTaskVigourDto finishTaskVigourDto);
 }

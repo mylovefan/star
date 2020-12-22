@@ -46,7 +46,7 @@ public interface StarDetailFacade {
 
     @ApiOperation("完成任务之后获得热力值接口")
     @PostMapping("getVigourVal")
-    void getVigourVal(@RequestBody FinishTaskVigourDto finishTaskVigourDto);
+    Integer getVigourVal(@RequestBody FinishTaskVigourDto finishTaskVigourDto);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "resourcesRelId", value = "活动列表返回", dataType = "Long", paramType = "query"),

@@ -78,8 +78,8 @@ public class StarDetailController implements StarDetailFacade {
 
 
     @Override
-    public void getVigourVal(@RequestBody FinishTaskVigourDto finishTaskVigourDto) {
-        hitSettingsService.getVigourVal(finishTaskVigourDto);
+    public Integer getVigourVal(@RequestBody FinishTaskVigourDto finishTaskVigourDto) {
+        return hitSettingsService.getVigourVal(finishTaskVigourDto);
     }
 
 
