@@ -6,4 +6,8 @@
         update star_resources_rel set join_num = join_num + #{joinNum},reach_num =reach_num+#{reachNum},status = #{status}
         where id =#{id}
     </update>
+
+    <select id="selectStar" resultType="com.star.module.operation.vo.ResourceStarVo">
+        select t2.name,t1.status from  star_resources_rel t1 left join star t2 on t1.star_id = t2.id where t1.resources_id = #{id}
+    </select>
 </mapper>

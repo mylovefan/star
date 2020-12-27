@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 
@@ -41,7 +42,7 @@ public interface CommonFacade {
 
     @ApiOperation(value = "上传文件")
     @PostMapping("upload")
-    String upload(@RequestParam(value = "file") File file);
+    String upload(@RequestParam(value = "file") MultipartFile file);
 
 
     @ApiOperation(value = "开发获取token")

@@ -30,7 +30,9 @@ import com.star.module.operation.entity.Resources;
 import com.star.module.operation.entity.StarResourcesRel;
 import com.star.module.operation.entity.StarTags;
 import com.star.module.operation.service.IResourcesService;
+import com.star.module.operation.util.DateUtils;
 import com.star.module.operation.vo.ListAwardVo;
+import com.star.module.operation.vo.ResourceStarVo;
 import com.star.module.operation.vo.ResourcesDetailVo;
 import com.star.module.operation.vo.ResourcesVo;
 import com.star.module.user.common.UserUtil;
@@ -144,7 +146,7 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
 
     @Override
     public PageSerializable<ResourcesVo> selectResourcesPage(ResourcesPageDto resourcesPageDto) {
-        IPage<Resources> page = new Page<>(resourcesPageDto.getPageNum(),resourcesPageDto.getPageSize());
+
         QueryWrapper<Resources> queryWrapper = new QueryWrapper<>();
         if(StringUtil.isNotEmpty(resourcesPageDto.getBeginTime())){
             queryWrapper.lambda().ge(Resources::getAddTime,resourcesPageDto.getBeginTime());
@@ -155,33 +157,46 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         if(resourcesPageDto.getType() != null){
             queryWrapper.lambda().eq(Resources::getType,resourcesPageDto.getType());
         }
-        LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
+        String localDateTimeOfNow = DateUtils.parseLocalDateToStr(localDateTime,DateUtils.DATE_FORMAT_DATETIME);
         if(resourcesPageDto.getStatus() != null){
             if(resourcesPageDto.getStatus() == 1){
-                queryWrapper.lambda().le(Resources::getBeginTime,localDateTimeOfNow);
+                queryWrapper.lambda().gt(Resources::getBeginTime,localDateTimeOfNow);
             }else if(resourcesPageDto.getStatus() == 2){
                 queryWrapper.lambda().ge(Resources::getBeginTime,localDateTimeOfNow);
-                queryWrapper.lambda().le(Resources::getEndTime,localDateTimeOfNow);
-            }else {
                 queryWrapper.lambda().ge(Resources::getEndTime,localDateTimeOfNow);
+            }else {
+                queryWrapper.lambda().lt(Resources::getEndTime,localDateTimeOfNow);
             }
 
         }
         queryWrapper.orderByDesc("add_time");
+        IPage<Resources> page = new Page<>(resourcesPageDto.getPageNum(),resourcesPageDto.getPageSize());
         IPage<Resources> resourcesIPage = resourcesMapper.selectPage(page, queryWrapper);
         List<ResourcesVo> list = new ArrayList<>();
         for (Resources resources : resourcesIPage.getRecords()){
             ResourcesVo resourcesVo = new ResourcesVo();
             BeanUtils.copyProperties(resources,resourcesVo);
-            if(localDateTimeOfNow.isAfter(resources.getBeginTime()) || localDateTimeOfNow.isBefore(resources.getEndTime())) {
+            if(localDateTime.isAfter(resources.getBeginTime()) || localDateTime.isBefore(resources.getEndTime())) {
                 resourcesVo.setStatus(2);
             }
-            if(localDateTimeOfNow.isAfter(resources.getEndTime())) {
+            if(localDateTime.isAfter(resources.getEndTime())) {
                 resourcesVo.setStatus(3);
             }
-            if(localDateTimeOfNow.isBefore(resources.getBeginTime())) {
+            if(localDateTime.isBefore(resources.getBeginTime())) {
                 resourcesVo.setStatus(1);
             }
+            List<ResourceStarVo> resourceStarVos = starResourcesRelMapper.selectStar(resources.getId());
+            List<String> completeStar = new ArrayList<>();
+             List<String> relationStar = new ArrayList<>();
+            for (ResourceStarVo resourceStarVo : resourceStarVos){
+                relationStar.add(resourceStarVo.getName());
+                if(resourceStarVo.getStatus() == 1){
+                    completeStar.add(resourceStarVo.getName());
+                }
+            }
+            resourcesVo.setRelationStar(relationStar);
+            resourcesVo.setCompleteStar(completeStar);
             list.add(resourcesVo);
         }
         PageSerializable<ResourcesVo> pageSerializable = new PageSerializable<>(list);

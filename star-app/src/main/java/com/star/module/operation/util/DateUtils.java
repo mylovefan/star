@@ -5,6 +5,8 @@ import org.apache.log4j.Logger;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -1701,6 +1703,16 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		Calendar cal =  Calendar.getInstance();
 		cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 		return cal;
+	}
+
+	public static String parseLocalDateToStr(LocalDateTime localDateTimeOfNow, String timeFromat){
+		if(localDateTimeOfNow == null){
+			return null;
+		}
+		DateTimeFormatter format = DateTimeFormatter.ofPattern(timeFromat);
+		//格式化字符串
+		String nowStr = localDateTimeOfNow.format(format);
+		return nowStr;
 	}
 	
 	

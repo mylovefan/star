@@ -2,7 +2,10 @@ package com.star.module.operation.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.star.module.operation.entity.StarResourcesRel;
+import com.star.module.operation.vo.ResourceStarVo;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +20,6 @@ public interface StarResourcesRelMapper extends BaseMapper<StarResourcesRel> {
 
     void updateNum(@Param("id") Long id, @Param("joinNum") int joinNum, @Param("reachNum") int reachNum,@Param("status") int status);
 
+
+    List<ResourceStarVo> selectStar(@Param("id") Long id);
 }

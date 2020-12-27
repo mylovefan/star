@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * <p>
@@ -68,8 +70,11 @@ public class CommonController implements CommonFacade {
     }
 
     @Override
-    public String upload(@RequestParam(value = "file") File file) {
-        return TencentUploadUtil.upload(file);
+    public String upload(@RequestParam(value = "file") MultipartFile file) {
+        File temFile = transferToFile(file);
+        String path = TencentUploadUtil.upload(temFile);
+        temFile.delete();
+        return path;
     }
 
     @Override
@@ -77,4 +82,20 @@ public class CommonController implements CommonFacade {
     public UserLoginVo testLogin(Long id) {
         return weixinAuthService.testLogin(id);
     }
+
+
+    private File transferToFile(MultipartFile multipartFile) {
+//        选择用缓冲区来实现这个转换即使用java 创建的临时文件 使用 MultipartFile.transferto()方法 。
+        File file = null;
+        try {
+            String originalFilename = multipartFile.getOriginalFilename();
+            String[] filename = originalFilename.split("\\.");
+            file=File.createTempFile(filename[0], ".jpg");
+            multipartFile.transferTo(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
 }
