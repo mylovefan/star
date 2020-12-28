@@ -18,6 +18,7 @@ import com.star.module.front.service.IHitListService;
 import com.star.module.front.service.IStarService;
 import com.star.module.front.vo.HitDetailVo;
 import com.star.module.front.vo.StarInfoVo;
+import com.star.module.operation.dto.TagsDto;
 import com.star.module.operation.entity.StarTags;
 import com.star.module.operation.entity.Tags;
 import com.star.module.operation.model.StatModel;
@@ -28,6 +29,7 @@ import com.star.module.operation.util.ListUtils;
 import com.star.module.operation.util.RandomUtils;
 import com.star.module.operation.dto.StarDto;
 import com.star.module.operation.dto.StarPageDto;
+import com.star.module.operation.vo.StarDetailVo;
 import com.star.module.operation.vo.StartVo;
 import com.star.module.user.common.UserUtil;
 import com.star.util.SnowflakeId;
@@ -88,7 +90,7 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
             queryWrapper.lambda().like(Star::getName, starPageDto.getName());
         }
         if (starPageDto.getId() != null) {
-            queryWrapper.lambda().like(Star::getId, starPageDto.getId());
+            queryWrapper.lambda().like(Star::getStarId, starPageDto.getId());
         }
         IPage page = new Page(starPageDto.getPageNum(), starPageDto.getPageSize());
         IPage<Star> pageList = starMapper.selectPage(page, queryWrapper);
@@ -159,26 +161,15 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
 
             List<StarTags> starTagsList = new ArrayList<>();
             StringBuffer sb = new StringBuffer();
-            Map<Long, String> tags = dto.getTags();
-            for (Map.Entry<Long, String> m : tags.entrySet()) {
-                if (m.getKey() == null) {
-                    throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(), "标签id错误");
-                }
-                if (StringUtil.isEmpty(m.getValue())) {
-                    throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(), "标签为空");
-                }
-                QueryWrapper<Tags> wrapper = new QueryWrapper();
-                wrapper.lambda().eq(Tags::getId, m.getValue());
-                Tags t = iTagsService.getOne(wrapper);
-                if (t == null) {
-                    throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(), "标签不存在，请先添加标签再关联明星");
-                }
+            List<TagsDto> tags = dto.getTags();
+            for (TagsDto m : tags) {
+
                 StarTags tag = new StarTags();
                 tag.setStarId(star.getId());
-                tag.setTagsId(m.getKey());
-                tag.setTagsName(m.getValue());
+                tag.setTagsId(m.getId());
+                tag.setTagsName(m.getName());
                 starTagsList.add(tag);
-                sb.append(m.getValue()).append(",");
+                sb.append(m.getName()).append(",");
             }
             iStarTagsService.saveBatch(starTagsList);
             star.setTags(sb.toString().substring(0, sb.length() - 1));
@@ -248,13 +239,19 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         //查询周榜名词
         String weekStart = DateUtils.getTimeStampStr(DateUtils.getWeekStart(new Date()));
         String weekEnd = DateUtils.getTimeStampStr(DateUtils.getWeekEnd(new Date()));
-        int weekRank = hitListMapper.getThisRank(id,weekStart,weekEnd);
+        Integer weekRank = hitListMapper.getThisRank(id,weekStart,weekEnd);
+        if(weekRank == null){
+            weekRank = 0;
+        }
         starInfoVo.setThisWeekRank(weekRank);
         //查询月榜名称
         String monthStart = DateUtils.getTimeStampStr(DateUtils.getMonthStart(new Date()));
         String monthEnd = DateUtils.getTimeStampStr(DateUtils.getMonthEnd(new Date()));
-        hitListMapper.getThisRank(id,monthStart,monthEnd);
-        starInfoVo.setThisMonthRank(weekRank);
+        Integer monthkRank = hitListMapper.getThisRank(id,monthStart,monthEnd);
+        if(monthkRank == null){
+            monthkRank = 0;
+        }
+        starInfoVo.setThisMonthRank(monthkRank);
         return starInfoVo;
     }
 
@@ -268,5 +265,20 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         Star star = starMapper.selectById(starId);
         hitDetailVo.setHitPopupImg(star.getHitPopupImg());
         return hitDetailVo;
+    }
+
+
+    @Override
+    public StarDetailVo selectStatById(Long id) {
+        Star star = starMapper.selectById(id);
+        StarDetailVo starDetailVo = new StarDetailVo();
+        BeanUtils.copyProperties(star,starDetailVo);
+        QueryWrapper<StarTags> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(StarTags::getStarId, id);
+        List<StarTags> list = iStarTagsService.list(queryWrapper);
+        List<TagsDto> tagsDtos = new ArrayList<>();
+        listUtils.copyList(list, tagsDtos, TagsDto.class);
+        starDetailVo.setTags(tagsDtos);
+        return starDetailVo;
     }
 }

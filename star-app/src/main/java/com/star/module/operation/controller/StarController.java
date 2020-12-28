@@ -10,10 +10,7 @@ import com.star.module.operation.dto.StarDto;
 import com.star.module.operation.dto.StarPageDto;
 import com.star.module.operation.facade.StarFacade;
 import com.star.module.front.service.IStarService;
-import com.star.module.operation.vo.FensMarkVo;
-import com.star.module.operation.vo.HitListVo;
-import com.star.module.operation.vo.StartVo;
-import com.star.module.operation.vo.TagsVo;
+import com.star.module.operation.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,6 +49,12 @@ public class StarController implements StarFacade {
     @Override
     public void updateStar(@RequestBody StarDto dto) {
         iStarService.updateStar(dto);
+    }
+
+
+    @Override
+    public StarDetailVo selectStatById(Long id) {
+        return iStarService.selectStatById(id);
     }
 
     @Override

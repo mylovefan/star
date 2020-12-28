@@ -5,10 +5,7 @@ import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.dto.HitListDto;
 import com.star.module.operation.dto.StarDto;
 import com.star.module.operation.dto.StarPageDto;
-import com.star.module.operation.vo.FensMarkVo;
-import com.star.module.operation.vo.HitListVo;
-import com.star.module.operation.vo.StartVo;
-import com.star.module.operation.vo.TagsVo;
+import com.star.module.operation.vo.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +28,10 @@ public interface StarFacade {
     @ApiOperation(value = "修改明星")
     @PostMapping("star/update")
     void updateStar(@RequestBody StarDto dto);
+
+    @ApiOperation(value = "明星详情")
+    @GetMapping("star/selectStatById")
+    StarDetailVo selectStatById(@RequestParam("id") Long id);
 
     @ApiOperation(value = "标签列表")
     @PostMapping("tags/list")

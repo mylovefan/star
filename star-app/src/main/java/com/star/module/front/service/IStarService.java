@@ -7,6 +7,7 @@ import com.star.module.front.vo.HitDetailVo;
 import com.star.module.front.vo.StarInfoVo;
 import com.star.module.operation.dto.StarDto;
 import com.star.module.operation.dto.StarPageDto;
+import com.star.module.operation.vo.StarDetailVo;
 import com.star.module.operation.vo.StartVo;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -66,4 +67,13 @@ public interface IStarService extends IService<Star> {
      * @return
      */
     HitDetailVo selectHitDetail(@RequestParam("starId") Long starId);
+
+
+    /**
+     * 明星详情
+     *
+     * @param id
+     * @return
+     */
+    StarDetailVo selectStatById(Long id);
 }

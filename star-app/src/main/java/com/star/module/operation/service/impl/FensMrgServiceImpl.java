@@ -60,7 +60,7 @@ public class FensMrgServiceImpl implements FensMrgService {
         IPage<Fens> page = new Page<>(fensDto.getPageNum(),fensDto.getPageSize());
         QueryWrapper<Fens> queryWrapper = new QueryWrapper<>();
         if(fensDto.getId() != null){
-            queryWrapper.lambda().like(Fens::getId,fensDto.getId());
+            queryWrapper.lambda().like(Fens::getFensId,fensDto.getId());
         }
         queryWrapper.orderByDesc("add_time");
         IPage<Fens> fensIPage = fensMapper.selectPage(page, queryWrapper);

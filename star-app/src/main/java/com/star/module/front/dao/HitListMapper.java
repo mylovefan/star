@@ -40,7 +40,7 @@ public interface HitListMapper extends BaseMapper<HitList> {
      * @param endTime
      * @return
      */
-    int getThisRank(@Param(value = "id") Long id,@Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime);
+    Integer getThisRank(@Param(value = "id") Long id,@Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime);
 
 
     /**
