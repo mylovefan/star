@@ -1,6 +1,9 @@
 package com.star.module.user.controller;
 
 
+import com.star.common.ErrorCodeEnum;
+import com.star.common.ServiceException;
+import com.star.module.operation.dto.UploadDto;
 import com.star.module.user.common.IgnoreSecurity;
 import com.star.module.operation.dto.LoginDto;
 import com.star.module.user.dto.ModifyPassCodeDTO;
@@ -11,12 +14,14 @@ import com.star.module.user.service.WeixinAuthService;
 import com.star.module.user.vo.UserLoginVo;
 import com.star.module.user.vo.UserMenuVo;
 import com.star.util.TencentUploadUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Decoder;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +35,7 @@ import java.io.IOException;
  * @since 2020-11-29
  */
 @RestController
+@Slf4j
 public class CommonController implements CommonFacade {
 
     @Autowired
@@ -74,6 +80,25 @@ public class CommonController implements CommonFacade {
         File temFile = transferToFile(file);
         String path = TencentUploadUtil.upload(temFile);
         temFile.delete();
+        return path;
+    }
+
+
+    @Override
+    public String uploadBase64(@RequestBody UploadDto uploadDto) {
+        BASE64Decoder decode = new BASE64Decoder();
+        byte[] bytes = new byte[0];
+        try {
+            String str = uploadDto.getBaseStr().split(",")[1];
+            bytes = decode.decodeBuffer(str);
+        } catch (IOException e) {
+            log.info("Base64转数组失败："+e.toString());
+            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"Base64转数组失败");
+        }catch (Exception e) {
+            log.info("Base64转数组失败："+e.toString());
+            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"上传失败");
+        }
+        String path = TencentUploadUtil.upload(bytes);
         return path;
     }
 

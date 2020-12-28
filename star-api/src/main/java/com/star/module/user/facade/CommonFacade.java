@@ -1,6 +1,7 @@
 package com.star.module.user.facade;
 
 import com.star.module.operation.dto.LoginDto;
+import com.star.module.operation.dto.UploadDto;
 import com.star.module.user.dto.ModifyPassCodeDTO;
 import com.star.module.user.dto.WeixinLongDto;
 import com.star.module.user.vo.UserLoginVo;
@@ -43,6 +44,11 @@ public interface CommonFacade {
     @ApiOperation(value = "上传文件")
     @PostMapping("upload")
     String upload(@RequestParam(value = "file") MultipartFile file);
+
+
+    @ApiOperation(value = "上传文件")
+    @PostMapping("uploadBase64")
+    String uploadBase64(@RequestBody UploadDto uploadDto);
 
 
     @ApiOperation(value = "开发获取token")
