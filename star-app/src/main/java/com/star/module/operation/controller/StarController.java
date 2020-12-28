@@ -64,6 +64,11 @@ public class StarController implements StarFacade {
         iTagsService.addTags(name);
     }
 
+    @Override
+    public void deleteTags(@RequestParam(value = "id") Long id) {
+        iTagsService.deleteTags(id);
+    }
+
     /**
      * 榜单列表
      * @param hitListDto

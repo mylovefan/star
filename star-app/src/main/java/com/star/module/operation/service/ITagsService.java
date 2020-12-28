@@ -19,4 +19,6 @@ public interface ITagsService extends IService<Tags> {
     List<TagsVo> tagsList();
 
     void addTags(String name);
+
+    void deleteTags(Long id);
 }

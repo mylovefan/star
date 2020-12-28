@@ -63,4 +63,10 @@ public class TagsServiceImpl extends ServiceImpl<TagsMapper, Tags> implements IT
         tagsNew.setAddTime(localDateTimeOfNow);
         tagsMapper.insert(tagsNew);
     }
+
+
+    @Override
+    public void deleteTags(Long id) {
+        tagsMapper.deleteById(id);
+    }
 }

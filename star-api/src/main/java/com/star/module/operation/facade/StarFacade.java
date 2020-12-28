@@ -40,6 +40,10 @@ public interface StarFacade {
     @GetMapping("tags/add")
     void addTag(@RequestParam("name") String name);
 
+    @ApiOperation(value = "删除标签")
+    @GetMapping("tags/deleteTags")
+    void deleteTags(@RequestParam("id") Long id);
+
     @ApiOperation(value = "榜单排行榜列表")
     @PostMapping("hitList/rankList")
     PageSerializable<HitListVo> hilListRankList(@RequestBody HitListDto hitListDto);
