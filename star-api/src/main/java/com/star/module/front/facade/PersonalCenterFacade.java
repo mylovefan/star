@@ -35,7 +35,7 @@ public interface PersonalCenterFacade {
 
 
     @ApiOperation(value = "修改我的信息")
-    @GetMapping("updatePersonalCenterInfo")
+    @PostMapping("updatePersonalCenterInfo")
     void updatePersonalCenterInfo(@RequestBody UpdatePersonalCenterInfoDto updatePersonalCenterInfoDto);
 
     @ApiOperation(value = "榜单")
