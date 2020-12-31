@@ -35,4 +35,7 @@ public class StarHitSettingsVo implements Serializable {
     @ApiModelProperty(value = "是否签到")
     private boolean signFlag;
 
+    @ApiModelProperty(value = "每日抽奖最高次数")
+    private Integer deawMaxNum;
+
 }

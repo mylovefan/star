@@ -2,6 +2,7 @@ package com.star.module.front.facade;
 
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
+import com.star.module.front.dto.HitDto;
 import com.star.module.front.vo.HitDetailVo;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.front.vo.MyGuardVo;
@@ -56,6 +57,6 @@ public interface HomeFacade {
 
     @ApiOperation("打榜")
     @PostMapping("hit")
-    void hit(@RequestParam("starId") Long starId,@RequestParam("vigourVal") Integer vigourVal);
+    void hit(@RequestBody HitDto hitDto);
 
 }

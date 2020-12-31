@@ -2,6 +2,7 @@ package com.star.module.front.controller;
 
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
+import com.star.module.front.dto.HitDto;
 import com.star.module.front.dto.RankDto;
 import com.star.module.front.facade.HomeFacade;
 import com.star.module.front.service.IFensService;
@@ -83,7 +84,7 @@ public class HomeController implements HomeFacade {
     }
 
     @Override
-    public void hit(@RequestParam("starId") Long starId, @RequestParam("vigourVal") Integer vigourVal) {
-        iHitListService.hit(starId,vigourVal);
+    public void hit(@RequestBody HitDto hitDto) {
+        iHitListService.hit(hitDto.getStarId(),hitDto.getVigourVal());
     }
 }
