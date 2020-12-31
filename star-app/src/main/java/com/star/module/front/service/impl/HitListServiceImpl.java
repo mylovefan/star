@@ -208,7 +208,7 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
                 pageSerializable.setTotal(resultList.size());
             }
             //根据id查询，返回一条数据及排名
-            if (hitListDto.getStarId() != null) {
+            if (hitListDto.getStarId() != null && hitListDto.getStarId()>0) {
                 List<HitListVo> resultList = list.stream().filter(li -> li.getStarId().equals(hitListDto.getStarId())).collect(Collectors.toList());
                 pageSerializable = new PageSerializable<>(resultList);
                 pageSerializable.setTotal(resultList.size());
