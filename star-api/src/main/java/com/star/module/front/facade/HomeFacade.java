@@ -44,7 +44,7 @@ public interface HomeFacade {
 
     @ApiOperation("热门搜索关键字")
     @GetMapping("hotSearch")
-    Map<Long, String> hotSearch();
+    List<String> hotSearch();
 
     @ApiOperation("搜索明星信息")
     @GetMapping("selectStarInfo")

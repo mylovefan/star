@@ -51,7 +51,7 @@ public interface IStarService extends IService<Star> {
      * 热门搜索的明星
      * @return
      */
-    Map<Long, String> hotSearch();
+    List<String> hotSearch();
 
     /**
      * 明星信息

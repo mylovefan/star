@@ -68,7 +68,7 @@ public class HomeController implements HomeFacade {
     }
 
     @Override
-    public Map<Long, String> hotSearch() {
+    public List<String> hotSearch() {
         return iStarService.hotSearch();
     }
 

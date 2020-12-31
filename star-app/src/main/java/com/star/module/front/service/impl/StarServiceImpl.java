@@ -209,13 +209,13 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
     }
 
     @Override
-    public Map<Long, String> hotSearch() {
+    public List<String> hotSearch() {
         QueryWrapper<Star> wrapper = new QueryWrapper();
         wrapper.lambda().eq(Star::getHotSearch, NumberUtils.INTEGER_ONE);
         List<Star> list = starMapper.selectList(wrapper);
-        Map<Long, String> map = new HashMap<>();
+        List<String> map = new ArrayList<>();
         for (Star star:list) {
-            map.put(star.getId(), star.getName());
+            map.add(star.getName());
         }
         return map;
     }
