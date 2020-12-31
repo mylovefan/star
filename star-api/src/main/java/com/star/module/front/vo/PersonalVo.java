@@ -20,4 +20,10 @@ public class PersonalVo {
 
     @ApiModelProperty(value = "头像")
     private String avatarUrl;
+
+    @ApiModelProperty(value = "热力值")
+    private Integer openFlag;
+
+    @ApiModelProperty(value = "是否开启个人标语 0未开启 1开启")
+    private String sloganOpen;
 }

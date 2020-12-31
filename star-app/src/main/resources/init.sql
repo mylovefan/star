@@ -81,6 +81,7 @@ CREATE TABLE `fens` (
   `total_vigour_val` int(10) DEFAULT '0' COMMENT '累计活力值',
   `consume_vigour_val` int(10) DEFAULT '0' COMMENT '消耗活力值',
   `slogan` varchar(20) DEFAULT NULL COMMENT '个人标语',
+  `slogan_open` int(1) DEFAULT '0' COMMENT '是否开启',
   `draw_num` int(10) DEFAULT '0' COMMENT '抽奖次数',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
