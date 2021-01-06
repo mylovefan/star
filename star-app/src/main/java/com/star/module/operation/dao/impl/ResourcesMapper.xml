@@ -6,6 +6,7 @@
 
         SELECT
             s.id,
+            r.id resourcesRelId,
             type,
             mark,
             target,
@@ -15,8 +16,8 @@
             star_resources_rel r
             LEFT JOIN resources s ON r.resources_id = s.id
             WHERE r.star_id =#{starId}
-            AND r.begin_time <![CDATA[<= ]]>  #{nowTime,jdbcType=VARCHAR}
-                AND r.end_time <![CDATA[>= ]]>  #{endTime,jdbcType=VARCHAR}
+            AND s.begin_time <![CDATA[<= ]]>  #{nowTime,jdbcType=VARCHAR}
+                AND s.end_time <![CDATA[>= ]]>  #{nowTime,jdbcType=VARCHAR}
     </select>
 
 </mapper>

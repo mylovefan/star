@@ -340,6 +340,11 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
         LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
         hitList.setCreateTime(localDateTimeOfNow);
         Long id = UserUtil.getCurrentUserId(request);
+
+        Fens fens = fensMapper.selectById(id);
+        if(vigourVal > fens.getVigourVal()){
+            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(), "热力值不够哦");
+        }
         hitList.setFensId(id);
         hitList.setStarId(starId);
         hitList.setVigourVal(vigourVal);
