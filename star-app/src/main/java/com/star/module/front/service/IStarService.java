@@ -4,6 +4,7 @@ import com.github.pagehelper.PageSerializable;
 import com.star.module.front.entity.Star;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.star.module.front.vo.HitDetailVo;
+import com.star.module.front.vo.HotStarVo;
 import com.star.module.front.vo.StarInfoVo;
 import com.star.module.operation.dto.StarDto;
 import com.star.module.operation.dto.StarPageDto;
@@ -51,7 +52,7 @@ public interface IStarService extends IService<Star> {
      * 热门搜索的明星
      * @return
      */
-    List<String> hotSearch();
+    List<HotStarVo> hotSearch();
 
     /**
      * 明星信息

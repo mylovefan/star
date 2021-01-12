@@ -40,7 +40,7 @@ public class HitSettingsDto implements Serializable {
     private Integer vigourSendType;
 
     @ApiModelProperty(value = "具体赠送热力值")
-    private Integer vigourSendNum;
+    private String vigourSendNum;
 
     @ApiModelProperty(value = "每日最高签到次数")
     private Integer signMaxNum;

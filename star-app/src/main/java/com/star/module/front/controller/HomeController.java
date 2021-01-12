@@ -9,11 +9,7 @@ import com.star.module.front.service.IFensService;
 import com.star.module.front.service.IGuardService;
 import com.star.module.front.service.IHitListService;
 import com.star.module.front.service.IStarService;
-import com.star.module.front.vo.HitDetailVo;
-import com.star.module.front.vo.HomeCarouselVo;
-import com.star.module.front.vo.MyGuardVo;
-import com.star.module.front.vo.PersonalVo;
-import com.star.module.front.vo.StarInfoVo;
+import com.star.module.front.vo.*;
 import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.service.ICarouselService;
 import com.star.module.operation.tesk.StarRankTask;
@@ -69,7 +65,7 @@ public class HomeController implements HomeFacade {
     }
 
     @Override
-    public List<String> hotSearch() {
+    public List<HotStarVo> hotSearch() {
         return iStarService.hotSearch();
     }
 

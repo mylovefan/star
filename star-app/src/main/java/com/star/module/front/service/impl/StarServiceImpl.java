@@ -17,6 +17,7 @@ import com.star.module.front.entity.Star;
 import com.star.module.front.service.IHitListService;
 import com.star.module.front.service.IStarService;
 import com.star.module.front.vo.HitDetailVo;
+import com.star.module.front.vo.HotStarVo;
 import com.star.module.front.vo.StarInfoVo;
 import com.star.module.operation.dto.TagsDto;
 import com.star.module.operation.entity.StarTags;
@@ -209,13 +210,16 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
     }
 
     @Override
-    public List<String> hotSearch() {
+    public List<HotStarVo> hotSearch() {
         QueryWrapper<Star> wrapper = new QueryWrapper();
         wrapper.lambda().eq(Star::getHotSearch, NumberUtils.INTEGER_ONE);
         List<Star> list = starMapper.selectList(wrapper);
-        List<String> map = new ArrayList<>();
+        List<HotStarVo> map = new ArrayList<>();
         for (Star star:list) {
-            map.add(star.getName());
+            HotStarVo starVo = new HotStarVo();
+            starVo.setId(star.getId().toString());
+            starVo.setName(star.getName());
+            map.add(starVo);
         }
         return map;
     }
