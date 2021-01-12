@@ -7,7 +7,7 @@ import lombok.Data;
 public class StarInfoVo {
 
     @ApiModelProperty(value = "id")
-    private String id;
+    private Long id;
 
     @ApiModelProperty(value = "姓名")
     private String name;
