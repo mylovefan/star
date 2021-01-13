@@ -100,6 +100,14 @@ public class Fens implements Serializable {
     @TableField("draw_num")
     private Integer drawNum;
 
+    @ApiModelProperty(value = "是否自建粉丝")
+    @TableField("build")
+    private Integer build;
+
+    @ApiModelProperty(value = "最后打榜明星")
+    @TableField("last_star")
+    private String lastStar;
+
     @ApiModelProperty(value = "创建时间")
     @TableField("add_time")
     private LocalDateTime addTime;

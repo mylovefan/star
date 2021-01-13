@@ -11,6 +11,7 @@ import com.star.module.front.vo.*;
 import com.star.module.operation.service.IResourcesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -58,5 +59,11 @@ public class PersonalCenterController implements PersonalCenterFacade {
     @Override
     public List<ListAwardPersionVo> listAward() {
         return resourcesService.listAward();
+    }
+
+
+    @Override
+    public void removeMyGuard(@RequestParam("starId") Long starId) {
+
     }
 }

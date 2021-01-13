@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.star.module.front.vo.MyGuardVo;
 import com.star.module.front.vo.MyHitListVo;
 import com.star.module.front.vo.StarGuardVo;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -42,5 +43,13 @@ public interface IGuardService extends IService<Guard> {
      * @return
      */
     List<StarGuardVo> selectStarGuardList(Long starId);
+
+
+    /**
+     * 移除守护
+     *
+     * @param starId
+     */
+    void removeMyGuard(Long starId);
 
 }

@@ -18,6 +18,7 @@ import com.star.module.front.service.IHitListService;
 import com.star.module.front.vo.FensVigourLogVo;
 import com.star.module.front.vo.FensVigourRankVo;
 import com.star.module.operation.dto.FensMarkRankDto;
+import com.star.module.operation.dto.FensMrgStarHiyDto;
 import com.star.module.operation.dto.HitListDto;
 import com.star.module.operation.util.DateUtils;
 import com.star.module.operation.util.ListUtils;
@@ -374,8 +375,52 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
             }
 
         }
-        fensMapper.updateReduceVigour(id,vigourVal);
+        fensMapper.updateReduceVigour(id,vigourVal,null);
 
+    }
+
+
+    @Override
+    public void bulidFensHit(FensMrgStarHiyDto fensMrgStarHiyDto) {
+        HitList hitList = new HitList();
+        LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
+        hitList.setCreateTime(localDateTimeOfNow);
+        Long id = fensMrgStarHiyDto.getId();
+
+        Fens fens = fensMapper.selectById(id);
+        if(fensMrgStarHiyDto.getVigourVal() > fens.getVigourVal()){
+            throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(), "热力值不够哦");
+        }
+        hitList.setFensId(id);
+        hitList.setStarId(fensMrgStarHiyDto.getStarId());
+        hitList.setVigourVal(fensMrgStarHiyDto.getVigourVal());
+        hitListMapper.insert(hitList);
+
+        QueryWrapper<Guard> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Guard::getStarId,fensMrgStarHiyDto.getStarId()).eq(Guard::getFensId,id);
+        Guard guard = guardMapper.selectOne(queryWrapper);
+        boolean flag = false;
+        if(fensMrgStarHiyDto.getVigourVal() >= 999){
+            flag = true;
+        }
+        if(guard == null){
+            Guard guardDo = new Guard();
+            guardDo.setId(SnowflakeId.getInstance().nextId());
+            guardDo.setAddTime(localDateTimeOfNow);
+            guardDo.setFensId(id);
+            guardDo.setStarId(fensMrgStarHiyDto.getStarId());
+            guardDo.setStatus(flag ? 1:0);
+            guardMapper.insert(guardDo);
+        }else {
+            if(flag){
+                Guard guardDo = new Guard();
+                guardDo.setId(guard.getId());
+                guardDo.setStatus(1);
+                guardMapper.updateById(guardDo);
+            }
+
+        }
+        fensMapper.updateReduceVigour(id,fensMrgStarHiyDto.getVigourVal(),fensMrgStarHiyDto.getStarName());
     }
 }
 

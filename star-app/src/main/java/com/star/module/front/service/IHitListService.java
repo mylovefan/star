@@ -7,6 +7,7 @@ import com.star.module.front.dto.StarFensRankDto;
 import com.star.module.front.entity.HitList;
 import com.star.module.front.vo.FensVigourRankVo;
 import com.star.module.operation.dto.FensMarkRankDto;
+import com.star.module.operation.dto.FensMrgStarHiyDto;
 import com.star.module.operation.dto.HitListDto;
 import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
@@ -69,4 +70,11 @@ public interface IHitListService extends IService<HitList> {
      * @param vigourVal
      */
     void hit( Long starId, Integer vigourVal);
+
+    /**
+     * 自建粉丝打榜
+     *
+     * @param fensMrgStarHiyDto
+     */
+    void bulidFensHit(FensMrgStarHiyDto fensMrgStarHiyDto);
 }

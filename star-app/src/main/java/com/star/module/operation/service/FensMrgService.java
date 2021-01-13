@@ -1,6 +1,7 @@
 package com.star.module.operation.service;
 
 import com.github.pagehelper.PageSerializable;
+import com.star.module.operation.dto.BulidFensDto;
 import com.star.module.operation.dto.FensDto;
 import com.star.module.operation.dto.GiveDto;
 import com.star.module.operation.vo.FensVo;
@@ -58,4 +59,26 @@ public interface FensMrgService {
      * @throws Exception
      */
     void downModel(HttpServletResponse response);
+
+    /**
+     * 新增自建粉丝
+     *
+     * @param bulidFensDto
+     */
+    void addBulidFens(BulidFensDto bulidFensDto);
+
+    /**
+     * 自建粉丝打榜模板
+     *
+     * @param response
+     */
+    void downStarHitModel(HttpServletResponse response);
+
+    /**
+     * 打榜导入
+     *
+     * @param file
+     * @return
+     */
+    ImportGiveVo importHitSatrVigourVal(MultipartFile file);
 }

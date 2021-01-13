@@ -285,4 +285,19 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         starDetailVo.setTags(tagsDtos);
         return starDetailVo;
     }
+
+    @Override
+    public List<HotStarVo> selectStarByName(String starName) {
+        QueryWrapper<Star> wrapper = new QueryWrapper();
+        wrapper.lambda().like(Star::getName, starName);
+        List<Star> starList = starMapper.selectList(wrapper);
+        List<HotStarVo> list = new ArrayList<>();
+        for (Star star :starList){
+            HotStarVo hotStarVo = new HotStarVo();
+            hotStarVo.setId(star.getId().toString());
+            hotStarVo.setName(star.getName());
+            list.add(hotStarVo);
+        }
+        return list;
+    }
 }

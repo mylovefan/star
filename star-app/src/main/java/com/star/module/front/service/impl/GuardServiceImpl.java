@@ -101,4 +101,13 @@ public class GuardServiceImpl extends ServiceImpl<GuardMapper, Guard> implements
         List<StarGuardVo> starGuardVos = guardMapper.selectStarGuardList(starId);
         return starGuardVos;
     }
+
+
+    @Override
+    public void removeMyGuard(Long starId) {
+        Long id = UserUtil.getCurrentUserId(request);
+        QueryWrapper<Guard> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Guard::getFensId,id).eq(Guard::getStarId,starId);
+        guardMapper.delete(queryWrapper);
+    }
 }

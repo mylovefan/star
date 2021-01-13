@@ -40,6 +40,9 @@ public class FensVo {
     @ApiModelProperty(value = "消耗活力值")
     private Integer consumeVigourVal;
 
+    @ApiModelProperty(value = "最后打榜明星")
+    private String lastStar;
+
     @ApiModelProperty(value = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @JsonSerialize(using = LocalDateTimeSerializer.class)

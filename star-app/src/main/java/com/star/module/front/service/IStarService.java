@@ -77,4 +77,12 @@ public interface IStarService extends IService<Star> {
      * @return
      */
     StarDetailVo selectStatById(Long id);
+
+    /**
+     * 根据明星名称查询明星
+     *
+     * @param starName
+     * @return
+     */
+    List<HotStarVo> selectStarByName(String starName);
 }
