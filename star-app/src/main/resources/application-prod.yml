@@ -1,9 +1,9 @@
 spring:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://123.207.120.31:3306/star?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&useSSL=false
-    username: root
-    password: star#2020
+    url: jdbc:mysql://######:3306/star?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&useSSL=false
+    username: xxx
+      password: xxxxx
     #连接池的配置信息,应用到上面所有数据源中
     #初始化大小,最小,最大
     initialSize: 5
