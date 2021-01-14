@@ -1,9 +1,9 @@
 spring:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://xxx:3306/xxx?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&useSSL=false
-    username: xxx
-    password: xxxxx
+    url: jdbc:mysql://123.207.120.31:3306/star?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&useSSL=false&serverTimezone=UTC
+    username: root
+    password: star#2020
     #连接池的配置信息,应用到上面所有数据源中
     #初始化大小,最小,最大
     initialSize: 5
@@ -30,7 +30,7 @@ spring:
           mergeSql: true
           slowSqlMillis: 5000
         loginUsername: root
-        loginPassword: 123456
+        loginPassword: star#2020
         #IP白名单(没有配置或者为空,则允许所有访问)
         allow:
         #IP黑名单 (存在共同时,deny优先于allow)
@@ -57,5 +57,7 @@ mybatis-plus:
 swagger:
   enable: true
 
-#logging:
-  #config: classpath:config/logback-spring.xml
+logging:
+  config: classpath:config/logback-spring.xml
+
+

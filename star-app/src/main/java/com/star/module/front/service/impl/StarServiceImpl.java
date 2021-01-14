@@ -37,11 +37,19 @@ import com.star.util.SnowflakeId;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -88,7 +96,8 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
 
         QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
         if (StringUtil.isNotEmpty(starPageDto.getName())) {
-            queryWrapper.lambda().like(Star::getName, starPageDto.getName());
+            List<String> nameList = Arrays.asList(starPageDto.getName().split("[,， \n\r]"));
+            queryWrapper.lambda().in(Star::getName, nameList);
         }
         if (starPageDto.getId() != null) {
             queryWrapper.lambda().like(Star::getStarId, starPageDto.getId());
@@ -299,5 +308,59 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
             list.add(hotStarVo);
         }
         return list;
+    }
+
+
+    @Override
+    public void downStarList(HttpServletResponse response,String name,Long starId) {
+        // 第一步，创建一个webbook，对应一个Excel文件
+        HSSFWorkbook wb = new HSSFWorkbook();
+        // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+        HSSFSheet sheet = wb.createSheet("明星记录");
+        sheet.setDefaultColumnWidth(30);
+        // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+        HSSFRow row = sheet.createRow((int) 0);
+
+        HSSFCell cell0 = row.createCell((short) 0);
+        cell0.setCellValue("明星姓名");
+        HSSFCell cell1 = row.createCell((short) 1);
+        cell1.setCellValue("明星ID");
+
+        QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
+        if (StringUtil.isNotEmpty(name)) {
+            List<String> nameList = Arrays.asList(name.split("[,， \n\r]"));
+            queryWrapper.lambda().in(Star::getName, nameList);
+        }
+        if (starId != null) {
+            queryWrapper.lambda().like(Star::getStarId, starId);
+        }
+        List<Star> stars = starMapper.selectList(queryWrapper);
+
+        int i = 1;
+        for (Star startVo : stars){
+            HSSFRow rowData = sheet.createRow((int) i);
+            HSSFCell celldata0 = rowData.createCell((short) 0);
+            celldata0.setCellValue(startVo.getName());
+            HSSFCell celldata1 = rowData.createCell((short) 1);
+            celldata1.setCellValue(startVo.getStarId().toString());
+            i++;
+        }
+
+        OutputStream out = null;
+        try {
+            out = response.getOutputStream();
+            response.setContentType("application/x-msdownload");
+            response.setHeader("Content-Disposition", "attachment; filename="
+                    + URLEncoder.encode("明星记录.xls", "UTF-8"));
+            wb.write(out);
+        }catch (Exception e){
+            throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(),"下载明星记录失败");
+        }  finally {
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

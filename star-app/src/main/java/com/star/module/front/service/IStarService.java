@@ -12,6 +12,7 @@ import com.star.module.operation.vo.StarDetailVo;
 import com.star.module.operation.vo.StartVo;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -85,4 +86,10 @@ public interface IStarService extends IService<Star> {
      * @return
      */
     List<HotStarVo> selectStarByName(String starName);
+
+    /**
+     *
+     * @param response
+     */
+    void downStarList(HttpServletResponse response,String name,Long starId);
 }

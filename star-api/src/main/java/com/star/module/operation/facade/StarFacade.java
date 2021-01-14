@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Api(value = "明星管理", tags = "明星管理")
@@ -52,5 +53,10 @@ public interface StarFacade {
     @ApiOperation(value = "粉丝贡献榜列表")
     @PostMapping("fensMark/rankList")
     PageSerializable<FensMarkVo> fensMarkRankList(@RequestBody FensMarkRankDto fensMarkRankDto);
+
+
+    @ApiOperation(value = "下载明星数据")
+    @GetMapping("downStarList")
+    void downStarList(HttpServletResponse response,@RequestParam("name") String name,@RequestParam("starId")  Long starId);
 
 }
