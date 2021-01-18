@@ -83,7 +83,7 @@ CREATE TABLE `fens` (
   `slogan` varchar(20) DEFAULT NULL COMMENT '个人标语',
   `slogan_open` int(1) DEFAULT '0' COMMENT '是否开启',
   `draw_num` int(10) DEFAULT '0' COMMENT '抽奖次数',
-  `bulid` int(1) DEFAULT '0' COMMENT '是否自建粉丝',
+  `build` int(1) DEFAULT '0' COMMENT '是否自建粉丝',
   `last_star` varchar(255) DEFAULT NULL COMMENT '最后打榜明星',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',

@@ -223,7 +223,7 @@ public class FensMrgServiceImpl implements FensMrgService {
     public void addBulidFens(BulidFensDto bulidFensDto) {
         Fens fens = new Fens();
         fens.setId(SnowflakeId.getInstance().nextId());
-        LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
+        LocalDateTime localDateTimeOfNow = LocalDateTime.now();
         fens.setAddTime(localDateTimeOfNow);
         fens.setAvatarUrl(bulidFensDto.getAvatarUrl());
         fens.setNickName(bulidFensDto.getNickName());

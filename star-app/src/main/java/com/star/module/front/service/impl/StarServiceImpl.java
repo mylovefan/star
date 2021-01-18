@@ -290,7 +290,13 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         queryWrapper.lambda().eq(StarTags::getStarId, id);
         List<StarTags> list = iStarTagsService.list(queryWrapper);
         List<TagsDto> tagsDtos = new ArrayList<>();
-        listUtils.copyList(list, tagsDtos, TagsDto.class);
+        for (StarTags starTags : list){
+            TagsDto tagsDto = new TagsDto();
+            tagsDto.setId(starTags.getId());
+            tagsDto.setTagsId(starTags.getTagsId());
+            tagsDto.setName(starTags.getTagsName());
+            tagsDtos.add(tagsDto);
+        }
         starDetailVo.setTags(tagsDtos);
         return starDetailVo;
     }

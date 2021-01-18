@@ -7,5 +7,7 @@ public class TagsDto {
 
     private Long id;
 
+    private Long tagsId;
+
     private String name;
 }
