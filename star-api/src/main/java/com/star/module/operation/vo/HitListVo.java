@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class HitListVo {
 
+    @ApiModelProperty(value = "id")
+    private Long id;
 
     @ApiModelProperty(value = "周时间段")
     private String weekTime;

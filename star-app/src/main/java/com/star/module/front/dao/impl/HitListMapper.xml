@@ -6,7 +6,8 @@
     <select id="selectHitRankByStar" resultType="com.star.module.operation.vo.HitListVo">
         SELECT
         st.name AS starName,
-        st.id AS starId,
+        st.star_id AS starId,
+        st.id AS id,
         st.avatar AS starAvatar,
         IFNULL(SUM(hl.vigour_val),0) AS totalVigourVal
         FROM hit_list hl
