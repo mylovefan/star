@@ -34,12 +34,10 @@ public class ResourcesDto implements Serializable {
     private Integer target;
 
     @ApiModelProperty(value = "开始时间")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime beginTime;
+    private String beginTime;
 
     @ApiModelProperty(value = "结束时间")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime endTime;
+    private String endTime;
 
     @ApiModelProperty(value = "明星标签")
     private List<TagsDto> tags;

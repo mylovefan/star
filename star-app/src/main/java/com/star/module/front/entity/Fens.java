@@ -94,7 +94,7 @@ public class Fens implements Serializable {
 
     @ApiModelProperty(value = "是否开启个人标语")
     @TableField("slogan_open")
-    private String sloganOpen;
+    private Integer sloganOpen;
 
     @ApiModelProperty(value = "抽奖次数")
     @TableField("draw_num")

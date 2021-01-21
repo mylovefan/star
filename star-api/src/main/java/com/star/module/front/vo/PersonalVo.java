@@ -25,5 +25,5 @@ public class PersonalVo {
     private Integer openFlag;
 
     @ApiModelProperty(value = "是否开启个人标语 0未开启 1开启")
-    private String sloganOpen;
+    private Integer sloganOpen;
 }

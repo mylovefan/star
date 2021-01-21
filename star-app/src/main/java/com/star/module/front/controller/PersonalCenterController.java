@@ -64,6 +64,6 @@ public class PersonalCenterController implements PersonalCenterFacade {
 
     @Override
     public void removeMyGuard(@RequestParam("starId") Long starId) {
-
+        guardService.removeMyGuard(starId);
     }
 }

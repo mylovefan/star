@@ -1714,6 +1714,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		String nowStr = localDateTimeOfNow.format(format);
 		return nowStr;
 	}
+
+	public static LocalDateTime parseLocalDateStr(String localDateTimeOfNow){
+
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		//格式化字符串
+		LocalDateTime localDateTime = LocalDateTime.parse(localDateTimeOfNow,format);
+		return localDateTime;
+	}
 	
 	
 	

@@ -90,6 +90,8 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
         Resources resources = new Resources();
         BeanUtils.copyProperties(resourcesDto,resources);
+        resources.setBeginTime(DateUtils.parseLocalDateStr(resourcesDto.getBeginTime()));
+        resources.setEndTime(DateUtils.parseLocalDateStr(resourcesDto.getEndTime()));
         resources.setTags(JSON.toJSONString(resourcesDto.getTags()));
         List<Long> starIds = resourcesDto.getTags().stream().map(TagsDto::getId).collect(Collectors.toList());
         QueryWrapper<StarTags> starTagsQueryWrapper = new QueryWrapper<>();
@@ -101,14 +103,14 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         }
         for (Long starId : resourcesDto.getStarIds()){
             QueryWrapper<Star> starWrapper = new QueryWrapper<>();
-            starWrapper.lambda().in(Star::getId,starId);
+            starWrapper.lambda().in(Star::getStarId,starId);
             Integer count = starMapper.selectCount(starWrapper);
             if(count != null && count > 0){
                 starList.add(starId);
             }
         }
 
-        if(resourcesDto.getId() != null){
+        if(resourcesDto.getId() != null && resourcesDto.getId().longValue() > 0){
             Resources record = resourcesMapper.selectById(resourcesDto.getId());
             if(record == null){
                 throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(),"id错误");
