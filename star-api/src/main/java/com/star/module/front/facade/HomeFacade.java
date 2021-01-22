@@ -2,12 +2,11 @@ package com.star.module.front.facade;
 
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
-import com.star.module.front.dto.HitDto;
+import com.star.module.front.dto.*;
 import com.star.module.front.vo.*;
 import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
-import com.star.module.front.dto.RankDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -54,5 +53,15 @@ public interface HomeFacade {
     @ApiOperation("打榜")
     @PostMapping("hit")
     void hit(@RequestBody HitDto hitDto);
+
+    /**
+     * 粉丝资源排名
+     *
+     * @param rankDto
+     * @return
+     */
+    @ApiOperation("粉丝榜")
+    @PostMapping("selectHomeFensRank")
+    PageSerializable<FensVigourRankVo> selectHomeFensRank(@RequestBody FensRankDto rankDto);
 
 }

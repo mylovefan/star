@@ -1,6 +1,8 @@
 package com.star.module.operation.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.star.module.operation.dto.TagsDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -35,11 +37,13 @@ public class ResourcesDetailVo implements Serializable {
     private Integer target;
 
     @ApiModelProperty(value = "开始时间")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime beginTime;
 
     @ApiModelProperty(value = "结束时间")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime endTime;
 
     @ApiModelProperty(value = "明星标签")

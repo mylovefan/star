@@ -25,7 +25,7 @@ public interface ResourcesFacade {
 
     @ApiOperation(value = "资源详情")
     @GetMapping("selectResources")
-    ResourcesDetailVo selectResources(@PathVariable("id") Long id);
+    ResourcesDetailVo selectResources(@RequestParam("id") Long id);
 
     @ApiOperation(value = "周榜月榜新增修改")
     @PostMapping("addOrUpdateListAward")

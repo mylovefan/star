@@ -42,7 +42,7 @@ public class ResourcesController implements ResourcesFacade {
     }
 
     @Override
-    public ResourcesDetailVo selectResources(@PathVariable("id") Long id) {
+    public ResourcesDetailVo selectResources(@RequestParam("id") Long id) {
         return resourcesService.selectResources(id);
     }
 

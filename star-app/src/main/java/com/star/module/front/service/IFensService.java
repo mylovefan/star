@@ -1,7 +1,11 @@
 package com.star.module.front.service;
 
+import com.github.pagehelper.PageSerializable;
+import com.star.module.front.dto.FensRankDto;
 import com.star.module.front.dto.UpdatePersonalCenterInfoDto;
+import com.star.module.front.vo.FensVigourRankVo;
 import com.star.module.front.vo.PersonalVo;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * <p>
@@ -27,4 +31,10 @@ public interface IFensService{
      */
     void updatePersonalCenterInfo(UpdatePersonalCenterInfoDto updatePersonalCenterInfoDto);
 
+    /**
+     * 粉丝榜
+     * @param rankDto
+     * @return
+     */
+    PageSerializable<FensVigourRankVo> selectHomeFensRank(FensRankDto rankDto);
 }
