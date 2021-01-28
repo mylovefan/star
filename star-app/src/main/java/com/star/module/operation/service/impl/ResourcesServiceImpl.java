@@ -165,10 +165,10 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
             if(resourcesPageDto.getStatus() == 1){
                 queryWrapper.lambda().gt(Resources::getBeginTime,localDateTimeOfNow);
             }else if(resourcesPageDto.getStatus() == 2){
-                queryWrapper.lambda().ge(Resources::getBeginTime,localDateTimeOfNow);
+                queryWrapper.lambda().le(Resources::getBeginTime,localDateTimeOfNow);
                 queryWrapper.lambda().ge(Resources::getEndTime,localDateTimeOfNow);
             }else {
-                queryWrapper.lambda().lt(Resources::getEndTime,localDateTimeOfNow);
+                queryWrapper.lambda().le(Resources::getEndTime,localDateTimeOfNow);
             }
 
         }
