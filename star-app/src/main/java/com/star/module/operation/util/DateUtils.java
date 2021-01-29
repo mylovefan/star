@@ -384,6 +384,18 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		return calendar.getTime();
 	}
 
+
+	public static Date adYear(Date date, int year) {
+		if (date == null) {
+			return null;
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		//calendar.add(Calendar.DAY_OF_MONTH, day);
+		calendar.add(Calendar.YEAR, year);
+		return calendar.getTime();
+	}
+
 	/**
 	 * 得到month的终止时间点.
 	 * 

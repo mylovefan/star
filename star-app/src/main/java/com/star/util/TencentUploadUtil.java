@@ -9,6 +9,7 @@ import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.model.StorageClass;
 import com.qcloud.cos.region.Region;
+import com.star.module.operation.util.DateUtils;
 
 import java.io.*;
 import java.net.URL;
@@ -160,7 +161,7 @@ public class TencentUploadUtil {
         ClientConfig clientConfig = new ClientConfig(new Region(region));
         // 3 生成cos客户端
         COSClient cosClient = new COSClient(cred, clientConfig);
-        Date expiration = new Date(System.currentTimeMillis()+ 3600*24*365*100* 1000);
+        Date expiration = DateUtils.adYear(new Date(),100);
         URL url = cosClient.generatePresignedUrl(bucket, key, expiration);
         // 关闭客户端
         cosClient.shutdown();
@@ -168,8 +169,8 @@ public class TencentUploadUtil {
         return url.toString();
     }
 
-    public static void main(String[] args) {
-        System.out.println(findFile("374546101027270656.jpg"));
-    }
+   /* public static void main(String[] args) {
+        System.out.println(DateUtils.adYear(new Date(),100));
+    }*/
 
 }
