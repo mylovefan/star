@@ -51,31 +51,37 @@ public class HomeController implements HomeFacade {
     }
 
     @Override
+    @IgnoreSecurity
     public PageSerializable<MyGuardVo> selectMyGuard(@RequestBody PageDTO pageDTO) {
         return iGuardService.selectMyGuard(pageDTO);
     }
 
     @Override
+    @IgnoreSecurity
     public PageSerializable<HitListVo> pageListRank(@RequestBody RankDto rankDto) {
         return iHitListService.pageListRank(rankDto);
     }
 
     @Override
+    @IgnoreSecurity
     public PageSerializable<FensMarkVo> selectFensRankPage(@RequestBody FensMarkRankDto fensMarkRankDto) {
         return iHitListService.selectFensRankPage(fensMarkRankDto);
     }
 
     @Override
+    @IgnoreSecurity
     public List<HotStarVo> hotSearch() {
         return iStarService.hotSearch();
     }
 
     @Override
+    @IgnoreSecurity
     public List<StarInfoVo> selectStarInfo(String name) {
         return iStarService.selectStar(name);
     }
 
     @Override
+    @IgnoreSecurity
     public HitDetailVo selectHitDetail(@RequestParam("starId") Long starId) {
         return iStarService.selectHitDetail(starId);
     }
@@ -87,6 +93,7 @@ public class HomeController implements HomeFacade {
 
 
     @Override
+    @IgnoreSecurity
     public PageSerializable<FensVigourRankVo> selectHomeFensRank(@RequestBody FensRankDto rankDto) {
         return iFensService.selectHomeFensRank(rankDto);
     }

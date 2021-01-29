@@ -11,6 +11,7 @@ import com.star.module.operation.dto.StarPageDto;
 import com.star.module.operation.facade.StarFacade;
 import com.star.module.front.service.IStarService;
 import com.star.module.operation.vo.*;
+import com.star.module.user.common.IgnoreSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -90,7 +91,7 @@ public class StarController implements StarFacade {
 
 
     @Override
-    public void downStarList(HttpServletResponse response,@RequestParam("name") String name,@RequestParam("starId")  Long starId) {
+    public void downStarList(HttpServletResponse response,@RequestParam(value = "name",required = false) String name,@RequestParam(value ="starId",required = false)  Long starId) {
         iStarService.downStarList(response,name,starId);
     }
 }
