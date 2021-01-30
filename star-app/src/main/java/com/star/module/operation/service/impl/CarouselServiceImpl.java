@@ -6,6 +6,7 @@ import com.github.pagehelper.util.StringUtil;
 import com.star.common.CommonConstants;
 import com.star.module.front.dao.StarMapper;
 import com.star.module.front.entity.Star;
+import com.star.module.front.vo.CarouselDeatilVo;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.operation.dao.CarouselMapper;
 import com.star.module.operation.entity.Carousel;
@@ -74,11 +75,13 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
                 if(StringUtil.isNotEmpty(carousel.getHome1())){
                     HomeCarouselVo vo1 = new HomeCarouselVo();
                     vo1.setImg(carousel.getHome1());
+                    vo1.setLevel(1);
                     list.add(vo1);
                 }
                 if(StringUtil.isNotEmpty(carousel.getHome2())){
                     HomeCarouselVo vo2 = new HomeCarouselVo();
                     vo2.setImg(carousel.getHome2());
+                    vo2.setLevel(2);
                     list.add(vo2);
                 }
             }
@@ -91,6 +94,7 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
             HomeCarouselVo vo3 = new HomeCarouselVo();
             vo3.setImg(star.getHomeImg());
             vo3.setStarName(star.getName());
+            vo3.setStarId(star.getId());
             list.add(vo3);
         }
 
@@ -101,8 +105,22 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
             HomeCarouselVo vo4 = new HomeCarouselVo();
             vo4.setImg(star1.getHomeImg());
             vo4.setStarName(star1.getName());
+            vo4.setStarId(star1.getId());
             list.add(vo4);
         }
         return list;
+    }
+
+
+    @Override
+    public CarouselDeatilVo seleclCarouseDeatil() {
+        Carousel carousel = carouselMapper.selectOne(new QueryWrapper<>());
+        CarouselDeatilVo carouselVo = new CarouselDeatilVo();
+        if (carousel == null){
+            return carouselVo;
+        }
+        carouselVo.setLevel1(carousel.getLevel1());
+        carouselVo.setLevel2(carousel.getLevel2());
+        return carouselVo;
     }
 }

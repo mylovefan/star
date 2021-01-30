@@ -64,4 +64,8 @@ public interface HomeFacade {
     @PostMapping("selectHomeFensRank")
     PageSerializable<FensVigourRankVo> selectHomeFensRank(@RequestBody FensRankDto rankDto);
 
+    @ApiOperation("轮播详情")
+    @GetMapping("seleclCarouseDeatil")
+    CarouselDeatilVo seleclCarouseDeatil();
+
 }

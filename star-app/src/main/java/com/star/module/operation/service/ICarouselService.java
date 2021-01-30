@@ -1,5 +1,6 @@
 package com.star.module.operation.service;
 
+import com.star.module.front.vo.CarouselDeatilVo;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.operation.entity.Carousel;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -37,4 +38,11 @@ public interface ICarouselService extends IService<Carousel> {
      * @return
      */
     List<HomeCarouselVo> carouselList();
+
+    /**
+     * 轮播详情
+     *
+     * @return
+     */
+    CarouselDeatilVo seleclCarouseDeatil();
 }

@@ -97,4 +97,10 @@ public class HomeController implements HomeFacade {
     public PageSerializable<FensVigourRankVo> selectHomeFensRank(@RequestBody FensRankDto rankDto) {
         return iFensService.selectHomeFensRank(rankDto);
     }
+
+
+    @Override
+    public CarouselDeatilVo seleclCarouseDeatil() {
+        return iCarouselService.seleclCarouseDeatil();
+    }
 }
