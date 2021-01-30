@@ -51,7 +51,6 @@ public class HomeController implements HomeFacade {
     }
 
     @Override
-    @IgnoreSecurity
     public PageSerializable<MyGuardVo> selectMyGuard(@RequestBody PageDTO pageDTO) {
         return iGuardService.selectMyGuard(pageDTO);
     }
