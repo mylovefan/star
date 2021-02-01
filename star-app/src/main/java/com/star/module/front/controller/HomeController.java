@@ -51,7 +51,6 @@ public class HomeController implements HomeFacade {
     }
 
     @Override
-    @IgnoreSecurity
     public PageSerializable<MyGuardVo> selectMyGuard(@RequestBody PageDTO pageDTO) {
         return iGuardService.selectMyGuard(pageDTO);
     }
@@ -98,6 +97,10 @@ public class HomeController implements HomeFacade {
         return iFensService.selectHomeFensRank(rankDto);
     }
 
+    @Override
+    public CarouselDeatilVo seleclCarouseDeatil() {
+        return iCarouselService.seleclCarouseDeatil();
+    }
 
     @Override
     public String selectOpenImg() {

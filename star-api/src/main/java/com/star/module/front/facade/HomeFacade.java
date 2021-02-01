@@ -68,4 +68,7 @@ public interface HomeFacade {
     @GetMapping("selectOpenImg")
     String selectOpenImg();
 
+    @ApiOperation("轮播详情")
+    @GetMapping("seleclCarouseDeatil")
+    CarouselDeatilVo seleclCarouseDeatil();
 }

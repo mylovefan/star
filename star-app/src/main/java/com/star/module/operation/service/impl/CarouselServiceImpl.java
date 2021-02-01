@@ -7,6 +7,7 @@ import com.github.pagehelper.util.StringUtil;
 import com.star.common.CommonConstants;
 import com.star.module.front.dao.StarMapper;
 import com.star.module.front.entity.Star;
+import com.star.module.front.vo.CarouselDeatilVo;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.operation.dao.CarouselMapper;
 import com.star.module.operation.dao.ListAwardMapper;
@@ -80,11 +81,13 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
                 if(StringUtil.isNotEmpty(carousel.getHome1())){
                     HomeCarouselVo vo1 = new HomeCarouselVo();
                     vo1.setImg(carousel.getHome1());
+                    vo1.setLevel(1);
                     list.add(vo1);
                 }
                 if(StringUtil.isNotEmpty(carousel.getHome2())){
                     HomeCarouselVo vo2 = new HomeCarouselVo();
                     vo2.setImg(carousel.getHome2());
+                    vo2.setLevel(2);
                     list.add(vo2);
                 }
             }
@@ -121,6 +124,17 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
         return list;
     }
 
+    @Override
+    public CarouselDeatilVo seleclCarouseDeatil() {
+        Carousel carousel = carouselMapper.selectOne(new QueryWrapper<>());
+        CarouselDeatilVo carouselVo = new CarouselDeatilVo();
+        if (carousel == null){
+            return carouselVo;
+        }
+        carouselVo.setLevel1(carousel.getLevel1());
+        carouselVo.setLevel2(carousel.getLevel2());
+        return carouselVo;
+    }
 
     @Override
     public String selectOpenImg() {
