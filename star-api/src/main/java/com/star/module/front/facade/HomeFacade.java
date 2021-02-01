@@ -64,4 +64,8 @@ public interface HomeFacade {
     @PostMapping("selectHomeFensRank")
     PageSerializable<FensVigourRankVo> selectHomeFensRank(@RequestBody FensRankDto rankDto);
 
+    @ApiOperation("开屏图")
+    @GetMapping("selectOpenImg")
+    String selectOpenImg();
+
 }

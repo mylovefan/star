@@ -37,4 +37,10 @@ public interface ICarouselService extends IService<Carousel> {
      * @return
      */
     List<HomeCarouselVo> carouselList();
+
+    /**
+     * 开屏图
+     * @return
+     */
+    String selectOpenImg();
 }

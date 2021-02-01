@@ -1,5 +1,6 @@
 package com.star.module.operation.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.util.StringUtil;
@@ -8,7 +9,9 @@ import com.star.module.front.dao.StarMapper;
 import com.star.module.front.entity.Star;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.operation.dao.CarouselMapper;
+import com.star.module.operation.dao.ListAwardMapper;
 import com.star.module.operation.entity.Carousel;
+import com.star.module.operation.entity.ListAward;
 import com.star.module.operation.service.ICarouselService;
 import com.star.module.user.dto.CarouselDto;
 import com.star.module.user.vo.CarouselVo;
@@ -38,6 +41,9 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
     private CarouselMapper carouselMapper;
     @Autowired
     private StarMapper starMapper;
+
+    @Autowired
+    private ListAwardMapper listAwardMapper;
 
     @Override
     public void addOrUpdateCarousel(CarouselDto carouselDto) {
@@ -84,25 +90,60 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
             }
         }
 
-        QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Star::getThisMonthRank, 1);
-        Star star = starMapper.selectOne(queryWrapper);
-        if(star !=null){
-            HomeCarouselVo vo3 = new HomeCarouselVo();
-            vo3.setImg(star.getHomeImg());
-            vo3.setStarName(star.getName());
-            list.add(vo3);
+        QueryWrapper<ListAward> wrapper = new QueryWrapper<>();
+        wrapper.lambda().in(ListAward::getCode,"MONTH");
+        ListAward listAward = listAwardMapper.selectOne(wrapper);
+        if(listAward != null && listAward.getType() == 3){
+            QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(Star::getThisMonthRank, 1);
+            Star star = starMapper.selectOne(queryWrapper);
+            if(star !=null){
+                HomeCarouselVo vo3 = new HomeCarouselVo();
+                vo3.setImg(star.getHomeImg());
+                vo3.setStarName(star.getName());
+                list.add(vo3);
+            }
         }
 
-        QueryWrapper<Star> queryWrapper1 = new QueryWrapper<>();
-        queryWrapper1.lambda().eq(Star::getThisWeekRank, 1);
-        Star star1 = starMapper.selectOne(queryWrapper1);
-        if(star1 !=null){
-            HomeCarouselVo vo4 = new HomeCarouselVo();
-            vo4.setImg(star1.getHomeImg());
-            vo4.setStarName(star1.getName());
-            list.add(vo4);
+        wrapper.lambda().in(ListAward::getCode,"WEEK");
+        ListAward listAward2 = listAwardMapper.selectOne(wrapper);
+        if(listAward2 != null && listAward2.getType() == 3){
+            QueryWrapper<Star> queryWrapper1 = new QueryWrapper<>();
+            queryWrapper1.lambda().eq(Star::getThisWeekRank, 1);
+            Star star1 = starMapper.selectOne(queryWrapper1);
+            if(star1 !=null){
+                HomeCarouselVo vo4 = new HomeCarouselVo();
+                vo4.setImg(star1.getHomeImg());
+                vo4.setStarName(star1.getName());
+                list.add(vo4);
+            }
         }
         return list;
+    }
+
+
+    @Override
+    public String selectOpenImg() {
+        List<ListAward> list = listAwardMapper.selectList(new QueryWrapper<>());
+        for (ListAward listAward : list){
+            if("WEEK".equals(listAward.getCode()) && listAward.getType() == 2){
+                QueryWrapper<Star> queryWrapper1 = new QueryWrapper<>();
+                queryWrapper1.lambda().eq(Star::getThisWeekRank, 1);
+                Star star1 = starMapper.selectOne(queryWrapper1);
+                if(star1 != null){
+                    return star1.getOpenImg();
+                }
+            }
+
+            if("MONTH".equals(listAward.getCode()) && listAward.getType() == 2){
+                QueryWrapper<Star> queryWrapper1 = new QueryWrapper<>();
+                queryWrapper1.lambda().eq(Star::getThisMonthRank, 1);
+                Star star1 = starMapper.selectOne(queryWrapper1);
+                if(star1 != null){
+                    return star1.getOpenImg();
+                }
+            }
+        }
+        return null;
     }
 }
