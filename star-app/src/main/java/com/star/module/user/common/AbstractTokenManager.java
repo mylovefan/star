@@ -18,7 +18,7 @@ import java.util.Date;
 public class AbstractTokenManager implements TokenManager {
 
     // token生效时效
-    protected int tokenExpireSeconds = 60 * 60 * 1000 * 3;
+    protected int tokenExpireSeconds = 60 * 60 * 1000 * 24 * 30;
 
     // token更新时效
     protected int tokenUpdateSeconds = 60 * 60 * 1000;

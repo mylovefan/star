@@ -103,6 +103,7 @@ public class HomeController implements HomeFacade {
     }
 
     @Override
+    @IgnoreSecurity
     public String selectOpenImg() {
         return iCarouselService.selectOpenImg();
     }

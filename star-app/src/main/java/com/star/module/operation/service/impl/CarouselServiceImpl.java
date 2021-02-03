@@ -104,6 +104,8 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
                 HomeCarouselVo vo3 = new HomeCarouselVo();
                 vo3.setImg(star.getHomeImg());
                 vo3.setStarName(star.getName());
+                vo3.setStarId(star.getId());
+                vo3.setCode("MONTH");
                 list.add(vo3);
             }
         }
@@ -118,6 +120,8 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
                 HomeCarouselVo vo4 = new HomeCarouselVo();
                 vo4.setImg(star1.getHomeImg());
                 vo4.setStarName(star1.getName());
+                vo4.setStarId(star1.getId());
+                vo4.setCode("WEEK");
                 list.add(vo4);
             }
         }

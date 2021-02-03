@@ -29,8 +29,8 @@ spring:
         stat:
           mergeSql: true
           slowSqlMillis: 5000
-        loginUsername: ###
-        loginPassword: ###
+        loginUsername: root
+        loginPassword: star#2020
         #IP白名单(没有配置或者为空,则允许所有访问)
         allow:
         #IP黑名单 (存在共同时,deny优先于allow)

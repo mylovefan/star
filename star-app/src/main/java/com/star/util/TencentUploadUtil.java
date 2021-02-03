@@ -161,7 +161,7 @@ public class TencentUploadUtil {
         ClientConfig clientConfig = new ClientConfig(new Region(region));
         // 3 生成cos客户端
         COSClient cosClient = new COSClient(cred, clientConfig);
-        Date expiration = DateUtils.adYear(new Date(),100);
+        Date expiration = DateUtils.adYear(new Date(),50);
         URL url = cosClient.generatePresignedUrl(bucket, key, expiration);
         // 关闭客户端
         cosClient.shutdown();
