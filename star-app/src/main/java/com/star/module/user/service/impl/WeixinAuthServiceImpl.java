@@ -40,9 +40,9 @@ import java.util.Map;
 @Slf4j
 public class WeixinAuthServiceImpl implements WeixinAuthService {
 
-    public String appId ="wxcf8c06040676fecd";
+    public String appId ="xxx";
 
-    public String secret ="bfa8089fdfbb2addeb5de83af974561f";
+    public String secret ="xxx";
 
     @Autowired
     private FensMapper fensMapper;

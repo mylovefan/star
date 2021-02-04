@@ -19,13 +19,13 @@ public class TencentUploadUtil {
 
 
     //腾讯云的SecretId
-    public static String secretId = "AKIDsdFgvSs8B2xmPqA5tysDONDrJbhaotHV";
+    public static String secretId = "xxx";
     //腾讯云的SecretKey
-    public static String secretKey ="EI9oqhOtKaccQ1PbaOH3hBTbbS7dx5C8";
+    public static String secretKey ="xxx";
     //腾讯云的bucket (存储桶)
-    public static String bucket ="star-1254802359";
+    public static String bucket ="xxx";
     //腾讯云的region(bucket所在地区)
-    public static String region ="ap-guangzhou";
+    public static String region ="xxx";
     //腾讯云的allowPrefix(允许上传的路径)
     public static String allowPrefix;
     //腾讯云的临时密钥时长(单位秒)
