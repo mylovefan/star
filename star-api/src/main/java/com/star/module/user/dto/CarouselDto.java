@@ -35,6 +35,8 @@ public class CarouselDto{
     @ApiModelProperty(value = "是否开启")
     private Integer open;
 
+    @ApiModelProperty(value = "是否开启")
+    private Integer open2;
 
 
 }

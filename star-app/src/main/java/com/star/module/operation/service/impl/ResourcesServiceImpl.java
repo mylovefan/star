@@ -102,6 +102,9 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
             starList.add(tags.getStarId());
         }
         for (Long starId : resourcesDto.getStarIds()){
+            if(starList.contains(starId)){
+                continue;
+            }
             QueryWrapper<Star> starWrapper = new QueryWrapper<>();
             starWrapper.lambda().in(Star::getStarId,starId);
             Integer count = starMapper.selectCount(starWrapper);
@@ -117,9 +120,6 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
             }
 
             //判断状态是否进行中
-            if(localDateTimeOfNow.isAfter(record.getBeginTime()) || localDateTimeOfNow.isBefore(record.getEndTime())) {
-                throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(),"资源状态进行中，不允许修改");
-            }
             if(localDateTimeOfNow.isAfter(record.getEndTime())) {
                 throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(),"资源状态已结束，不允许修改");
             }

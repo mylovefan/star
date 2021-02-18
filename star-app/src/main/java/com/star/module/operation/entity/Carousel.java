@@ -50,6 +50,10 @@ public class Carousel implements Serializable {
     @TableField("open")
     private Integer open;
 
+    @ApiModelProperty(value = "是否开启")
+    @TableField("open2")
+    private Integer open2;
+
     @ApiModelProperty(value = "新增时间")
     @TableField("add_time")
     private LocalDateTime addTime;

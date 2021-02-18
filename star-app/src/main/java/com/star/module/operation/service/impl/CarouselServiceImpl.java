@@ -84,6 +84,8 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
                     vo1.setLevel(1);
                     list.add(vo1);
                 }
+            }
+            if(carousel.getOpen2().equals(NumberUtils.INTEGER_ONE)){
                 if(StringUtil.isNotEmpty(carousel.getHome2())){
                     HomeCarouselVo vo2 = new HomeCarouselVo();
                     vo2.setImg(carousel.getHome2());
