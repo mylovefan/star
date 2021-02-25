@@ -166,13 +166,15 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
             if(hitSettings.getScoreStrategyFlag() == 1){
                 if(fens.getDrawNum() >= hitSettings.getStrategyDeawMinNum()){
                     List<String> list = Arrays.asList(hitSettings.getVigourSendNum().split(","));
-                    if(list.size() == 1){
-                        Random df = new Random();
-                        int random = df.nextInt(list.size());
-                        fensVigourLog.setVigourVal(Integer.parseInt(list.get(random)));
-                        fensDo.setDrawNum(0);
-                    }
+                    Random df = new Random();
+                    int random = df.nextInt(list.size());
+                    fensVigourLog.setVigourVal(Integer.parseInt(list.get(random)));
+                    fensDo.setDrawNum(0);
                 }else {
+                    List<String> list = Arrays.asList(hitSettings.getDrawFieldNums().split(","));
+                    Random df = new Random();
+                    int random = df.nextInt(list.size());
+                    fensVigourLog.setVigourVal(Integer.parseInt(list.get(random)));
                     fensDo.setDrawNum(fens.getDrawNum() + 1);
                 }
             }else {
