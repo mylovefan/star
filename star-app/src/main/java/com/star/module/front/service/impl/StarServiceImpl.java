@@ -12,6 +12,7 @@ import com.star.common.ServiceException;
 import com.star.module.front.dao.FensMapper;
 import com.star.module.front.dao.HitListMapper;
 import com.star.module.front.dao.StarMapper;
+import com.star.module.front.dto.RankDto;
 import com.star.module.front.entity.Fens;
 import com.star.module.front.entity.Star;
 import com.star.module.front.service.IHitListService;
@@ -30,6 +31,7 @@ import com.star.module.operation.util.ListUtils;
 import com.star.module.operation.util.RandomUtils;
 import com.star.module.operation.dto.StarDto;
 import com.star.module.operation.dto.StarPageDto;
+import com.star.module.operation.vo.HitListVo;
 import com.star.module.operation.vo.StarDetailVo;
 import com.star.module.operation.vo.StartVo;
 import com.star.module.user.common.UserUtil;
@@ -164,6 +166,61 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         this.tagsSet(dto, star);
     }
 
+
+    @Override
+    public PageSerializable<HitListVo> pageListRank(RankDto rankDto) {
+        String startTime = null;
+        String endTime = null;
+        switch (rankDto.getRankType()){
+            case 0:
+                //查询条件都为空时，默认统计本周
+                getStarRank(0, DateUtils.getWeekStart(new Date()), DateUtils.getWeekEnd(new Date()));
+                break;
+            case 1:
+                //查询条件都为空时，默认统计本月
+                getStarRank(1, DateUtils.getMonthStart(new Date()), DateUtils.getMonthEnd(new Date()));
+                break;
+        }
+        QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
+        if(rankDto.getRankType() == 0){
+            queryWrapper.orderByDesc("this_week_rank");
+        }else if(rankDto.getRankType() == 1){
+            queryWrapper.orderByDesc("this_month_rank");
+        }else {
+            queryWrapper.orderByDesc("hot_nums");
+        }
+        IPage page = new Page(rankDto.getPageNum(), rankDto.getPageSize());
+        IPage<Star> pageList = starMapper.selectPage(page, queryWrapper);
+
+        //返回结果
+        List<HitListVo> weekRankList = new ArrayList<>();
+        int i = rankDto.getPageSize()*(rankDto.getPageNum()-1)+1 ;
+        for (Star star : pageList.getRecords()) {
+            HitListVo hitListVo = new HitListVo();
+            hitListVo.setId(star.getId());
+            hitListVo.setStarAvatar(star.getAvatar());
+            hitListVo.setStarId(star.getStarId());
+            hitListVo.setStarName(star.getName());
+            hitListVo.setRank(i);
+            if(rankDto.getRankType() != 2){
+                Integer totalVigourVal = hitListMapper.totalCountVigourMark(startTime, endTime, star.getId());
+                if(totalVigourVal == null){
+                    hitListVo.setTotalVigourVal(0);
+                }else {
+                    hitListVo.setTotalVigourVal(totalVigourVal);
+                }
+            }else {
+                hitListVo.setTotalVigourVal(star.getHotNums());
+            }
+            i++;
+            weekRankList.add(hitListVo);
+        }
+        //int totalCount = hitListMapper.totalCount(startTime, endTime);
+        PageSerializable<HitListVo> pageSerializable = new PageSerializable<>(weekRankList);
+        pageSerializable.setTotal(pageList.getTotal());
+        return pageSerializable;
+    }
+
     private void tagsSet(StarDto dto, Star star) {
         /** 标签关联标签处理 */
         if (dto.getTags() != null && !dto.getTags().isEmpty()) {
@@ -209,9 +266,18 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
                 BeanUtils.copyProperties(modelList.get(i), star);
 
                 if(type ==0) {
-                    star.setThisWeekRank(i+1);
+                    if(modelList.get(i).getVigourVal() == 0){
+                        star.setThisWeekRank(0);
+                    }else {
+                        star.setThisWeekRank(i+1);
+                    }
+
                 }else{
-                    star.setThisMonthRank(i+1);
+                    if(modelList.get(i).getVigourVal() == 0){
+                        star.setThisMonthRank(0);
+                    }else {
+                        star.setThisMonthRank(i+1);
+                    }
                 }
                 starMapper.updateById(star);
             }

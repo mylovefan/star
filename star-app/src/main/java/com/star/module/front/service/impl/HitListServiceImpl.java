@@ -275,33 +275,7 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
         return pageSerializable;
     }
 
-    @Override
-    public PageSerializable<HitListVo> pageListRank(RankDto rankDto) {
-        String startTime = null;
-        String endTime = null;
-        switch (rankDto.getRankType()){
-            case 0:
-                //查询条件都为空时，默认统计本周
-                startTime = DateUtils.getTimeStampStr(DateUtils.getWeekStart(new Date()));
-                endTime = DateUtils.getTimeStampStr(DateUtils.getWeekEnd(new Date()));
-                break;
-            case 1:
-                //查询条件都为空时，默认统计本月
-                startTime = DateUtils.getTimeStampStr(DateUtils.getMonthStart(new Date()));
-                endTime = DateUtils.getTimeStampStr(DateUtils.getMonthEnd(new Date()));
-                break;
-        }
 
-        //返回结果
-        List<HitListVo> weekRankList = hitListMapper.selectHitRankByStar(startTime, endTime, rankDto.getPageNum(), rankDto.getPageSize(), NumberUtils.INTEGER_ONE, true);
-        for (int i = 0; i < weekRankList.size(); i++) {
-            weekRankList.get(i).setRank(i + 1);
-        }
-        int totalCount = hitListMapper.totalCount(startTime, endTime);
-        PageSerializable<HitListVo> pageSerializable = new PageSerializable<>(weekRankList);
-        pageSerializable.setTotal(totalCount);
-        return pageSerializable;
-    }
 
     @Override
     public PageSerializable<FensVigourRankVo> selectFensRank(StarFensRankDto rankDto) {

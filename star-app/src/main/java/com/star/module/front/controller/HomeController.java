@@ -58,7 +58,7 @@ public class HomeController implements HomeFacade {
     @Override
     @IgnoreSecurity
     public PageSerializable<HitListVo> pageListRank(@RequestBody RankDto rankDto) {
-        return iHitListService.pageListRank(rankDto);
+        return iStarService.pageListRank(rankDto);
     }
 
     @Override

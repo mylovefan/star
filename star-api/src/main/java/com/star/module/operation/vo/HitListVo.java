@@ -29,7 +29,7 @@ public class HitListVo {
     private int rank;
 
     @ApiModelProperty(value = "总活力值")
-    private Long totalVigourVal;
+    private Integer totalVigourVal;
 
     @ApiModelProperty(value = "排序 0：正序；1：倒序；")
     private int sortType;

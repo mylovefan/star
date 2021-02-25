@@ -102,6 +102,24 @@
         </where>
     </select>
 
+    <select id="totalCountVigourMark" resultType="java.lang.Integer">
+        SELECT
+        COUNT(DISTINCT hl.fens_id) AS totalCount
+        FROM hit_list hl
+        LEFT JOIN fens fs ON fs.id = hl.fens_id
+        <where>
+            <if test="startTime != null">
+                and	hl.create_time <![CDATA[>= ]]> #{startTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null">
+                and	hl.create_time <![CDATA[<= ]]> #{endTime,jdbcType=VARCHAR}
+            </if>
+            <if test="starId != null">
+                and	hl.star_id =  #{starId}
+            </if>
+        </where>
+    </select>
+
     <select id="getThisRank" resultType="java.lang.Integer">
         SELECT t.rank_no FROM (
             SELECT

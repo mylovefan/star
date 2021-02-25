@@ -1,6 +1,7 @@
 package com.star.module.front.service;
 
 import com.github.pagehelper.PageSerializable;
+import com.star.module.front.dto.RankDto;
 import com.star.module.front.entity.Star;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.star.module.front.vo.HitDetailVo;
@@ -8,6 +9,7 @@ import com.star.module.front.vo.HotStarVo;
 import com.star.module.front.vo.StarInfoVo;
 import com.star.module.operation.dto.StarDto;
 import com.star.module.operation.dto.StarPageDto;
+import com.star.module.operation.vo.HitListVo;
 import com.star.module.operation.vo.StarDetailVo;
 import com.star.module.operation.vo.StartVo;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,4 +94,12 @@ public interface IStarService extends IService<Star> {
      * @param response
      */
     void downStarList(HttpServletResponse response,String name,Long starId);
+
+
+    /**
+     * 首页榜单列表
+     * @param rankDto
+     * @return
+     */
+    PageSerializable<HitListVo> pageListRank(RankDto rankDto);
 }

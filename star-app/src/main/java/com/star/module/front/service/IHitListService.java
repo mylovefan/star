@@ -48,12 +48,6 @@ public interface IHitListService extends IService<HitList> {
      */
     PageSerializable<FensMarkVo> selectFensRankPage(FensMarkRankDto fensMarkRankDto);
 
-    /**
-     * 首页榜单列表
-     * @param rankDto
-     * @return
-     */
-    PageSerializable<HitListVo> pageListRank(RankDto rankDto);
 
     /**
      * 粉丝周榜月榜总榜
