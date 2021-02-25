@@ -207,6 +207,6 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
 
     public static void main(String[] args) {
         Random df = new Random();
-        System.out.println(df.nextInt(2));
+        System.out.println(df.nextInt(6));
     }
 }
