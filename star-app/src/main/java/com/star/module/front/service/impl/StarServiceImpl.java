@@ -174,21 +174,30 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         switch (rankDto.getRankType()){
             case 0:
                 //查询条件都为空时，默认统计本周
-                getStarRank(0, DateUtils.getWeekStart(new Date()), DateUtils.getWeekEnd(new Date()));
+                Date starDate = DateUtils.getWeekStart(new Date());
+                Date endDate = DateUtils.getWeekEnd(new Date());
+                startTime = DateUtils.formatDate(starDate,DateUtils.DATE_FORMAT_DATETIME);
+                endTime = DateUtils.formatDate(endDate,DateUtils.DATE_FORMAT_DATETIME);
+                getStarRank(0, starDate, endDate);
                 break;
             case 1:
                 //查询条件都为空时，默认统计本月
-                getStarRank(1, DateUtils.getMonthStart(new Date()), DateUtils.getMonthEnd(new Date()));
+                Date starMonthDate = DateUtils.getMonthStart(new Date());
+                Date endMonthDate = DateUtils.getMonthEnd(new Date());
+                startTime = DateUtils.formatDate(starMonthDate,DateUtils.DATE_FORMAT_DATETIME);
+                endTime = DateUtils.formatDate(endMonthDate,DateUtils.DATE_FORMAT_DATETIME);
+                getStarRank(1, starMonthDate, endMonthDate);
                 break;
         }
         QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
         if(rankDto.getRankType() == 0){
-            queryWrapper.orderByDesc("this_week_rank");
+            queryWrapper.orderByAsc("this_week_rank");
         }else if(rankDto.getRankType() == 1){
-            queryWrapper.orderByDesc("this_month_rank");
+            queryWrapper.orderByAsc("this_month_rank");
         }else {
             queryWrapper.orderByDesc("hot_nums");
         }
+        queryWrapper.orderByAsc("create_time");
         IPage page = new Page(rankDto.getPageNum(), rankDto.getPageSize());
         IPage<Star> pageList = starMapper.selectPage(page, queryWrapper);
 
