@@ -104,7 +104,7 @@
 
     <select id="totalCountVigourMark" resultType="java.lang.Integer">
         SELECT
-        COUNT(DISTINCT hl.fens_id) AS totalCount
+        sum(hl.vigour_val) AS totalCount
         FROM hit_list hl
         LEFT JOIN fens fs ON fs.id = hl.fens_id
         <where>
