@@ -147,7 +147,7 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
         if(VigourTypeEnums.SIGN.getCode() == finishTaskVigourDto.getType()){
             //签到
             if(count !=null && count >hitSettings.getSignMaxNum()){
-                throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"每日签到次数达到上限，请明日再来吧!");
+                throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"今日签到次数已用完，明日再来吧");
             }
             queryWrapper.lambda().eq(FensVigourLog::getStarId,finishTaskVigourDto.getStarId());
             Integer starSign = fensVigourLogMapper.selectCount(queryWrapper);
@@ -158,7 +158,7 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
         }else if(VigourTypeEnums.LUCK.getCode() == finishTaskVigourDto.getType()){
             //抽奖
             if(count !=null && count >hitSettings.getDeawMaxNum()){
-                throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"每日抽奖次数达到上限，请明日再来吧!");
+                throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"今日抽次数已用完，明日再来吧");
             }
             Fens fensDo = new Fens();
             fensDo.setId(id);
@@ -189,13 +189,13 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
         }else if(VigourTypeEnums.VIEW.getCode() == finishTaskVigourDto.getType()){
             //看视频
             if(count !=null && count >hitSettings.getVideoMaxNum()){
-                throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"每日看视频次数达到上限，请明日再来吧!");
+                throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"今日看视频次数已用完，明日再来吧");
             }
             fensVigourLog.setVigourVal(hitSettings.getVigourVideoNum());
         }else if(VigourTypeEnums.SHARE.getCode() == finishTaskVigourDto.getType()){
             //分享
             if(count !=null && count >hitSettings.getShareMaxNum()){
-                throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"每日分享次数达到上限，请明日再来吧!");
+                throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"今日分享次数已用完，明日再来吧");
             }
             fensVigourLog.setVigourVal(hitSettings.getVigourShareNum());
         }
