@@ -14,6 +14,7 @@ import com.star.module.front.dto.StarFensRankDto;
 import com.star.module.front.entity.Fens;
 import com.star.module.front.entity.Guard;
 import com.star.module.front.entity.HitList;
+import com.star.module.front.entity.Star;
 import com.star.module.front.service.IHitListService;
 import com.star.module.front.vo.FensVigourLogVo;
 import com.star.module.front.vo.FensVigourRankVo;
@@ -351,6 +352,7 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
         }
         fensMapper.updateReduceVigour(id,vigourVal,null);
 
+        starMapper.updateVigour(starId,vigourVal);
     }
 
 
@@ -395,6 +397,8 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
 
         }
         fensMapper.updateReduceVigour(id,fensMrgStarHiyDto.getVigourVal(),fensMrgStarHiyDto.getStarName());
+
+        starMapper.updateVigour(fensMrgStarHiyDto.getStarId(),fensMrgStarHiyDto.getVigourVal());
     }
 }
 

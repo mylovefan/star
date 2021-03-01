@@ -33,7 +33,7 @@ public interface HitListMapper extends BaseMapper<HitList> {
     int totalCountFensMark(@Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime);
 
 
-    int totalCountVigourMark(@Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime,Long starId);
+    Integer totalCountVigourMark(@Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime,Long starId);
 
     /**
      * 明星本周|本月排名

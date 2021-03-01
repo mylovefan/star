@@ -23,4 +23,7 @@
 	</sql>
 
 -->
+    <update id="updateVigour">
+        update star set hot_nums = hot_nums + #{vigourVal} where id =  #{id}
+    </update>
 </mapper>

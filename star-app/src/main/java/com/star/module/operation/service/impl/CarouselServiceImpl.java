@@ -112,8 +112,9 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
             }
         }
 
-        wrapper.lambda().in(ListAward::getCode,"WEEK");
-        ListAward listAward2 = listAwardMapper.selectOne(wrapper);
+        QueryWrapper<ListAward> weekwrapper = new QueryWrapper<>();
+        weekwrapper.lambda().in(ListAward::getCode,"WEEK");
+        ListAward listAward2 = listAwardMapper.selectOne(weekwrapper);
         if(listAward2 != null && listAward2.getType() == 3){
             QueryWrapper<Star> queryWrapper1 = new QueryWrapper<>();
             queryWrapper1.lambda().eq(Star::getThisWeekRank, 1);

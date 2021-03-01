@@ -275,18 +275,9 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
                 BeanUtils.copyProperties(modelList.get(i), star);
 
                 if(type ==0) {
-                    if(modelList.get(i).getVigourVal() == 0){
-                        star.setThisWeekRank(0);
-                    }else {
-                        star.setThisWeekRank(i+1);
-                    }
-
+                    star.setThisWeekRank(i+1);
                 }else{
-                    if(modelList.get(i).getVigourVal() == 0){
-                        star.setThisMonthRank(0);
-                    }else {
-                        star.setThisMonthRank(i+1);
-                    }
+                    star.setThisMonthRank(i+1);
                 }
                 starMapper.updateById(star);
             }
