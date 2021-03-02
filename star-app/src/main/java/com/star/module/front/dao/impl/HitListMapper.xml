@@ -137,6 +137,23 @@
         ) t where star_id = #{id}
     </select>
 
+
+    <select id="getLastRank" resultType="com.star.module.front.vo.HomeCarouselVo">
+        SELECT
+        t1.id starId,
+        t1.name starName,
+        open_img openImg,
+        home_img img
+        FROM(
+        SELECT star_id,sum( vigour_val ) AS val FROM hit_list
+        WHERE
+         create_time <![CDATA[>= ]]>  #{startTime,jdbcType=VARCHAR}
+                AND create_time <![CDATA[<= ]]>  #{endTime,jdbcType=VARCHAR}
+        GROUP BY star_id ORDER BY val DESC  LIMIT 1
+        ) t2
+        LEFT JOIN star t1 ON t1.id = t2.star_id
+    </select>
+
     <select id="getFensThisRank" resultType="com.star.module.front.vo.FensVigourRankVo">
        SELECT
             @rownum:=@rownum + 1 AS rank_no,

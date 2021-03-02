@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.util.StringUtil;
 import com.star.common.CommonConstants;
+import com.star.module.front.dao.HitListMapper;
 import com.star.module.front.dao.StarMapper;
 import com.star.module.front.entity.Star;
 import com.star.module.front.vo.CarouselDeatilVo;
@@ -14,6 +15,7 @@ import com.star.module.operation.dao.ListAwardMapper;
 import com.star.module.operation.entity.Carousel;
 import com.star.module.operation.entity.ListAward;
 import com.star.module.operation.service.ICarouselService;
+import com.star.module.operation.util.DateUtils;
 import com.star.module.user.dto.CarouselDto;
 import com.star.module.user.vo.CarouselVo;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,6 +48,9 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
 
     @Autowired
     private ListAwardMapper listAwardMapper;
+
+    @Autowired
+    private HitListMapper hitListMapper;
 
     @Override
     public void addOrUpdateCarousel(CarouselDto carouselDto) {
@@ -98,34 +104,28 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
         QueryWrapper<ListAward> wrapper = new QueryWrapper<>();
         wrapper.lambda().in(ListAward::getCode,"MONTH");
         ListAward listAward = listAwardMapper.selectOne(wrapper);
-        if(listAward != null && listAward.getType() == 3){
-            QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(Star::getThisMonthRank, 1);
-            Star star = starMapper.selectOne(queryWrapper);
-            if(star !=null){
-                HomeCarouselVo vo3 = new HomeCarouselVo();
-                vo3.setImg(star.getHomeImg());
-                vo3.setStarName(star.getName());
-                vo3.setStarId(star.getId());
-                vo3.setCode("MONTH");
-                list.add(vo3);
+        if(listAward != null && listAward.getType().indexOf("3") != -1){
+            Date starDate = DateUtils.getLastWeekMonday();
+            Date endDate = DateUtils.getLastSundayEndDay();
+            String startTime = DateUtils.formatDate(starDate,DateUtils.DATE_FORMAT_DATETIME);
+            String endTime = DateUtils.formatDate(endDate,DateUtils.DATE_FORMAT_DATETIME);
+            HomeCarouselVo lastRank = hitListMapper.getLastRank(startTime, endTime);
+            if(lastRank !=null){
+                lastRank.setCode("MONTH");
+                list.add(lastRank);
             }
         }
 
         QueryWrapper<ListAward> weekwrapper = new QueryWrapper<>();
         weekwrapper.lambda().in(ListAward::getCode,"WEEK");
         ListAward listAward2 = listAwardMapper.selectOne(weekwrapper);
-        if(listAward2 != null && listAward2.getType() == 3){
-            QueryWrapper<Star> queryWrapper1 = new QueryWrapper<>();
-            queryWrapper1.lambda().eq(Star::getThisWeekRank, 1);
-            Star star1 = starMapper.selectOne(queryWrapper1);
-            if(star1 !=null){
-                HomeCarouselVo vo4 = new HomeCarouselVo();
-                vo4.setImg(star1.getHomeImg());
-                vo4.setStarName(star1.getName());
-                vo4.setStarId(star1.getId());
-                vo4.setCode("WEEK");
-                list.add(vo4);
+        if(listAward2 != null && listAward2.getType().indexOf("3") != -1){
+            String startTime = DateUtils.getLastMonthStart();
+            String endTime = DateUtils.getLastMonthEnd();
+            HomeCarouselVo lastRank = hitListMapper.getLastRank(startTime, endTime);
+            if(lastRank !=null){
+                lastRank.setCode("WEEK");
+                list.add(lastRank);
             }
         }
         return list;
@@ -147,7 +147,7 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
     public String selectOpenImg() {
         List<ListAward> list = listAwardMapper.selectList(new QueryWrapper<>());
         for (ListAward listAward : list){
-            if("WEEK".equals(listAward.getCode()) && listAward.getType() == 2){
+            if("WEEK".equals(listAward.getCode()) && listAward.getType().indexOf("2") != -1){
                 QueryWrapper<Star> queryWrapper1 = new QueryWrapper<>();
                 queryWrapper1.lambda().eq(Star::getThisWeekRank, 1);
                 Star star1 = starMapper.selectOne(queryWrapper1);
@@ -156,7 +156,7 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
                 }
             }
 
-            if("MONTH".equals(listAward.getCode()) && listAward.getType() == 2){
+            if("MONTH".equals(listAward.getCode()) && listAward.getType().indexOf("2") != -1){
                 QueryWrapper<Star> queryWrapper1 = new QueryWrapper<>();
                 queryWrapper1.lambda().eq(Star::getThisMonthRank, 1);
                 Star star1 = starMapper.selectOne(queryWrapper1);

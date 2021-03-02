@@ -21,4 +21,7 @@ public class HomeCarouselVo {
     @ApiModelProperty(value = "周月")
     private String code;
 
+    @ApiModelProperty(value = "开屏图")
+    private String openImg;
+
 }

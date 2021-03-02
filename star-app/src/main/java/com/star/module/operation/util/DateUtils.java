@@ -801,6 +801,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(getCalendar().getTime());
 		cal.add(Calendar.DATE, -7);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
 		return cal.getTime();
 	}
 
@@ -830,6 +833,30 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
 		return calendar.getTime();
+	}
+
+
+	public static String getLastMonthStart() {
+		Calendar calendar = Calendar.getInstance();//获取当前日期
+		calendar.add(Calendar.MONTH, -1);
+		calendar.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		String firstDay = LONG_DATE_FORMAT.format(calendar.getTime());
+		return firstDay;
+	}
+
+	public static String getLastMonthEnd() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.DAY_OF_MONTH,0);//设置为1号,当前日期既为本月第一天
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE,59);
+		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.MILLISECOND, 59);
+		String lastDay = LONG_DATE_FORMAT.format(calendar.getTime());
+		return lastDay;
 	}
 
 	/**
@@ -1754,11 +1781,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 //		System.out.println(formatDate(date4));
 		Date vipEndDate = DateUtils.parseDate("2020-11-28 00:00:00", DATE_FORMAT_DATETIME);
 		/*Date vipRealEndDate = DateUtils.addDay(vipEndDate, -19632);*/
-		Date thisMonday = DateUtils.getMonthStart(new Date());
-		Date thisSunday = DateUtils.getMonthEnd(new Date());
+		String thisMonday = DateUtils.getLastMonthStart();
+		String thisSunday = DateUtils.getLastMonthEnd();
 
-		System.out.println(DateUtils.getTimeStampStr(thisMonday));
-		System.out.println(DateUtils.getTimeStampStr(thisSunday));
+		System.out.println(thisMonday);
+		System.out.println(thisSunday);
 
 		//System.out.println((int)getDistanceOfTwoDate1(sdfDateOnly.parse("2021-04-17 23:59:59"),sdfDateOnly.parse("2020-10-10 00：00：00")));
 

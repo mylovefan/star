@@ -40,7 +40,7 @@ public class ListAward implements Serializable {
 
     @ApiModelProperty(value = "1-后援金 2-小程序开屏 3-首页轮播 4-户外大屏")
     @TableField("type")
-    private Integer type;
+    private String type;
 
     @ApiModelProperty(value = "宣传页")
     @TableField("img")
