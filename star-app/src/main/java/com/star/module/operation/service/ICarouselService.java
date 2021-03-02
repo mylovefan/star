@@ -4,6 +4,7 @@ import com.star.module.front.vo.CarouselDeatilVo;
 import com.star.module.front.vo.HomeCarouselVo;
 import com.star.module.operation.entity.Carousel;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.star.module.operation.vo.OpenVo;
 import com.star.module.user.dto.CarouselDto;
 import com.star.module.user.vo.CarouselVo;
 
@@ -43,7 +44,7 @@ public interface ICarouselService extends IService<Carousel> {
      * 开屏图
      * @return
      */
-    String selectOpenImg();
+    OpenVo selectOpenImg();
 
     /**
      * 轮播详情

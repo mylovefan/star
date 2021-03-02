@@ -7,6 +7,7 @@ import com.star.module.front.vo.*;
 import com.star.module.operation.dto.FensMarkRankDto;
 import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
+import com.star.module.operation.vo.OpenVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -66,7 +67,7 @@ public interface HomeFacade {
 
     @ApiOperation("开屏图")
     @GetMapping("selectOpenImg")
-    String selectOpenImg();
+    OpenVo selectOpenImg();
 
     @ApiOperation("轮播详情")
     @GetMapping("seleclCarouseDeatil")

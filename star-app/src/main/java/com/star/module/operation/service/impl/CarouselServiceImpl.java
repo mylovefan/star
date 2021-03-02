@@ -16,6 +16,7 @@ import com.star.module.operation.entity.Carousel;
 import com.star.module.operation.entity.ListAward;
 import com.star.module.operation.service.ICarouselService;
 import com.star.module.operation.util.DateUtils;
+import com.star.module.operation.vo.OpenVo;
 import com.star.module.user.dto.CarouselDto;
 import com.star.module.user.vo.CarouselVo;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -102,7 +103,7 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
         }
 
         QueryWrapper<ListAward> wrapper = new QueryWrapper<>();
-        wrapper.lambda().in(ListAward::getCode,"MONTH");
+        wrapper.lambda().eq(ListAward::getCode,"MONTH").eq(ListAward::getOpen,1);
         ListAward listAward = listAwardMapper.selectOne(wrapper);
         if(listAward != null && listAward.getType().indexOf("3") != -1){
             Date starDate = DateUtils.getLastWeekMonday();
@@ -117,7 +118,7 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
         }
 
         QueryWrapper<ListAward> weekwrapper = new QueryWrapper<>();
-        weekwrapper.lambda().in(ListAward::getCode,"WEEK");
+        weekwrapper.lambda().eq(ListAward::getCode,"WEEK").eq(ListAward::getOpen,1);
         ListAward listAward2 = listAwardMapper.selectOne(weekwrapper);
         if(listAward2 != null && listAward2.getType().indexOf("3") != -1){
             String startTime = DateUtils.getLastMonthStart();
@@ -144,24 +145,32 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
     }
 
     @Override
-    public String selectOpenImg() {
+    public OpenVo selectOpenImg() {
         List<ListAward> list = listAwardMapper.selectList(new QueryWrapper<>());
         for (ListAward listAward : list){
-            if("WEEK".equals(listAward.getCode()) && listAward.getType().indexOf("2") != -1){
-                QueryWrapper<Star> queryWrapper1 = new QueryWrapper<>();
-                queryWrapper1.lambda().eq(Star::getThisWeekRank, 1);
-                Star star1 = starMapper.selectOne(queryWrapper1);
-                if(star1 != null){
-                    return star1.getOpenImg();
+            if("WEEK".equals(listAward.getCode()) && listAward.getOpen() == 1 && listAward.getType().indexOf("2") != -1){
+                Date starDate = DateUtils.getLastWeekMonday();
+                Date endDate = DateUtils.getLastSundayEndDay();
+                String startTime = DateUtils.formatDate(starDate,DateUtils.DATE_FORMAT_DATETIME);
+                String endTime = DateUtils.formatDate(endDate,DateUtils.DATE_FORMAT_DATETIME);
+                HomeCarouselVo lastRank = hitListMapper.getLastRank(startTime, endTime);
+                if(lastRank != null){
+                    OpenVo openVo = new OpenVo();
+                    openVo.setImg(lastRank.getOpenImg());
+                    openVo.setName(lastRank.getStarName());
+                    return openVo;
                 }
             }
 
-            if("MONTH".equals(listAward.getCode()) && listAward.getType().indexOf("2") != -1){
-                QueryWrapper<Star> queryWrapper1 = new QueryWrapper<>();
-                queryWrapper1.lambda().eq(Star::getThisMonthRank, 1);
-                Star star1 = starMapper.selectOne(queryWrapper1);
-                if(star1 != null){
-                    return star1.getOpenImg();
+            if("MONTH".equals(listAward.getCode()) && listAward.getOpen() == 1 && listAward.getType().indexOf("2") != -1){
+                String startTime = DateUtils.getLastMonthStart();
+                String endTime = DateUtils.getLastMonthEnd();
+                HomeCarouselVo lastRank = hitListMapper.getLastRank(startTime, endTime);
+                if(lastRank != null){
+                    OpenVo openVo = new OpenVo();
+                    openVo.setImg(lastRank.getOpenImg());
+                    openVo.setName(lastRank.getStarName());
+                    return openVo;
                 }
             }
         }

@@ -16,6 +16,7 @@ import com.star.module.operation.service.ICarouselService;
 import com.star.module.operation.tesk.StarRankTask;
 import com.star.module.operation.vo.FensMarkVo;
 import com.star.module.operation.vo.HitListVo;
+import com.star.module.operation.vo.OpenVo;
 import com.star.module.user.common.IgnoreSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -104,7 +105,7 @@ public class HomeController implements HomeFacade {
 
     @Override
     @IgnoreSecurity
-    public String selectOpenImg() {
+    public OpenVo selectOpenImg() {
         return iCarouselService.selectOpenImg();
     }
 }
