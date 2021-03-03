@@ -2,9 +2,11 @@ package com.star.module.operation.service;
 
 import com.github.pagehelper.PageSerializable;
 import com.star.commen.dto.PageDTO;
+import com.star.module.front.dto.OpenImgDto;
 import com.star.module.front.dto.ResourcesRankDto;
 import com.star.module.front.vo.FensJoinResVo;
 import com.star.module.front.vo.ListAwardPersionVo;
+import com.star.module.front.vo.OpenImgVo;
 import com.star.module.front.vo.StarResourcesVo;
 import com.star.module.operation.dto.ListAwardDto;
 import com.star.module.operation.dto.ResourcesDto;
@@ -96,5 +98,17 @@ public interface IResourcesService extends IService<Resources> {
      * @return
      */
     List<ListAwardPersionVo> listAward();
+
+    /**
+     * 开屏图设置
+     *
+     * @param openImgDto
+     */
+    void addOrUpdatOpenImg(OpenImgDto openImgDto);
+
+    /**
+     * 查询开屏图
+     */
+    OpenImgVo selectOpenImg();
 
 }

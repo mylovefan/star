@@ -13,22 +13,22 @@ import com.star.common.CommonConstants;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
 import com.star.module.front.dao.FensJoinMapper;
+import com.star.module.front.dao.OpenImgMapper;
 import com.star.module.front.dao.StarMapper;
+import com.star.module.front.dto.OpenImgDto;
 import com.star.module.front.dto.ResourcesRankDto;
 import com.star.module.front.entity.FensJoin;
 import com.star.module.front.entity.Star;
 import com.star.module.front.vo.FensJoinResVo;
 import com.star.module.front.vo.ListAwardPersionVo;
+import com.star.module.front.vo.OpenImgVo;
 import com.star.module.front.vo.StarResourcesVo;
 import com.star.module.operation.dao.ListAwardMapper;
 import com.star.module.operation.dao.ResourcesMapper;
 import com.star.module.operation.dao.StarResourcesRelMapper;
 import com.star.module.operation.dao.StarTagsMapper;
 import com.star.module.operation.dto.*;
-import com.star.module.operation.entity.ListAward;
-import com.star.module.operation.entity.Resources;
-import com.star.module.operation.entity.StarResourcesRel;
-import com.star.module.operation.entity.StarTags;
+import com.star.module.operation.entity.*;
 import com.star.module.operation.service.IResourcesService;
 import com.star.module.operation.util.DateUtils;
 import com.star.module.operation.vo.ListAwardVo;
@@ -82,6 +82,9 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private OpenImgMapper openImgMapper;
 
     @Override
     @Transactional
@@ -358,5 +361,36 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
             listAwardPersionVos.add(listAwardPersionVo);
         }
         return listAwardPersionVos;
+    }
+
+
+    @Override
+    public void addOrUpdatOpenImg(OpenImgDto openImgDto) {
+        QueryWrapper<OpenImg> wrapper = new QueryWrapper<>();
+        OpenImg openImg = openImgMapper.selectOne(wrapper);
+        if(openImg == null){
+            openImg = new OpenImg();
+            openImg.setId(SnowflakeId.getInstance().nextId());
+            openImg.setImg(openImgDto.getImg());
+            openImg.setOpen(openImgDto.getOpen());
+            openImgMapper.insert(openImg);
+        }else {
+            openImg.setImg(openImgDto.getImg());
+            openImg.setOpen(openImgDto.getOpen());
+            openImgMapper.updateById(openImg);
+        }
+
+    }
+
+    @Override
+    public OpenImgVo selectOpenImg() {
+        QueryWrapper<OpenImg> wrapper = new QueryWrapper<>();
+        OpenImg openImg = openImgMapper.selectOne(wrapper);
+        OpenImgVo openImgVo = new OpenImgVo();
+        if(openImg == null){
+            return openImgVo;
+        }
+        BeanUtils.copyProperties(openImg,openImgVo);
+        return openImgVo;
     }
 }

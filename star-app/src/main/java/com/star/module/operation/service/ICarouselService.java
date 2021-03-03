@@ -32,7 +32,7 @@ public interface ICarouselService extends IService<Carousel> {
      *
      * @return
      */
-    CarouselVo selectCarousel();
+    List<CarouselVo> selectCarousel();
 
     /**
      * 首页轮播图列表

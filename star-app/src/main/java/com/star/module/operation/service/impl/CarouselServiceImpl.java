@@ -68,38 +68,29 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
     }
 
     @Override
-    public CarouselVo selectCarousel() {
-        Carousel carousel = carouselMapper.selectOne(new QueryWrapper<>());
-        CarouselVo carouselVo = new CarouselVo();
-        if (carousel == null){
-            return carouselVo;
+    public List<CarouselVo> selectCarousel() {
+        List<Carousel> carousels = carouselMapper.selectList(new QueryWrapper<>());
+        List<CarouselVo> carouselVos = new ArrayList<>();
+        for (Carousel carousel : carousels){
+           CarouselVo carouselVo = new CarouselVo();
+           BeanUtils.copyProperties(carousel,carouselVo);
+           carouselVos.add(carouselVo);
         }
-        BeanUtils.copyProperties(carousel,carouselVo);
-        return carouselVo;
+        return carouselVos;
     }
 
 
     @Override
     public List<HomeCarouselVo> carouselList() {
         List<HomeCarouselVo> list = new ArrayList<>();
-        Carousel carousel = carouselMapper.selectOne(new QueryWrapper<>());
-        if(carousel!=null){
-            if(carousel.getOpen().equals(NumberUtils.INTEGER_ONE)){
-                if(StringUtil.isNotEmpty(carousel.getHome1())){
-                    HomeCarouselVo vo1 = new HomeCarouselVo();
-                    vo1.setImg(carousel.getHome1());
-                    vo1.setLevel(1);
-                    list.add(vo1);
-                }
-            }
-            if(carousel.getOpen2().equals(NumberUtils.INTEGER_ONE)){
-                if(StringUtil.isNotEmpty(carousel.getHome2())){
-                    HomeCarouselVo vo2 = new HomeCarouselVo();
-                    vo2.setImg(carousel.getHome2());
-                    vo2.setLevel(2);
-                    list.add(vo2);
-                }
-            }
+        QueryWrapper<Carousel> cwrapper = new QueryWrapper<>();
+        cwrapper.lambda().eq(Carousel::getOpen,1).orderByAsc(Carousel::getAddTime);
+        List<Carousel> carousels = carouselMapper.selectList(cwrapper);
+        for (Carousel carousel : carousels){
+            HomeCarouselVo vo1 = new HomeCarouselVo();
+            vo1.setImg(carousel.getHome());
+            vo1.setLevelImg(carousel.getLevel());
+            list.add(vo1);
         }
 
         QueryWrapper<ListAward> wrapper = new QueryWrapper<>();
@@ -139,8 +130,8 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
         if (carousel == null){
             return carouselVo;
         }
-        carouselVo.setLevel1(carousel.getLevel1());
-        carouselVo.setLevel2(carousel.getLevel2());
+        //carouselVo.setLevel1(carousel.getLevel1());
+        //carouselVo.setLevel2(carousel.getLevel2());
         return carouselVo;
     }
 

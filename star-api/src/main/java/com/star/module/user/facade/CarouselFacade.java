@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Api(value = "轮播图设置", tags = "轮播图设置")
 @RequestMapping("carousel/")
 public interface CarouselFacade {
@@ -19,5 +21,5 @@ public interface CarouselFacade {
 
     @ApiOperation(value = "轮播图查询")
     @PostMapping("selectCarousel")
-    CarouselVo selectCarousel();
+    List<CarouselVo> selectCarousel();
 }

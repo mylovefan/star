@@ -2,6 +2,8 @@ package com.star.module.operation.controller;
 
 
 import com.github.pagehelper.PageSerializable;
+import com.star.module.front.dto.OpenImgDto;
+import com.star.module.front.vo.OpenImgVo;
 import com.star.module.operation.dto.ListAwardDto;
 import com.star.module.operation.dto.ResourcesDto;
 import com.star.module.operation.dto.ResourcesPageDto;
@@ -54,5 +56,17 @@ public class ResourcesController implements ResourcesFacade {
     @Override
     public ListAwardVo selectListAward(@RequestParam("code") String code) {
         return resourcesService.selectListAward(code);
+    }
+
+
+    @Override
+    public void addOrUpdatOpenImg(@RequestBody OpenImgDto openImgDto) {
+        resourcesService.addOrUpdatOpenImg(openImgDto);
+    }
+
+    @Override
+    public OpenImgVo selectOpenImg() {
+
+        return resourcesService.selectOpenImg();
     }
 }

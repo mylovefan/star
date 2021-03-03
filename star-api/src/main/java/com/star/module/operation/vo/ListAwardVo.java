@@ -25,7 +25,7 @@ public class ListAwardVo implements Serializable {
     private Integer open;
 
     @ApiModelProperty(value = "1-后援金 2-小程序开屏 3-首页轮播 4-户外大屏")
-    private Integer type;
+    private String type;
 
     @ApiModelProperty(value = "宣传页")
     private String img;

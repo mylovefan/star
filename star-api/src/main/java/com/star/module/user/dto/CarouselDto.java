@@ -21,22 +21,15 @@ public class CarouselDto{
     private Long id;
 
     @ApiModelProperty(value = "首页轮播图")
-    private String home1;
+    private String home;
 
     @ApiModelProperty(value = "二级轮播图")
-    private String level1;
-
-    @ApiModelProperty(value = "首页轮播图")
-    private String home2;
-
-    @ApiModelProperty(value = "二级轮播图")
-    private String level2;
+    private String level;
 
     @ApiModelProperty(value = "是否开启")
     private Integer open;
 
-    @ApiModelProperty(value = "是否开启")
-    private Integer open2;
+
 
 
 }

@@ -1,6 +1,8 @@
 package com.star.module.operation.facade;
 
 import com.github.pagehelper.PageSerializable;
+import com.star.module.front.dto.OpenImgDto;
+import com.star.module.front.vo.OpenImgVo;
 import com.star.module.operation.dto.ListAwardDto;
 import com.star.module.operation.dto.ResourcesDto;
 import com.star.module.operation.dto.ResourcesPageDto;
@@ -34,4 +36,12 @@ public interface ResourcesFacade {
     @ApiOperation(value = "查询周榜月榜 code(WEEK | MONTH)")
     @GetMapping("selectListAward")
     ListAwardVo selectListAward(@RequestParam("code") String code);
+
+    @ApiOperation(value = "开屏图新增修改")
+    @PostMapping("addOrUpdatOpenImg")
+    void addOrUpdatOpenImg(@RequestBody OpenImgDto openImgDto);
+
+    @ApiOperation(value = "查询开屏图")
+    @PostMapping("selectOpenImg")
+    OpenImgVo selectOpenImg();
 }
