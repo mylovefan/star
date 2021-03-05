@@ -103,10 +103,9 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
         wrapper.lambda().eq(ListAward::getCode,"MONTH").eq(ListAward::getOpen,1);
         ListAward listAward = listAwardMapper.selectOne(wrapper);
         if(listAward != null && listAward.getType().indexOf("3") != -1){
-            Date starDate = DateUtils.getLastWeekMonday();
-            Date endDate = DateUtils.getLastSundayEndDay();
-            String startTime = DateUtils.formatDate(starDate,DateUtils.DATE_FORMAT_DATETIME);
-            String endTime = DateUtils.formatDate(endDate,DateUtils.DATE_FORMAT_DATETIME);
+            String startTime = DateUtils.getLastMonthStart();
+            String endTime = DateUtils.getLastMonthEnd();
+
             HomeCarouselVo lastRank = hitListMapper.getLastRank(startTime, endTime);
             if(lastRank !=null){
                 lastRank.setCode("MONTH");
@@ -118,8 +117,10 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
         weekwrapper.lambda().eq(ListAward::getCode,"WEEK").eq(ListAward::getOpen,1);
         ListAward listAward2 = listAwardMapper.selectOne(weekwrapper);
         if(listAward2 != null && listAward2.getType().indexOf("3") != -1){
-            String startTime = DateUtils.getLastMonthStart();
-            String endTime = DateUtils.getLastMonthEnd();
+            Date starDate = DateUtils.getLastWeekMonday();
+            Date endDate = DateUtils.getLastSundayEndDay();
+            String startTime = DateUtils.formatDate(starDate,DateUtils.DATE_FORMAT_DATETIME);
+            String endTime = DateUtils.formatDate(endDate,DateUtils.DATE_FORMAT_DATETIME);
             HomeCarouselVo lastRank = hitListMapper.getLastRank(startTime, endTime);
             if(lastRank !=null){
                 lastRank.setCode("WEEK");

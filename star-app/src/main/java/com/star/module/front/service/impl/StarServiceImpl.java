@@ -104,6 +104,20 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         if (starPageDto.getId() != null) {
             queryWrapper.lambda().like(Star::getStarId, starPageDto.getId());
         }
+        if(starPageDto.getMonthSort() != null){
+            if(starPageDto.getMonthSort() == 0){
+                queryWrapper.lambda().orderByAsc(Star::getThisMonthRank);
+            }else {
+                queryWrapper.lambda().orderByDesc(Star::getThisMonthRank);
+            }
+        }
+        if(starPageDto.getWeekSort() != null){
+            if(starPageDto.getWeekSort() == 0){
+                queryWrapper.lambda().orderByAsc(Star::getThisWeekRank);
+            }else {
+                queryWrapper.lambda().orderByDesc(Star::getThisWeekRank);
+            }
+        }
         IPage page = new Page(starPageDto.getPageNum(), starPageDto.getPageSize());
         IPage<Star> pageList = starMapper.selectPage(page, queryWrapper);
         List<StartVo> list = new ArrayList<>();

@@ -46,7 +46,7 @@ public class StarRankTask {
         log.info("==============周一统计明星榜单开始，运行时间："+DateUtils.getTimeStampStr(new Date())+"==============");
         log.info("==============统计开始时间："+DateUtils.getTimeStampStr(DateUtils.getDayStart(DateUtils.getLastWeekMonday()))+"==============");
         log.info("==============统计结束时间："+DateUtils.getTimeStampStr(DateUtils.getDayEnd(DateUtils.getLastSundayEndDay()))+"==============");
-        statisticsStarRank(NumberUtils.INTEGER_ZERO, DateUtils.getDayStart(DateUtils.getLastWeekMonday()), DateUtils.getDayEnd(DateUtils.getLastSundayEndDay()));
+        statisticsStarRank(NumberUtils.INTEGER_ZERO, DateUtils.getLastWeekMonday(), DateUtils.getLastSundayEndDay());
 
         long endTime = System.currentTimeMillis();
         log.info("==============统计结束，耗时："+(endTime - beginTime) / 1000+"s ==============");
@@ -56,12 +56,12 @@ public class StarRankTask {
      * 每月1号早上8点执行
      */
     @Scheduled(cron = "0 0 8 1 * ?")
-    public void starRankByMonth() {
+    public void starRankByMonth() throws Exception{
         long beginTime = System.currentTimeMillis();
         log.info("==============一号统计明星榜单开始，运行时间："+DateUtils.getTimeStampStr(new Date())+"==============");
-        log.info("==============统计开始时间："+DateUtils.getTimeStampStr(DateUtils.getDayStart(DateUtils.getPreviousMonthFirstDay()))+"==============");
-        log.info("==============统计结束时间："+DateUtils.getTimeStampStr(DateUtils.getDayEnd(DateUtils.getPreviousMonthLastDay()))+"==============");
-        statisticsStarRank(NumberUtils.INTEGER_ONE, DateUtils.getDayStart(DateUtils.getPreviousMonthFirstDay()), DateUtils.getDayEnd(DateUtils.getPreviousMonthLastDay()));
+        log.info("==============统计开始时间："+DateUtils.getLastMonthStart()+"==============");
+        log.info("==============统计结束时间："+DateUtils.getLastMonthEnd()+"==============");
+        statisticsStarRank(NumberUtils.INTEGER_ONE, DateUtils.parseDate(DateUtils.getLastMonthStart(),"yyyy-MM-dd HH:mm:ss"),  DateUtils.parseDate(DateUtils.getLastMonthEnd(),"yyyy-MM-dd HH:mm:ss"));
 
         long endTime = System.currentTimeMillis();
         log.info("==============统计结束，耗时："+(endTime - beginTime) / 1000+"s ==============");

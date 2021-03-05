@@ -36,5 +36,5 @@ public class HitListDto extends PageDTO {
     private Long starId = null;
 
     @ApiModelProperty(value = "排序 0：正序；1：倒序；")
-    private int sortType;
+    private int sortType = 1;
 }
