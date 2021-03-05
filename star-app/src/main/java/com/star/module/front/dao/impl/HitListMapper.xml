@@ -22,7 +22,7 @@
         </where>
         GROUP BY hl.star_id ORDER BY
         <if test="sortType==0">
-            totalVigourVal asc
+            totalVigourVal desc
         </if>
         <if test="sortType==1">
             totalVigourVal desc
