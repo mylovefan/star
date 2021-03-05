@@ -6,14 +6,17 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.util.StringUtil;
 import com.star.common.CommonConstants;
 import com.star.module.front.dao.HitListMapper;
+import com.star.module.front.dao.OpenImgMapper;
 import com.star.module.front.dao.StarMapper;
 import com.star.module.front.entity.Star;
 import com.star.module.front.vo.CarouselDeatilVo;
 import com.star.module.front.vo.HomeCarouselVo;
+import com.star.module.front.vo.OpenImgVo;
 import com.star.module.operation.dao.CarouselMapper;
 import com.star.module.operation.dao.ListAwardMapper;
 import com.star.module.operation.entity.Carousel;
 import com.star.module.operation.entity.ListAward;
+import com.star.module.operation.entity.OpenImg;
 import com.star.module.operation.service.ICarouselService;
 import com.star.module.operation.util.DateUtils;
 import com.star.module.operation.vo.OpenVo;
@@ -53,6 +56,9 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
     @Autowired
     private HitListMapper hitListMapper;
 
+    @Autowired
+    private OpenImgMapper openImgMapper;
+
     @Override
     public void addOrUpdateCarousel(CarouselDto carouselDto) {
         Carousel carousel = new Carousel();
@@ -84,7 +90,7 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
     public List<HomeCarouselVo> carouselList() {
         List<HomeCarouselVo> list = new ArrayList<>();
         QueryWrapper<Carousel> cwrapper = new QueryWrapper<>();
-        cwrapper.lambda().eq(Carousel::getOpen,1).orderByAsc(Carousel::getAddTime);
+        cwrapper.lambda().eq(Carousel::getOpen,1).orderByAsc(Carousel::getSort);
         List<Carousel> carousels = carouselMapper.selectList(cwrapper);
         for (Carousel carousel : carousels){
             HomeCarouselVo vo1 = new HomeCarouselVo();
@@ -137,34 +143,13 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
 
     @Override
     public OpenVo selectOpenImg() {
-        List<ListAward> list = listAwardMapper.selectList(new QueryWrapper<>());
-        for (ListAward listAward : list){
-            if("WEEK".equals(listAward.getCode()) && listAward.getOpen() == 1 && listAward.getType().indexOf("2") != -1){
-                Date starDate = DateUtils.getLastWeekMonday();
-                Date endDate = DateUtils.getLastSundayEndDay();
-                String startTime = DateUtils.formatDate(starDate,DateUtils.DATE_FORMAT_DATETIME);
-                String endTime = DateUtils.formatDate(endDate,DateUtils.DATE_FORMAT_DATETIME);
-                HomeCarouselVo lastRank = hitListMapper.getLastRank(startTime, endTime);
-                if(lastRank != null){
-                    OpenVo openVo = new OpenVo();
-                    openVo.setImg(lastRank.getOpenImg());
-                    openVo.setName(lastRank.getStarName());
-                    return openVo;
-                }
-            }
-
-            if("MONTH".equals(listAward.getCode()) && listAward.getOpen() == 1 && listAward.getType().indexOf("2") != -1){
-                String startTime = DateUtils.getLastMonthStart();
-                String endTime = DateUtils.getLastMonthEnd();
-                HomeCarouselVo lastRank = hitListMapper.getLastRank(startTime, endTime);
-                if(lastRank != null){
-                    OpenVo openVo = new OpenVo();
-                    openVo.setImg(lastRank.getOpenImg());
-                    openVo.setName(lastRank.getStarName());
-                    return openVo;
-                }
-            }
+        QueryWrapper<OpenImg> wrapper = new QueryWrapper<>();
+        OpenImg openImg = openImgMapper.selectOne(wrapper);
+        OpenVo openImgVo = new OpenVo();
+        if(openImg == null || openImg.getOpen() == 0){
+            return openImgVo;
         }
-        return null;
+        openImgVo.setImg(openImg.getImg());
+        return openImgVo;
     }
 }

@@ -50,5 +50,6 @@ public class Carousel implements Serializable {
     @TableField("update_time")
     private LocalDateTime updateTime;
 
-
+    @ApiModelProperty(value = "排序")
+    private Integer sort;
 }

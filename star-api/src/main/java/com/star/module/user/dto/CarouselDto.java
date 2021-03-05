@@ -29,6 +29,9 @@ public class CarouselDto{
     @ApiModelProperty(value = "是否开启")
     private Integer open;
 
+    @ApiModelProperty(value = "排序")
+    private Integer sort;
+
 
 
 

@@ -27,7 +27,7 @@ public class ResourcesVo implements Serializable {
     @ApiModelProperty(value = "id")
     private Long id;
 
-    @ApiModelProperty(value = "资源类型(1-后援金 2-小程序开屏 3-首页轮播 4-户外大屏)")
+    @ApiModelProperty(value = "资源类型(1-后援金 2-小程序开屏 3-首页轮播 4-户外大屏 5-自定义)")
     private Integer type;
 
     @ApiModelProperty(value = "金额和大屏名称")

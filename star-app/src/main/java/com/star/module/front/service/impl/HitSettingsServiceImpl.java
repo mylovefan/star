@@ -149,11 +149,11 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
             if(count !=null && count >hitSettings.getSignMaxNum()){
                 throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"今日签到次数已用完，明日再来吧");
             }
-            queryWrapper.lambda().eq(FensVigourLog::getStarId,finishTaskVigourDto.getStarId());
+            /*queryWrapper.lambda().eq(FensVigourLog::getStarId,finishTaskVigourDto.getStarId());
             Integer starSign = fensVigourLogMapper.selectCount(queryWrapper);
             if(starSign != null && starSign >0){
                 throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"今日你已为该明星签到，不可重复签到!");
-            }
+            }*/
             fensVigourLog.setVigourVal(hitSettings.getVigourSignNum());
         }else if(VigourTypeEnums.LUCK.getCode() == finishTaskVigourDto.getType()){
             //抽奖
