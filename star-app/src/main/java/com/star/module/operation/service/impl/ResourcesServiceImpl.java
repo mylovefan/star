@@ -48,7 +48,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -100,7 +102,7 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         QueryWrapper<StarTags> starTagsQueryWrapper = new QueryWrapper<>();
         starTagsQueryWrapper.lambda().in(StarTags::getTagsId,starIds);
         List<StarTags> starTags = starTagsMapper.selectList(starTagsQueryWrapper);
-        List<Long> starList = new ArrayList<>();
+        Set<Long> starList = new HashSet<>();
         for (StarTags tags : starTags){
             starList.add(tags.getStarId());
         }

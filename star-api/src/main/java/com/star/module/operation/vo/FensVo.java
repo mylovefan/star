@@ -48,5 +48,8 @@ public class FensVo {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime addTime;
 
+    @ApiModelProperty(value = "分享总次数")
+    private Integer shareCount;
+
 
 }

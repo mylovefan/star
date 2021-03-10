@@ -9,6 +9,7 @@ import com.star.common.CommonConstants;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
 import com.star.module.front.dao.FensMapper;
+import com.star.module.front.dao.FensVigourLogMapper;
 import com.star.module.front.dao.StarMapper;
 import com.star.module.front.entity.Fens;
 import com.star.module.front.entity.FensVigourLog;
@@ -71,6 +72,9 @@ public class FensMrgServiceImpl implements FensMrgService {
     @Autowired
     private IHitListService hitListService;
 
+    @Autowired
+    private FensVigourLogMapper fensVigourLogMapper;
+
     @Override
     public PageSerializable<FensVo> selectFensPage(FensDto fensDto) {
         IPage<Fens> page = new Page<>(fensDto.getPageNum(),fensDto.getPageSize());
@@ -85,6 +89,12 @@ public class FensMrgServiceImpl implements FensMrgService {
         for (Fens fens : fensIPage.getRecords()){
             FensVo fensVo = new FensVo();
             BeanUtils.copyProperties(fens,fensVo);
+
+            //查询分享总次数
+            QueryWrapper<FensVigourLog> fqueryWrapper = new QueryWrapper<>();
+            fqueryWrapper.lambda().eq(FensVigourLog::getFensId,fens.getId());
+            Integer count = fensVigourLogMapper.selectCount(fqueryWrapper);
+            fensVo.setShareCount(count);
             list.add(fensVo);
         }
         PageSerializable<FensVo> pageSerializable = new PageSerializable<>(list);
