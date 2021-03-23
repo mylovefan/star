@@ -138,12 +138,20 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         }
         star = new Star();
         BeanUtils.copyProperties(dto, star);
-        if (StringUtils.isNotEmpty(star.getTags())) {
-            if (star.getTags().contains(HOTSEARCH)) {
+        if (dto.getTags() != null && dto.getTags().size() > 0) {
+            List<String> list = new ArrayList<>();
+            String tagsStr = "";
+            for (TagsDto s : dto.getTags()){
+                list.add(s.getName());
+                tagsStr = tagsStr+s.getName()+"、";
+            }
+            if (list.contains(HOTSEARCH)) {
                 star.setHotSearch(NumberUtils.INTEGER_ONE);
             } else {
                 star.setHotSearch(NumberUtils.INTEGER_ZERO);
             }
+            tagsStr =tagsStr.substring(0, tagsStr.length() - 1);
+            star.setTags(tagsStr);
         }
 
         QueryWrapper<Star> query = new QueryWrapper<>();
@@ -169,12 +177,20 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
             throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(), "明星信息不存在");
         }
         BeanUtils.copyProperties(dto, star);
-        if (StringUtils.isNotEmpty(star.getTags())) {
-            if (star.getTags().contains(HOTSEARCH)) {
+        if (dto.getTags() != null && dto.getTags().size() > 0) {
+            List<String> list = new ArrayList<>();
+            String tagsStr = "";
+            for (TagsDto s : dto.getTags()){
+                list.add(s.getName());
+                tagsStr = tagsStr+s.getName()+"、";
+            }
+            if (list.contains(HOTSEARCH)) {
                 star.setHotSearch(NumberUtils.INTEGER_ONE);
             } else {
                 star.setHotSearch(NumberUtils.INTEGER_ZERO);
             }
+            tagsStr =tagsStr.substring(0, tagsStr.length() - 1);
+            star.setTags(tagsStr);
         }
         starMapper.updateById(star);
         this.tagsSet(dto, star);
@@ -250,7 +266,6 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
             iStarTagsService.deleteByStarId(star.getId());
 
             List<StarTags> starTagsList = new ArrayList<>();
-            StringBuffer sb = new StringBuffer();
             List<TagsDto> tags = dto.getTags();
             for (TagsDto m : tags) {
 
@@ -259,11 +274,8 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
                 tag.setTagsId(m.getId());
                 tag.setTagsName(m.getName());
                 starTagsList.add(tag);
-                sb.append(m.getName()).append(",");
             }
             iStarTagsService.saveBatch(starTagsList);
-            star.setTags(sb.toString().substring(0, sb.length() - 1));
-            starMapper.updateById(star);
         }
     }
 

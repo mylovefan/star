@@ -8,9 +8,13 @@ import com.star.common.CommonConstants;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
 import com.star.module.front.dao.FensMapper;
+import com.star.module.front.dao.FensVigourLogMapper;
 import com.star.module.front.entity.Fens;
+import com.star.module.front.entity.FensVigourLog;
+import com.star.module.front.enums.VigourTypeEnums;
 import com.star.module.operation.util.RandomUtils;
 import com.star.module.user.common.TokenManager;
+import com.star.module.user.common.UserUtil;
 import com.star.module.user.service.WeixinAuthService;
 import com.star.module.user.util.HttpClientUtil;
 import com.star.module.user.vo.UserLoginVo;
@@ -29,6 +33,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.AlgorithmParameters;
 import java.security.Security;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
@@ -42,13 +47,16 @@ public class WeixinAuthServiceImpl implements WeixinAuthService {
 
     public String appId ="xxx";
 
-    public String secret ="xxx";
+    public String secret ="xxxx";
 
     @Autowired
     private FensMapper fensMapper;
 
     @Autowired
     private TokenManager tokenManager;
+
+    @Autowired
+    private FensVigourLogMapper fensVigourLogMapper;
 
 
     @Override
@@ -74,6 +82,7 @@ public class WeixinAuthServiceImpl implements WeixinAuthService {
         LocalDateTime localDateTimeOfNow = LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI));
         if(fens == null){
             // 用户信息入库
+            Long id = SnowflakeId.getInstance().nextId();
             String nickName = rawDataJson.getString("nickName");
             String avatarUrl = rawDataJson.getString("avatarUrl");
             String gender = rawDataJson.getString("gender");
@@ -81,7 +90,7 @@ public class WeixinAuthServiceImpl implements WeixinAuthService {
             String country = rawDataJson.getString("country");
             String province = rawDataJson.getString("province");
             fens = new Fens();
-            fens.setId(SnowflakeId.getInstance().nextId());
+            fens.setId(id);
             fens.setOpenId(openid);
             fens.setAddTime(localDateTimeOfNow);
             fens.setLastVisitTime(localDateTimeOfNow);
@@ -100,6 +109,18 @@ public class WeixinAuthServiceImpl implements WeixinAuthService {
             Long fensId = RandomUtils.randomNumber6(longs);
             fens.setFensId(fensId);
 
+            //首次登录赠送热力值
+            FensVigourLog fensVigourLog = new FensVigourLog();
+            fensVigourLog.setFensId(id);
+            fensVigourLog.setType(VigourTypeEnums.GIVE.getCode());
+            fensVigourLog.setVigourVal(10);
+            fensVigourLog.setId(SnowflakeId.getInstance().nextId());
+            fensVigourLog.setAddTime(localDateTimeOfNow);
+            fensVigourLog.setVigTime(LocalDate.now());
+            fensVigourLogMapper.insert(fensVigourLog);
+
+            fens.setVigourVal(10);
+            fens.setTotalVigourVal(10);
             fensMapper.insert(fens);
         }else {
             fens.setLastVisitTime(localDateTimeOfNow);

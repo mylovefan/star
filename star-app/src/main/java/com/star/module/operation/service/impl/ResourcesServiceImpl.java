@@ -37,6 +37,7 @@ import com.star.module.operation.vo.ResourcesDetailVo;
 import com.star.module.operation.vo.ResourcesVo;
 import com.star.module.user.common.UserUtil;
 import com.star.util.SnowflakeId;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,16 +107,22 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         for (StarTags tags : starTags){
             starList.add(tags.getStarId());
         }
-        for (Long starId : resourcesDto.getStarIds()){
-            if(starList.contains(starId)){
-                continue;
+        List<Long> starIds2 = new ArrayList<>();
+        if(resourcesDto.getStarIds() != null){
+            for (Long starId : resourcesDto.getStarIds()){
+                QueryWrapper<Star> starWrapper = new QueryWrapper<>();
+                starWrapper.lambda().eq(Star::getStarId,starId);
+                Star star = starMapper.selectOne(starWrapper);
+                if(star == null){
+                    continue;
+                }
+                if(starList.contains(star.getId())){
+                    continue;
+                }
+                starIds2.add(starId);
+                starList.add(star.getId());
             }
-            QueryWrapper<Star> starWrapper = new QueryWrapper<>();
-            starWrapper.lambda().in(Star::getStarId,starId);
-            Integer count = starMapper.selectCount(starWrapper);
-            if(count != null && count > 0){
-                starList.add(starId);
-            }
+            resources.setStarIds(JSON.toJSONString(starIds2));
         }
 
         if(resourcesDto.getId() != null && resourcesDto.getId().longValue() > 0){
@@ -216,14 +223,13 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         Resources resources = resourcesMapper.selectById(id);
         ResourcesDetailVo resourcesVo = new ResourcesDetailVo();
         BeanUtils.copyProperties(resources,resourcesVo);
-        resourcesVo.setTags(JSONArray.parseArray(resources.getTags(),TagsDto.class));
-
+        if(StringUtils.isNotBlank(resources.getTags())){
+            resourcesVo.setTags(JSONArray.parseArray(resources.getTags(),TagsDto.class));
+        }
         //查询明星
-        QueryWrapper<StarResourcesRel> wrapper = new QueryWrapper<>();
-        wrapper.lambda().in(StarResourcesRel::getResourcesId,id);
-        List<StarResourcesRel> starResourcesRels = starResourcesRelMapper.selectList(wrapper);
-        List<Long> starIds = starResourcesRels.stream().map(StarResourcesRel::getStarId).collect(Collectors.toList());
-        resourcesVo.setStarIds(starIds);
+        if(StringUtils.isNotBlank(resources.getStarIds())){
+            resourcesVo.setStarIds(JSONArray.parseArray(resources.getStarIds(),Long.class));
+        }
         return resourcesVo;
     }
 

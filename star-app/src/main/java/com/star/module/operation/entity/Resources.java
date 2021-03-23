@@ -54,6 +54,10 @@ public class Resources implements Serializable {
     @TableField("tags")
     private String tags;
 
+    @ApiModelProperty(value = "明星ids")
+    @TableField("star_ids")
+    private String starIds;
+
     @ApiModelProperty(value = "新增时间")
     @TableField("add_time")
     private LocalDateTime addTime;

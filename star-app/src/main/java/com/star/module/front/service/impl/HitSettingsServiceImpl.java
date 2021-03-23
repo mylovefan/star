@@ -185,7 +185,7 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
                 fensDo.setDrawNum(fens.getDrawNum() + 1);
             }
             fensMapper.updateById(fensDo);
-            fensVigourLog.setVigourVal(hitSettings.getVigourSignNum());
+            //fensVigourLog.setVigourVal(hitSettings.getVigourSignNum());
         }else if(VigourTypeEnums.VIEW.getCode() == finishTaskVigourDto.getType()){
             //看视频
             if(count !=null && count >hitSettings.getVideoMaxNum()){

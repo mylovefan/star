@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.star.common.CommonConstants;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
+import com.star.module.operation.dao.StarTagsMapper;
 import com.star.module.operation.dao.TagsMapper;
+import com.star.module.operation.entity.StarTags;
 import com.star.module.operation.entity.Tags;
 import com.star.module.operation.service.ITagsService;
 import com.star.module.operation.util.ListUtils;
@@ -34,6 +36,9 @@ public class TagsServiceImpl extends ServiceImpl<TagsMapper, Tags> implements IT
     private TagsMapper tagsMapper;
     @Autowired
     private ListUtils listUtils;
+
+    @Autowired
+    private StarTagsMapper starTagsMapper;
 
     @Override
     public List<TagsVo> tagsList() {
@@ -67,6 +72,12 @@ public class TagsServiceImpl extends ServiceImpl<TagsMapper, Tags> implements IT
 
     @Override
     public void deleteTags(Long id) {
+        QueryWrapper<StarTags> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(StarTags::getTagsId, id);
+        Integer count = starTagsMapper.selectCount(queryWrapper);
+        if(count !=null && count >0){
+            throw new ServiceException(ErrorCodeEnum.ERROR_200001.getCode(), "标签亿关联明星,不可删除");
+        }
         tagsMapper.deleteById(id);
     }
 }

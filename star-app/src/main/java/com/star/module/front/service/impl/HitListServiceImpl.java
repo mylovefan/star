@@ -329,26 +329,14 @@ public class HitListServiceImpl extends ServiceImpl<HitListMapper, HitList> impl
         QueryWrapper<Guard> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(Guard::getStarId,starId).eq(Guard::getFensId,id);
         Guard guard = guardMapper.selectOne(queryWrapper);
-        boolean flag = false;
-        if(vigourVal >= 999){
-            flag = true;
-        }
         if(guard == null){
             Guard guardDo = new Guard();
             guardDo.setId(SnowflakeId.getInstance().nextId());
             guardDo.setAddTime(localDateTimeOfNow);
             guardDo.setFensId(id);
             guardDo.setStarId(starId);
-            guardDo.setStatus(flag ? 1:0);
+            guardDo.setStatus(1);
             guardMapper.insert(guardDo);
-        }else {
-            if(flag){
-                Guard guardDo = new Guard();
-                guardDo.setId(guard.getId());
-                guardDo.setStatus(1);
-                guardMapper.updateById(guardDo);
-            }
-
         }
         fensMapper.updateReduceVigour(id,vigourVal,null);
 

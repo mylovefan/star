@@ -64,7 +64,7 @@ public class FensServiceImpl implements IFensService {
         Long id = UserUtil.getCurrentUserId(request);
         IPage<Fens> page = new Page<>(rankDto.getPageNum(),rankDto.getPageSize());
         QueryWrapper<Fens> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("consume_vigour_val");
+        queryWrapper.orderByDesc("vigour_val");
         IPage<Fens> fensIPage = fensMapper.selectPage(page, queryWrapper);
         List<FensVigourRankVo> list = new ArrayList<>();
         for (Fens fens : fensIPage.getRecords()){

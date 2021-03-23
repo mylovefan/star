@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -25,8 +26,7 @@ import java.util.List;
  * 明星排行榜统计定时任务
  * 统计冠亚季军
  */
-
-@Component
+@EnableScheduling
 @Slf4j
 public class StarRankTask {
 
