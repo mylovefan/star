@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,8 @@ import java.util.List;
  * 明星排行榜统计定时任务
  * 统计冠亚季军
  */
-@EnableScheduling
+@Component
+@EnableAsync
 @Slf4j
 public class StarRankTask {
 
@@ -40,7 +42,7 @@ public class StarRankTask {
     /**
      * 每周1早上8点执行
      */
-    @Scheduled(cron = "0 0 8 ? 0 1 *")
+    @Scheduled(cron = "0 0 1 ? * MON")
     public void starRankByWeek() {
         long beginTime = System.currentTimeMillis();
         log.info("==============周一统计明星榜单开始，运行时间："+DateUtils.getTimeStampStr(new Date())+"==============");
@@ -53,9 +55,9 @@ public class StarRankTask {
     }
 
     /**
-     * 每月1号早上8点执行
+     * 每月1号早上1点执行
      */
-    @Scheduled(cron = "0 0 8 1 * ?")
+    @Scheduled(cron = "0 0 1 1 * ?")
     public void starRankByMonth() throws Exception{
         long beginTime = System.currentTimeMillis();
         log.info("==============一号统计明星榜单开始，运行时间："+DateUtils.getTimeStampStr(new Date())+"==============");

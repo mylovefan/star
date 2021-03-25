@@ -9,6 +9,7 @@ import com.star.module.front.vo.HotStarVo;
 import com.star.module.front.vo.StarInfoVo;
 import com.star.module.operation.dto.StarDto;
 import com.star.module.operation.dto.StarPageDto;
+import com.star.module.operation.model.StatModel;
 import com.star.module.operation.vo.HitListVo;
 import com.star.module.operation.vo.StarDetailVo;
 import com.star.module.operation.vo.StartVo;
@@ -49,7 +50,7 @@ public interface IStarService extends IService<Star> {
      * @param startTime
      * @param endTime
      */
-    void getStarRank(int type, Date startTime, Date endTime);
+    List<StatModel> getStarRank(int type, Date startTime, Date endTime);
 
     /**
      * 热门搜索的明星
@@ -102,4 +103,14 @@ public interface IStarService extends IService<Star> {
      * @return
      */
     PageSerializable<HitListVo> pageListRank(RankDto rankDto);
+
+    /**
+     * 定时任务更新
+     *
+     * @param type
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<StatModel> getStatisticsStarRankTask(int type, String startTime, String endTime);
 }

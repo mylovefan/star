@@ -65,4 +65,25 @@ public interface HitListMapper extends BaseMapper<HitList> {
      * @return
      */
     HomeCarouselVo getLastRank (@Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime);
+
+
+
+    /**
+     * 上周上月榜单
+     *
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<HitList> statisticsRankByTimeAndStar (@Param(value = "startIds") List<Long> startIds, @Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime);
+
+
+    /**
+     * 上周上月榜单
+     *
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<HitList> statisticsRankByTime (@Param(value = "startTime") String startTime, @Param(value = "endTime") String endTime);
 }

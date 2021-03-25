@@ -14,7 +14,7 @@ import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @Configuration
@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Configuration;
 @MapperScan({"com.star.module.*.dao"})
 @EnableFeignClients
 @Slf4j
+@EnableScheduling
 //@EnableSwagger2
 public class StarAppApplication {
 

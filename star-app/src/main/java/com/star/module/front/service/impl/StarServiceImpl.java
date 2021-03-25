@@ -14,6 +14,7 @@ import com.star.module.front.dao.HitListMapper;
 import com.star.module.front.dao.StarMapper;
 import com.star.module.front.dto.RankDto;
 import com.star.module.front.entity.Fens;
+import com.star.module.front.entity.HitList;
 import com.star.module.front.entity.Star;
 import com.star.module.front.service.IHitListService;
 import com.star.module.front.service.IStarService;
@@ -152,6 +153,8 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
             }
             tagsStr =tagsStr.substring(0, tagsStr.length() - 1);
             star.setTags(tagsStr);
+        }else {
+            star.setTags("");
         }
 
         QueryWrapper<Star> query = new QueryWrapper<>();
@@ -191,6 +194,8 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
             }
             tagsStr =tagsStr.substring(0, tagsStr.length() - 1);
             star.setTags(tagsStr);
+        }else {
+            star.setTags("");
         }
         starMapper.updateById(star);
         this.tagsSet(dto, star);
@@ -201,35 +206,33 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
     public PageSerializable<HitListVo> pageListRank(RankDto rankDto) {
         String startTime = null;
         String endTime = null;
-        switch (rankDto.getRankType()){
-            case 0:
-                //查询条件都为空时，默认统计本周
-                Date starDate = DateUtils.getWeekStart(new Date());
-                Date endDate = DateUtils.getWeekEnd(new Date());
-                startTime = DateUtils.formatDate(starDate,DateUtils.DATE_FORMAT_DATETIME);
-                endTime = DateUtils.formatDate(endDate,DateUtils.DATE_FORMAT_DATETIME);
-                getStarRank(0, starDate, endDate);
-                break;
-            case 1:
-                //查询条件都为空时，默认统计本月
-                Date starMonthDate = DateUtils.getMonthStart(new Date());
-                Date endMonthDate = DateUtils.getMonthEnd(new Date());
-                startTime = DateUtils.formatDate(starMonthDate,DateUtils.DATE_FORMAT_DATETIME);
-                endTime = DateUtils.formatDate(endMonthDate,DateUtils.DATE_FORMAT_DATETIME);
-                getStarRank(1, starMonthDate, endMonthDate);
-                break;
-        }
         QueryWrapper<Star> queryWrapper = new QueryWrapper<>();
         if(rankDto.getRankType() == 0){
             queryWrapper.orderByAsc("this_week_rank");
+
+            Date starDate = DateUtils.getWeekStart(new Date());
+            Date endDate = DateUtils.getWeekEnd(new Date());
+            startTime = DateUtils.formatDate(starDate,DateUtils.DATE_FORMAT_DATETIME);
+            endTime = DateUtils.formatDate(endDate,DateUtils.DATE_FORMAT_DATETIME);
         }else if(rankDto.getRankType() == 1){
             queryWrapper.orderByAsc("this_month_rank");
+
+            Date starMonthDate = DateUtils.getMonthStart(new Date());
+            Date endMonthDate = DateUtils.getMonthEnd(new Date());
+            startTime = DateUtils.formatDate(starMonthDate,DateUtils.DATE_FORMAT_DATETIME);
+            endTime = DateUtils.formatDate(endMonthDate,DateUtils.DATE_FORMAT_DATETIME);
         }else {
             queryWrapper.orderByDesc("hot_nums");
         }
         queryWrapper.orderByAsc("create_time");
         IPage page = new Page(rankDto.getPageNum(), rankDto.getPageSize());
         IPage<Star> pageList = starMapper.selectPage(page, queryWrapper);
+
+        List<Long> starIds = new ArrayList<>();
+        for (Star star : pageList.getRecords()) {
+            starIds.add(star.getId());
+        }
+        List<HitList> list = hitListMapper.statisticsRankByTimeAndStar(starIds,startTime,endTime);
 
         //返回结果
         List<HitListVo> weekRankList = new ArrayList<>();
@@ -242,11 +245,15 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
             hitListVo.setStarName(star.getName());
             hitListVo.setRank(i);
             if(rankDto.getRankType() != 2){
-                Integer totalVigourVal = hitListMapper.totalCountVigourMark(startTime, endTime, star.getId());
-                if(totalVigourVal == null){
-                    hitListVo.setTotalVigourVal(0);
-                }else {
-                    hitListVo.setTotalVigourVal(totalVigourVal);
+                for (HitList statModel : list){
+                    if(star.getId().longValue() == statModel.getStarId()){
+                        if(statModel.getVigourVal() == null){
+                            hitListVo.setTotalVigourVal(0);
+                        }else {
+                            hitListVo.setTotalVigourVal(statModel.getVigourVal());
+                        }
+                        break;
+                    }
                 }
             }else {
                 hitListVo.setTotalVigourVal(star.getHotNums());
@@ -279,16 +286,15 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         }
     }
 
-    public void getStarRank(int type, Date startTime, Date endTime){
+    public List<StatModel> getStarRank(int type, Date startTime, Date endTime){
         List<Star> starList = starMapper.selectList(new QueryWrapper<>());
         log.info("==============被统计明星数："+starList.size()+"==============");
+        List<StatModel> modelList = new ArrayList<>();
         if(starList.size()>0) {
             starList.stream().forEach(sl -> {
                 if(type==1)sl.setThisMonthRank(NumberUtils.INTEGER_ZERO);
                 if(type==0)sl.setThisWeekRank(NumberUtils.INTEGER_ZERO);
             });
-
-            List<StatModel> modelList = new ArrayList<>();
             listUtils.copyList(starList, modelList, StatModel.class);
             modelList.stream().forEach(item ->{
                 int vigourVal = iHitListService.statisticsRankByTime(item.getId(), startTime, endTime);
@@ -308,6 +314,106 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
                 starMapper.updateById(star);
             }
         }
+        return modelList;
+    }
+
+
+    private List<StatModel> getStatisticsStarRank(int type, String startTime, String endTime){
+        List<Star> starList = starMapper.selectList(new QueryWrapper<>());
+        log.info("==============被统计明星数："+starList.size()+"==============");
+        List<StatModel> modelList = new ArrayList<>();
+        if(starList.size()>0) {
+            starList.stream().forEach(sl -> {
+                if(type==1)sl.setThisMonthRank(NumberUtils.INTEGER_ZERO);
+                if(type==0)sl.setThisWeekRank(NumberUtils.INTEGER_ZERO);
+            });
+            listUtils.copyList(starList, modelList, StatModel.class);
+            QueryWrapper<HitList> queryWrapper = new QueryWrapper<>();
+            if (startTime != null) {
+                queryWrapper.lambda().ge(HitList::getCreateTime, startTime);
+            }
+            if (endTime != null) {
+                queryWrapper.lambda().le(HitList::getCreateTime, endTime);
+            }
+            List<HitList> list = hitListMapper.statisticsRankByTime(startTime,endTime);
+            modelList.stream().forEach(item ->{
+                boolean flag = true;
+                for (HitList hitList : list){
+                    if (item.getId().longValue() == hitList.getStarId().longValue()) {
+                        item.setVigourVal(hitList.getVigourVal());
+                        flag = false;
+                        break;
+                    }
+                }
+                if(flag){
+                    item.setVigourVal(0);
+                }
+            });
+           /* modelList.sort(Comparator.comparing(StatModel::getVigourVal).reversed());
+
+            List<Star> updateList = new ArrayList<>();
+            for (int i = 0; i < modelList.size() ; i++) {
+                Star star = new Star();
+                star.setId(modelList.get(i).getId());
+                if(type ==0) {
+                    star.setThisWeekRank(i+1);
+                }else{
+                    star.setThisMonthRank(i+1);
+                }
+                updateList.add(star);
+            }
+            starMapper.batchUpdate(updateList);*/
+        }
+        return modelList;
+    }
+
+    public List<StatModel> getStatisticsStarRankTask(int type, String startTime, String endTime){
+        List<Star> starList = starMapper.selectList(new QueryWrapper<>());
+        log.info("==============被统计明星数："+starList.size()+"==============");
+        List<StatModel> modelList = new ArrayList<>();
+        if(starList.size()>0) {
+            starList.stream().forEach(sl -> {
+                if(type==1)sl.setThisMonthRank(NumberUtils.INTEGER_ZERO);
+                if(type==0)sl.setThisWeekRank(NumberUtils.INTEGER_ZERO);
+            });
+            listUtils.copyList(starList, modelList, StatModel.class);
+            QueryWrapper<HitList> queryWrapper = new QueryWrapper<>();
+            if (startTime != null) {
+                queryWrapper.lambda().ge(HitList::getCreateTime, startTime);
+            }
+            if (endTime != null) {
+                queryWrapper.lambda().le(HitList::getCreateTime, endTime);
+            }
+            List<HitList> list = hitListMapper.statisticsRankByTime(startTime,endTime);
+            modelList.stream().forEach(item ->{
+                boolean flag = true;
+                for (HitList hitList : list){
+                    if (item.getId().longValue() == hitList.getStarId().longValue()) {
+                        item.setVigourVal(hitList.getVigourVal());
+                        flag = false;
+                        break;
+                    }
+                }
+                if(flag){
+                    item.setVigourVal(0);
+                }
+            });
+            modelList.sort(Comparator.comparing(StatModel::getVigourVal).reversed());
+
+            List<Star> updateList = new ArrayList<>();
+            for (int i = 0; i < modelList.size() ; i++) {
+                Star star = new Star();
+                star.setId(modelList.get(i).getId());
+                if(type ==0) {
+                    star.setThisWeekRank(i+1);
+                }else{
+                    star.setThisMonthRank(i+1);
+                }
+                updateList.add(star);
+            }
+            starMapper.batchUpdate(updateList);
+        }
+        return modelList;
     }
 
     @Override
@@ -340,23 +446,8 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
         Star star = starMapper.selectById(id);
         StarInfoVo starInfoVo = new StarInfoVo();
         BeanUtils.copyProperties(star, starInfoVo);
-
-        //查询周榜名词
-        String weekStart = DateUtils.getTimeStampStr(DateUtils.getWeekStart(new Date()));
-        String weekEnd = DateUtils.getTimeStampStr(DateUtils.getWeekEnd(new Date()));
-        Integer weekRank = hitListMapper.getThisRank(id,weekStart,weekEnd);
-        if(weekRank == null){
-            weekRank = 0;
-        }
-        starInfoVo.setThisWeekRank(weekRank);
-        //查询月榜名称
-        String monthStart = DateUtils.getTimeStampStr(DateUtils.getMonthStart(new Date()));
-        String monthEnd = DateUtils.getTimeStampStr(DateUtils.getMonthEnd(new Date()));
-        Integer monthkRank = hitListMapper.getThisRank(id,monthStart,monthEnd);
-        if(monthkRank == null){
-            monthkRank = 0;
-        }
-        starInfoVo.setThisMonthRank(monthkRank);
+        starInfoVo.setThisWeekRank(star.getThisWeekRank());
+        starInfoVo.setThisMonthRank(star.getThisMonthRank());
         return starInfoVo;
     }
 

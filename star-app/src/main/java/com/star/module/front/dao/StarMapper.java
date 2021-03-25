@@ -4,6 +4,8 @@ import com.star.module.front.entity.Star;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  * 明星表 Mapper 接口
@@ -19,5 +21,8 @@ public interface StarMapper extends BaseMapper<Star> {
      * @param vigourVal
      */
     void updateVigour(@Param("id") Long id, @Param("vigourVal") int vigourVal);
+
+
+    void batchUpdate(@Param("list") List<Star> list);
 
 }
