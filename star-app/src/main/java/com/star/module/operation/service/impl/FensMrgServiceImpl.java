@@ -28,6 +28,7 @@ import com.star.module.operation.vo.GiveVo;
 import com.star.module.operation.vo.ImportGiveVo;
 import com.star.module.user.common.UserUtil;
 import com.star.util.SnowflakeId;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -41,6 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -285,6 +287,7 @@ public class FensMrgServiceImpl implements FensMrgService {
 
 
     @Override
+    @Transactional
     public ImportGiveVo importHitSatrVigourVal(MultipartFile file) {
         Workbook wookbook = null;
         String originalFilename = file.getOriginalFilename();
@@ -313,6 +316,9 @@ public class FensMrgServiceImpl implements FensMrgService {
         for (int i = 1; i <= totalRowNum; i++) {
             //获得第i行对象
             Row row = sheet.getRow(i);
+            if(row == null){
+                continue;
+            }
             Cell c0 = row.getCell(0);
             Long fensId = null;
             Long starId = null;
@@ -321,12 +327,15 @@ public class FensMrgServiceImpl implements FensMrgService {
                 fensId = Long.parseLong(fensIdStr.toString());
             }else {
                 String fensIdStr = c0.getStringCellValue();
+                if(StringUtils.isBlank(fensIdStr)){
+                    continue;
+                }
                 fensId = Long.parseLong(fensIdStr);
             }
 
             Cell c1 = row.getCell(1);
             String vigourVal = "";
-            if(c0.getCellType() == 0){
+            if(c1.getCellType() == 0){
                 Integer cellValue = new Integer((int) c1.getNumericCellValue());
                 vigourVal = cellValue.toString();
             }else {

@@ -258,6 +258,9 @@ public class StarServiceImpl extends ServiceImpl<StarMapper, Star> implements IS
             }else {
                 hitListVo.setTotalVigourVal(star.getHotNums());
             }
+            if(hitListVo.getTotalVigourVal() == null){
+                hitListVo.setTotalVigourVal(0);
+            }
             i++;
             weekRankList.add(hitListVo);
         }

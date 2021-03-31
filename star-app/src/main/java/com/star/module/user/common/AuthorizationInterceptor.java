@@ -71,16 +71,19 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
             return false;
         }
         Method method = handlerMethod.getMethod();
-        // 如果不是映射到方法直接通过
-        if ((handlerMethod.getBeanType().getAnnotation(IgnoreSecurity.class) != null   // 查看方法所在的Controller是否有注解
-                || method.getAnnotation(IgnoreSecurity.class) != null)){
-            return true;
-        }
 
         String unauthorizedErrorMsg = unauthorizedErrorMessage;
 
         // 从header中得到token
         String token = request.getHeader(httpHeaderName);
+
+        if(token == null){
+            // 如果不是映射到方法直接通过
+            if ((handlerMethod.getBeanType().getAnnotation(IgnoreSecurity.class) != null   // 查看方法所在的Controller是否有注解
+                    || method.getAnnotation(IgnoreSecurity.class) != null)){
+                return true;
+            }
+        }
 
         if (token != null && token.length() > 0) {
             Jws<Claims> claimsJws = null;

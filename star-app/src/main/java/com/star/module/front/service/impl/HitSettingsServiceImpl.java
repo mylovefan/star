@@ -120,10 +120,44 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
                 .eq(FensVigourLog::getType, VigourTypeEnums.SIGN.getCode())
                 .eq(FensVigourLog::getVigTime, LocalDate.now());
         Integer count = fensVigourLogMapper.selectCount(queryWrapper);
-        if(count !=null && count>0){
+
+        if(count !=null && count >= hitSettings.getSignMaxNum()){
             starHitSettingsVo.setSignFlag(true);
         }else {
             starHitSettingsVo.setSignFlag(false);
+        }
+
+        QueryWrapper<FensVigourLog> luckqueryWrapper = new QueryWrapper<>();
+        luckqueryWrapper.lambda().eq(FensVigourLog::getFensId,id).eq(FensVigourLog::getStarId,starId)
+                .eq(FensVigourLog::getType, VigourTypeEnums.LUCK.getCode())
+                .eq(FensVigourLog::getVigTime, LocalDate.now());
+        Integer luckcount = fensVigourLogMapper.selectCount(queryWrapper);
+        if(luckcount !=null && luckcount >= hitSettings.getDeawMaxNum()){
+            starHitSettingsVo.setLuckFlag(true);
+        }else {
+            starHitSettingsVo.setLuckFlag(false);
+        }
+
+        QueryWrapper<FensVigourLog> viewqueryWrapper = new QueryWrapper<>();
+        viewqueryWrapper.lambda().eq(FensVigourLog::getFensId,id).eq(FensVigourLog::getStarId,starId)
+                .eq(FensVigourLog::getType, VigourTypeEnums.VIEW.getCode())
+                .eq(FensVigourLog::getVigTime, LocalDate.now());
+        Integer viewcount = fensVigourLogMapper.selectCount(viewqueryWrapper);
+        if(viewcount !=null && viewcount >= hitSettings.getVideoMaxNum()){
+            starHitSettingsVo.setViewFlag(true);
+        }else {
+            starHitSettingsVo.setViewFlag(false);
+        }
+
+        QueryWrapper<FensVigourLog> sharequeryWrapper = new QueryWrapper<>();
+        sharequeryWrapper.lambda().eq(FensVigourLog::getFensId,id).eq(FensVigourLog::getStarId,starId)
+                .eq(FensVigourLog::getType, VigourTypeEnums.SHARE.getCode())
+                .eq(FensVigourLog::getVigTime, LocalDate.now());
+        Integer sharecount = fensVigourLogMapper.selectCount(sharequeryWrapper);
+        if(sharecount !=null && sharecount >= hitSettings.getShareMaxNum()){
+            starHitSettingsVo.setShareFlag(true);
+        }else {
+            starHitSettingsVo.setShareFlag(false);
         }
         return starHitSettingsVo;
     }
@@ -146,7 +180,7 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
         Integer count = fensVigourLogMapper.selectCount(queryWrapper);
         if(VigourTypeEnums.SIGN.getCode() == finishTaskVigourDto.getType()){
             //签到
-            if(count !=null && count >hitSettings.getSignMaxNum()){
+            if(count !=null && count >= hitSettings.getSignMaxNum()){
                 throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"今日签到次数已用完，明日再来吧");
             }
             /*queryWrapper.lambda().eq(FensVigourLog::getStarId,finishTaskVigourDto.getStarId());
@@ -188,13 +222,13 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
             //fensVigourLog.setVigourVal(hitSettings.getVigourSignNum());
         }else if(VigourTypeEnums.VIEW.getCode() == finishTaskVigourDto.getType()){
             //看视频
-            if(count !=null && count >hitSettings.getVideoMaxNum()){
+            if(count !=null && count >= hitSettings.getVideoMaxNum()){
                 throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"今日看视频次数已用完，明日再来吧");
             }
             fensVigourLog.setVigourVal(hitSettings.getVigourVideoNum());
         }else if(VigourTypeEnums.SHARE.getCode() == finishTaskVigourDto.getType()){
             //分享
-            if(count !=null && count >hitSettings.getShareMaxNum()){
+            if(count !=null && count >= hitSettings.getShareMaxNum()){
                 throw new ServiceException(ErrorCodeEnum.PARAM_ERROR.getCode(),"今日分享次数已用完，明日再来吧");
             }
             fensVigourLog.setVigourVal(hitSettings.getVigourShareNum());

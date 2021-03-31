@@ -38,4 +38,13 @@ public class StarHitSettingsVo implements Serializable {
     @ApiModelProperty(value = "每日抽奖最高次数")
     private Integer deawMaxNum;
 
+    @ApiModelProperty(value = "是否能抽奖")
+    private boolean luckFlag;
+
+    @ApiModelProperty(value = "是否能看视频")
+    private boolean viewFlag;
+
+    @ApiModelProperty(value = "是否能分享")
+    private boolean shareFlag;
+
 }
