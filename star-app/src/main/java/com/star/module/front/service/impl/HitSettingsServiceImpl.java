@@ -116,7 +116,7 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
             return starHitSettingsVo;
         }
         QueryWrapper<FensVigourLog> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(FensVigourLog::getFensId,id).eq(FensVigourLog::getStarId,starId)
+        queryWrapper.lambda().eq(FensVigourLog::getFensId,id)
                 .eq(FensVigourLog::getType, VigourTypeEnums.SIGN.getCode())
                 .eq(FensVigourLog::getVigTime, LocalDate.now());
         Integer count = fensVigourLogMapper.selectCount(queryWrapper);
@@ -128,7 +128,7 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
         }
 
         QueryWrapper<FensVigourLog> luckqueryWrapper = new QueryWrapper<>();
-        luckqueryWrapper.lambda().eq(FensVigourLog::getFensId,id).eq(FensVigourLog::getStarId,starId)
+        luckqueryWrapper.lambda().eq(FensVigourLog::getFensId,id)
                 .eq(FensVigourLog::getType, VigourTypeEnums.LUCK.getCode())
                 .eq(FensVigourLog::getVigTime, LocalDate.now());
         Integer luckcount = fensVigourLogMapper.selectCount(queryWrapper);
@@ -139,7 +139,7 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
         }
 
         QueryWrapper<FensVigourLog> viewqueryWrapper = new QueryWrapper<>();
-        viewqueryWrapper.lambda().eq(FensVigourLog::getFensId,id).eq(FensVigourLog::getStarId,starId)
+        viewqueryWrapper.lambda().eq(FensVigourLog::getFensId,id)
                 .eq(FensVigourLog::getType, VigourTypeEnums.VIEW.getCode())
                 .eq(FensVigourLog::getVigTime, LocalDate.now());
         Integer viewcount = fensVigourLogMapper.selectCount(viewqueryWrapper);
@@ -150,7 +150,7 @@ public class HitSettingsServiceImpl extends ServiceImpl<HitSettingsMapper, HitSe
         }
 
         QueryWrapper<FensVigourLog> sharequeryWrapper = new QueryWrapper<>();
-        sharequeryWrapper.lambda().eq(FensVigourLog::getFensId,id).eq(FensVigourLog::getStarId,starId)
+        sharequeryWrapper.lambda().eq(FensVigourLog::getFensId,id)
                 .eq(FensVigourLog::getType, VigourTypeEnums.SHARE.getCode())
                 .eq(FensVigourLog::getVigTime, LocalDate.now());
         Integer sharecount = fensVigourLogMapper.selectCount(sharequeryWrapper);

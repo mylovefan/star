@@ -234,19 +234,25 @@ public class FensMrgServiceImpl implements FensMrgService {
     @Override
     public void addBulidFens(BulidFensDto bulidFensDto) {
         Fens fens = new Fens();
-        fens.setId(SnowflakeId.getInstance().nextId());
-        LocalDateTime localDateTimeOfNow = LocalDateTime.now();
-        fens.setAddTime(localDateTimeOfNow);
         fens.setAvatarUrl(bulidFensDto.getAvatarUrl());
         fens.setNickName(bulidFensDto.getNickName());
-        fens.setConsumeVigourVal(0);
-        fens.setTotalVigourVal(1000000);
-        fens.setVigourVal(1000000);
-        List<Long> longs = fensMapper.selectFensIds();
-        Long fensId = RandomUtils.randomNumber6(longs);
-        fens.setFensId(fensId);
-        fens.setBuild(1);
-        fensMapper.insert(fens);
+        if(bulidFensDto.getId() != null){
+            fens.setId(bulidFensDto.getId());
+            fensMapper.updateById(fens);
+        }else {
+            fens.setId(SnowflakeId.getInstance().nextId());
+            LocalDateTime localDateTimeOfNow = LocalDateTime.now();
+            fens.setAddTime(localDateTimeOfNow);
+            fens.setConsumeVigourVal(0);
+            fens.setTotalVigourVal(1000000);
+            fens.setVigourVal(1000000);
+            List<Long> longs = fensMapper.selectFensIds();
+            Long fensId = RandomUtils.randomNumber6(longs);
+            fens.setFensId(fensId);
+            fens.setBuild(1);
+            fensMapper.insert(fens);
+        }
+
     }
 
 

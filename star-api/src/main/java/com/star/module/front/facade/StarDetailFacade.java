@@ -55,4 +55,8 @@ public interface StarDetailFacade {
     @ApiOperation("参与活动")
     @PostMapping("joinResources")
     void joinResources(@RequestParam("resourcesRelId") Long resourcesRelId,@RequestParam("status") Integer status);
+
+    @ApiOperation(value = "查询粉丝是否能看视频")
+    @GetMapping("selectViewLimit")
+    Boolean selectViewLimit();
 }

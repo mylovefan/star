@@ -44,4 +44,13 @@ public interface ResourcesFacade {
     @ApiOperation(value = "查询开屏图")
     @PostMapping("selectOpenImg")
     OpenImgVo selectOpenImg();
+
+
+    @ApiOperation(value = "设置看视频次数")
+    @PostMapping("saveOrUpdateViewLimit")
+    void saveOrUpdateViewLimit(@RequestParam("viewLimit") int viewLimit);
+
+    @ApiOperation(value = "查询看视频次数")
+    @GetMapping("selectViewLimit")
+    Integer selectViewLimit();
 }

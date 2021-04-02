@@ -69,4 +69,15 @@ public class ResourcesController implements ResourcesFacade {
 
         return resourcesService.selectOpenImg();
     }
+
+
+    @Override
+    public void saveOrUpdateViewLimit(@RequestParam("viewLimit") int viewLimit) {
+        resourcesService.saveOrUpdateViewLimit(viewLimit);
+    }
+
+    @Override
+    public Integer selectViewLimit() {
+        return resourcesService.selectViewLimit();
+    }
 }

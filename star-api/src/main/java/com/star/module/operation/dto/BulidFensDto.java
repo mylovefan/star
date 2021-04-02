@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class BulidFensDto {
 
+    @ApiModelProperty(value = "id")
+    private Long id;
 
     @ApiModelProperty(value = "网名")
     private String nickName;

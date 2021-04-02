@@ -12,13 +12,13 @@ import com.github.pagehelper.util.StringUtil;
 import com.star.common.CommonConstants;
 import com.star.common.ErrorCodeEnum;
 import com.star.common.ServiceException;
-import com.star.module.front.dao.FensJoinMapper;
-import com.star.module.front.dao.OpenImgMapper;
-import com.star.module.front.dao.StarMapper;
+import com.star.module.front.dao.*;
 import com.star.module.front.dto.OpenImgDto;
 import com.star.module.front.dto.ResourcesRankDto;
 import com.star.module.front.entity.FensJoin;
+import com.star.module.front.entity.FensView;
 import com.star.module.front.entity.Star;
+import com.star.module.front.entity.ViewLimit;
 import com.star.module.front.vo.FensJoinResVo;
 import com.star.module.front.vo.ListAwardPersionVo;
 import com.star.module.front.vo.OpenImgVo;
@@ -45,6 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -88,6 +89,12 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
 
     @Autowired
     private OpenImgMapper openImgMapper;
+
+    @Autowired
+    private ViewLimitMapper viewLimitMapper;
+
+    @Autowired
+    private FensViewMapper fensViewMapper;
 
     @Override
     @Transactional
@@ -343,6 +350,7 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
                 fensJoinMapper.updateById(fensJoinDo);
                 reachNum = 1;
             }
+            joinNum = 1;
         }
         int count = starResourcesRelDo.getReachNum() + reachNum;
 
@@ -353,6 +361,21 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         starResourcesRel.setUpdateTime(localDateTimeOfNow);
 
         starResourcesRelMapper.updateNum(resourcesRelId,joinNum,reachNum,rstatus);
+
+        //增加观看次数
+        QueryWrapper<FensView> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(FensView::getAddTime, LocalDate.now()).eq(FensView::getFensId,id);
+        FensView fensView = fensViewMapper.selectOne(queryWrapper);
+        if(fensView == null){
+            fensView = new FensView();
+            fensView.setAddTime(LocalDate.now());
+            fensView.setFensId(id);
+            fensView.setViewNum(1);
+            fensViewMapper.insert(fensView);
+        }else {
+            fensView.setViewNum(fensView.getViewNum()+1);
+            fensViewMapper.updateById(fensView);
+        }
     }
 
 
@@ -400,5 +423,31 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         }
         BeanUtils.copyProperties(openImg,openImgVo);
         return openImgVo;
+    }
+
+
+    @Override
+    public void saveOrUpdateViewLimit(int viewLimit) {
+        QueryWrapper<ViewLimit> wrapper = new QueryWrapper<>();
+        ViewLimit viewLimitDo = viewLimitMapper.selectOne(wrapper);
+        if(viewLimitDo == null){
+            viewLimitDo = new ViewLimit();
+            viewLimitDo.setViewLimit(viewLimit);
+            viewLimitMapper.insert(viewLimitDo);
+        }else {
+            viewLimitDo.setViewLimit(viewLimit);
+            viewLimitMapper.update(viewLimitDo,wrapper);
+        }
+    }
+
+
+    @Override
+    public Integer selectViewLimit() {
+        QueryWrapper<ViewLimit> wrapper = new QueryWrapper<>();
+        ViewLimit viewLimitDo = viewLimitMapper.selectOne(wrapper);
+        if(viewLimitDo != null){
+            return viewLimitDo.getViewLimit();
+        }
+        return null;
     }
 }

@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.util.StringUtil;
 import com.star.common.CommonConstants;
+import com.star.module.front.dao.FensMapper;
 import com.star.module.front.dao.HitListMapper;
 import com.star.module.front.dao.OpenImgMapper;
 import com.star.module.front.dao.StarMapper;
+import com.star.module.front.entity.Fens;
 import com.star.module.front.entity.Star;
 import com.star.module.front.vo.CarouselDeatilVo;
 import com.star.module.front.vo.HomeCarouselVo;
@@ -20,6 +22,7 @@ import com.star.module.operation.entity.OpenImg;
 import com.star.module.operation.service.ICarouselService;
 import com.star.module.operation.util.DateUtils;
 import com.star.module.operation.vo.OpenVo;
+import com.star.module.user.common.UserUtil;
 import com.star.module.user.dto.CarouselDto;
 import com.star.module.user.vo.CarouselVo;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -27,6 +30,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -59,6 +63,12 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
     @Autowired
     private OpenImgMapper openImgMapper;
 
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private FensMapper fensMapper;
+
     @Override
     public void addOrUpdateCarousel(CarouselDto carouselDto) {
         Carousel carousel = new Carousel();
@@ -88,6 +98,14 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
 
     @Override
     public List<HomeCarouselVo> carouselList() {
+        //刷新登录时间
+        Long id = UserUtil.getCurrentUserId(request);
+        if(id != null){
+            Fens fens = new Fens();
+            fens.setId(id);
+            fens.setLastVisitTime(LocalDateTime.now(ZoneId.of(CommonConstants.ZONEID_SHANGHAI)));
+            fensMapper.updateById(fens);
+        }
         List<HomeCarouselVo> list = new ArrayList<>();
         QueryWrapper<Carousel> cwrapper = new QueryWrapper<>();
         cwrapper.lambda().eq(Carousel::getOpen,1).orderByAsc(Carousel::getSort);

@@ -6,10 +6,7 @@ import com.star.module.front.dto.FinishTaskVigourDto;
 import com.star.module.front.dto.ResourcesRankDto;
 import com.star.module.front.dto.StarFensRankDto;
 import com.star.module.front.facade.StarDetailFacade;
-import com.star.module.front.service.IGuardService;
-import com.star.module.front.service.IHitListService;
-import com.star.module.front.service.IHitSettingsService;
-import com.star.module.front.service.IStarService;
+import com.star.module.front.service.*;
 import com.star.module.front.vo.*;
 import com.star.module.operation.dto.StarPageDto;
 import com.star.module.operation.service.IResourcesService;
@@ -38,6 +35,9 @@ public class StarDetailController implements StarDetailFacade {
 
     @Autowired
     private IResourcesService resourcesService;
+
+    @Autowired
+    private IFensViewService fensViewService;
 
     @Override
     @IgnoreSecurity
@@ -86,5 +86,11 @@ public class StarDetailController implements StarDetailFacade {
     @Override
     public void joinResources(@RequestParam("resourcesRelId") Long resourcesRelId,@RequestParam("status") Integer status) {
         resourcesService.joinResources(resourcesRelId, status);
+    }
+
+
+    @Override
+    public Boolean selectViewLimit() {
+        return fensViewService.selectViewLimit();
     }
 }

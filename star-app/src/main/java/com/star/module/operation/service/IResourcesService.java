@@ -111,4 +111,18 @@ public interface IResourcesService extends IService<Resources> {
      */
     OpenImgVo selectOpenImg();
 
+    /**
+     * 设置看视频次数
+     *
+     * @param viewLimit
+     */
+    void saveOrUpdateViewLimit(int viewLimit);
+
+
+    /**
+     * 查询看视频次数
+     *
+     */
+    Integer selectViewLimit();
+
 }
