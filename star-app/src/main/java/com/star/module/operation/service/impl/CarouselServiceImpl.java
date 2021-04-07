@@ -135,8 +135,8 @@ public class CarouselServiceImpl extends ServiceImpl<CarouselMapper, Carousel> i
         weekwrapper.lambda().eq(ListAward::getCode,"WEEK").eq(ListAward::getOpen,1);
         ListAward listAward2 = listAwardMapper.selectOne(weekwrapper);
         if(listAward2 != null && listAward2.getType().indexOf("3") != -1){
-            Date starDate = DateUtils.getLastWeekMonday();
-            Date endDate = DateUtils.getLastSundayEndDay();
+            Date starDate = DateUtils.getBeginDayOfLastWeek();
+            Date endDate = DateUtils.getEndDayOfLastWeek();
             String startTime = DateUtils.formatDate(starDate,DateUtils.DATE_FORMAT_DATETIME);
             String endTime = DateUtils.formatDate(endDate,DateUtils.DATE_FORMAT_DATETIME);
             HomeCarouselVo lastRank = hitListMapper.getLastRank(startTime, endTime);
